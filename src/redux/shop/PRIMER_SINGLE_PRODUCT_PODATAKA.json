@@ -1,0 +1,130 @@
+{ 
+   "status":"success",
+   "data":{ 
+      "doc":{ 
+         "startLocation":{ 
+            "type":"Point",
+            "description":"Miami, USA",
+            "coordinates":[ 
+               -80.185942,
+               25.774772
+            ],
+            "address":"301 Biscayne Blvd, Miami, FL 33132, USA"
+         },
+         "ratingsAverage":4.8,
+         "ratingsQuantity":6,
+         "images":[ 
+            "tour-2-1.jpg",
+            "tour-2-2.jpg",
+            "tour-2-3.jpg"
+         ],
+         "startDates":[ 
+            "2021-06-19T09:00:00.000Z",
+            "2021-07-20T09:00:00.000Z",
+            "2021-08-18T09:00:00.000Z"
+         ],
+         "secretTour":false,
+         "guides":[ 
+            "5c8a22c62f8fb814b56fa18b",
+            "5c8a1f4e2f8fb814b56fa185"
+         ],
+         "_id":"5c88fa8cf4afda39709c2955",
+         "category":"hiking",
+         "name":"The Sea Explorer",
+         "duration":7,
+         "maxGroupSize":15,
+         "difficulty":"medium",
+         "price":497,
+         "summary":"Exploring the jaw-dropping US east coast by foot and by boat",
+         "description":"Consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.\nIrure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.",
+         "imageCover":"tour-2-cover.jpg",
+         "location":[ 
+
+         ],
+         "slug":"the-sea-explorer",
+         "__v":0,
+         "durationWeeks":1,
+         "reviews":[ 
+            { 
+               "_id":"5c8a34ed14eb5c17645c9108",
+               "review":"Cras mollis nisi parturient mi nec aliquet suspendisse sagittis eros condimentum scelerisque taciti mattis praesent feugiat eu nascetur a tincidunt",
+               "rating":5,
+               "user":{ 
+                  "_id":"5c8a1dfa2f8fb814b56fa181",
+                  "name":"Lourdes Browning"
+               },
+               "tour":"5c88fa8cf4afda39709c2955",
+               "createdAt":"2019-12-16T11:47:56.503Z",
+               "__v":0,
+               "id":"5c8a34ed14eb5c17645c9108"
+            },
+            { 
+               "_id":"5c8a36b714eb5c17645c910f",
+               "review":"Pulvinar taciti etiam aenean lacinia natoque interdum fringilla suspendisse nam sapien urna!",
+               "rating":4,
+               "user":{ 
+                  "_id":"5c8a1e1a2f8fb814b56fa182",
+                  "name":"Sophie Louise Hart"
+               },
+               "tour":"5c88fa8cf4afda39709c2955",
+               "createdAt":"2019-12-16T11:47:56.507Z",
+               "__v":0,
+               "id":"5c8a36b714eb5c17645c910f"
+            },
+            { 
+               "_id":"5c8a391f14eb5c17645c911f",
+               "review":"Sem feugiat sed lorem vel dignissim platea habitasse dolor suscipit ultricies dapibus",
+               "rating":5,
+               "user":{ 
+                  "_id":"5c8a211f2f8fb814b56fa188",
+                  "name":"Cristian Vega"
+               },
+               "tour":"5c88fa8cf4afda39709c2955",
+               "createdAt":"2019-12-16T11:47:56.515Z",
+               "__v":0,
+               "id":"5c8a391f14eb5c17645c911f"
+            },
+            { 
+               "_id":"5c8a3a7014eb5c17645c9124",
+               "review":"Blandit varius nascetur est felis praesent lorem himenaeos pretium dapibus tellus bibendum consequat ac duis",
+               "rating":5,
+               "user":{ 
+                  "_id":"5c8a23c82f8fb814b56fa18d",
+                  "name":"Laura Wilson"
+               },
+               "tour":"5c88fa8cf4afda39709c2955",
+               "createdAt":"2019-12-16T11:47:56.517Z",
+               "__v":0,
+               "id":"5c8a3a7014eb5c17645c9124"
+            },
+            { 
+               "_id":"5c8a3b7c14eb5c17645c912f",
+               "review":"Tempor pellentesque eu placerat auctor enim nam suscipit tincidunt natoque ipsum est.",
+               "rating":5,
+               "user":{ 
+                  "_id":"5c8a23de2f8fb814b56fa18e",
+                  "name":"Max Smith"
+               },
+               "tour":"5c88fa8cf4afda39709c2955",
+               "createdAt":"2019-12-16T11:47:56.521Z",
+               "__v":0,
+               "id":"5c8a3b7c14eb5c17645c912f"
+            },
+            { 
+               "_id":"5c8a3cdc14eb5c17645c913b",
+               "review":"Magna magnis tellus dui vivamus donec placerat vehicula erat turpis",
+               "rating":5,
+               "user":{ 
+                  "_id":"5c8a24822f8fb814b56fa192",
+                  "name":"John Riley"
+               },
+               "tour":"5c88fa8cf4afda39709c2955",
+               "createdAt":"2019-12-16T11:47:56.527Z",
+               "__v":0,
+               "id":"5c8a3cdc14eb5c17645c913b"
+            }
+         ],
+         "id":"5c88fa8cf4afda39709c2955"
+      }
+   }
+}
