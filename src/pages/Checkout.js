@@ -1,7 +1,9 @@
-import React, { useEffect, useState, useReducer } from 'react'
+import React, { useEffect, useState, useReducer, setInputs } from 'react'
 import { connect } from 'react-redux'
 // import { createStructuredSelector } from 'reselect'
 import { routingUtils } from './../utils/routing-utils'
+import axios from 'axios'
+import StripeCheckout from 'react-stripe-checkout'
 
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
@@ -13,10 +15,12 @@ import FormControl from '@material-ui/core/FormControl';
 import FormGroup from '@material-ui/core/FormGroup';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Checkbox from '@material-ui/core/Checkbox';
+import { createOrder } from './../redux/shop/shop-actions'
 
 import Radio from '@material-ui/core/Radio';
 import RadioGroup from '@material-ui/core/RadioGroup';
 import FormHelperText from '@material-ui/core/FormHelperText';
+import StripePayment from './StripePayment'
 
 // import { selectCartItems, selectCartTotal } from '../redux/cart/cart-selectors'
 
@@ -75,9 +79,6 @@ const Checkout = (props) => {
     }
   }
   */
-
-
-
   const mInitial = {
     paypal: false,
     card: false,
@@ -105,20 +106,43 @@ const Checkout = (props) => {
   // onChange={ (e) => { mDispatch('BITCOIN') } }
   // mState.paypal
 
+  //dodao useReducer da handluje input change. Zasto mora da se salje objekat sa username: '' itd kada moze da se kreira properti kada se unese input?
+
+  const [inputValues, setInputValues] = useReducer(
+    (state, newState) => ({ ...state, ...newState }),
+    {}
+
+  );
+
+  const handleInputChange = event => {
+    const { name, value } = event.target;
+    setInputValues({ [name]: value });
+  };
+  console.log('hello');
+  console.log(inputValues);
 
 
 
-  const [state, setState] = useState({})
-  let handleInputChange = (event) => {
-    const target = event.target;
-    const value = target.type === 'checkbox' ? target.checked : target.value;
-    const name = target.name;
+  // const [state, setState] = useState({})
+  // let handleInputChange = (event) => {
+  //   const target = event.target;
+  //   const value = target.type === 'checkbox' ? target.checked : target.value;
+  //   const name = target.name;
+  //   console.log('opalio');
 
-    setState({
-      [name]: value
-    });
-  }
 
+  //   setState({
+  //     [name]: value
+  //   });
+  // }
+
+
+  //   const handleInputChange = (event) => {
+  //   event.persist();
+  //   setInputs(inputs => ({...inputs, [event.target.name]: event.target.value}));
+  //   console.log('opalio');
+
+  // }
 
   useEffect(() => {
     // isto sto i componentDidMount()
@@ -131,9 +155,92 @@ const Checkout = (props) => {
   let breadcrumbs = thisPageRoute.breadcrumbs;
   let activeRoute = thisPageRoute.routeName;
 
-  let subtotal = formatUtils.formatPrice(800, '€')
-  let tax = formatUtils.formatPrice(200, '€')
-  let totalPrice = formatUtils.formatPrice(1000, '€');
+
+  let items = props.state_ceo.cart.cartItems; // itemsi iz carta koji na backendu moraj uda se upisu u tabelu 
+  if (!Array.isArray(items)) {
+    items = [];
+  }
+  let subtotal = 0;
+  items.forEach((item) => {
+    subtotal += (item.price * item.quantity)
+  })
+  let subtotalDisplay = formatUtils.formatPrice(subtotal, '€')
+  let tax = 0;
+  let taxDisplay = formatUtils.formatPrice(tax, '€')
+  let total = subtotal + tax;
+  let totalDisplay = formatUtils.formatPrice(total, '€');
+
+
+  const onToken = token => {
+    console.log(token);
+    /*
+    // primer koda koji koristi samo jedan item pri kupovini
+    const id = '5c88fa8cf4afda39709c2955'
+    props.dispatch(createOrder({ amount: price, tourId: id, token }))
+    */
+    // axios({
+    //   url: `http://127.0.0.1:3002/api/v1/bookings/checkout-session/5c88fa8cf4afda39709c2955`,
+    //   method: 'post',
+    //   data: {
+    //     amount: price,
+    //     token
+    //   }
+    //   }).then(response => {
+    //     alert('success')
+    //     console.log(token, response);
+    //   }).catch(error => {
+    //     alert('unsuccessfull')
+    //     console.log(error);
+    //   })
+
+    // NOVO kod koji koristi ceo array itema iz carta
+    let items = props.state_ceo.cart.cartItems; // itemsi iz carta koji na backendu moraj uda se upisu u tabelu OrderItems odnosno bookings...
+    console.log(items);
+    let total = 0;
+    let tours = [];
+    let jsxCartItems = items.map((item) => {
+      // return <CheckoutItem key={item.id} cartItem={item} />
+      total += item.price * item.quantity;
+      tours.push(item.id); // popunjava array sam osa ID-ovima od tura...
+      return (
+        <></>
+      ) // ovo za sada ne koristimo ali smo iskoristili kod radi sabiranja cifre za naplatu...
+    })
+
+    let submitData = {
+      amount: total,
+      tours: tours,
+      token
+    }
+    console.log(submitData)
+
+    props.dispatch(createOrder(submitData))
+  }
+
+  let handleSubmit = async (e) => {
+    e.preventDefault();
+    // console.log('submit');
+    // const id = '5c88fa8cf4afda39709c2955'
+    // // props.dispatch(bookTour(id))
+    // try{
+    // const session = await axios(`http://127.0.0.1:3002/api/v1/bookings/checkout-session/${id}`)
+    // console.log(session);
+    // await
+    // }catch (err) {
+    //   console.log(err);
+
+    // }
+    // onToken = async token => {
+    //   console.log(token);
+    // let session = await axios({
+    //   method: 'GET',
+    //   url: `http://localhost:3002/api/v1/bookings/checkout-session/5c88fa8cf4afda39709c2955`
+    // })
+    // console.log(session);
+    // alert('Payment successfull')
+    // }
+  }
+  const publishableKey = 'pk_test_uwo2ixsEAZeoQqmFkHcEAW9O00CYR7upAk';
 
   return (
     <>
@@ -164,10 +271,10 @@ const Checkout = (props) => {
                 <h2>Order Summary</h2>
 
                 <div className="checkout-summary-items">
-                  <div className="item"><span>Subtotal </span><b>{subtotal}</b></div>
-                  <div className="item"><span>Tax </span><b>{tax}</b></div>
+                  <div className="item"><span>Subtotal </span><b>{subtotalDisplay}</b></div>
+                  <div className="item"><span>Tax </span><b>{taxDisplay}</b></div>
                   <div className="item separator"></div>
-                  <div className="item total"><span>Order total: </span><b>{totalPrice}</b></div>
+                  <div className="item total"><span>Order total: </span><b>{totalDisplay}</b></div>
                 </div>
 
                 <div className="add-to-cart-group">
@@ -198,7 +305,7 @@ const Checkout = (props) => {
                         defaultValue=""
                         helperText="First and last name"
                         variant="outlined"
-                        value={state.fullName}
+                        value={inputValues.fullName}
                         onChange={handleInputChange}
                         name="fullName"
                       />
@@ -209,7 +316,7 @@ const Checkout = (props) => {
                         defaultValue=""
                         helperText="We will answer on this email"
                         variant="outlined"
-                        value={state.email}
+                        value={inputValues.email}
                         onChange={handleInputChange}
                         name="email"
                       />
@@ -221,7 +328,7 @@ const Checkout = (props) => {
                         rows="4"
                         defaultValue=""
                         variant="outlined"
-                        value={state.message}
+                        value={inputValues.message}
                         onChange={handleInputChange}
                         name="message"
                       />
@@ -229,6 +336,7 @@ const Checkout = (props) => {
                       <Button
                         variant="contained"
                         endIcon={<i class="fas fa-paper-plane"></i>}
+
                       >Send</Button>
 
                     </div>
@@ -237,11 +345,11 @@ const Checkout = (props) => {
 
                   <FormGroup>
                     <FormControlLabel
-                      control={<Checkbox checked={state.saveaddress} onChange={handleInputChange} value="saveaddress" />}
+                      control={<Checkbox checked={inputValues.saveaddress} onChange={handleInputChange} value="saveaddress" />}
                       label="Save address for future use"
                     />
                     <FormControlLabel
-                      control={<Checkbox checked={state.makedefault} onChange={handleInputChange} value="makedefault" />}
+                      control={<Checkbox checked={inputValues.makedefault} onChange={handleInputChange} value="makedefault" />}
                       label="Make this my default address"
                     />
                   </FormGroup>
@@ -264,82 +372,98 @@ const Checkout = (props) => {
                   </RadioGroup>
                 </FormControl>
 
-                <div className={'payment-form-wrapper ' + cl_saved}>
-                  <div className="material-ui-form payment-form form-items">
+                <form onSubmit={handleSubmit}>
+                  <div className={'payment-form-wrapper ' + cl_saved}>
+                    <div className="material-ui-form payment-form form-items">
 
-                    <div className="item col-1-1">
-                      <TextField
-                        id="outlined-helperText"
-                        label="Card number"
-                        defaultValue="1111222233334444"
-                        helperText=""
-                        variant="outlined"
-                        value={state.cardnumber}
-                        onChange={handleInputChange}
-                        name="cardnumber"
-                      />
-                    </div>
-                    <div className="item col-1-6">
-                      <TextField
-                        id="outlined-helperText"
-                        type="number"
-                        label="MM"
-                        defaultValue=""
-                        helperText="Expiry month"
-                        variant="outlined"
-                        value={state.cardmm}
-                        onChange={handleInputChange}
-                        name="cardmm"
-                      />
-                    </div>
-                    <div className="item col-1-6">
-                      <TextField
-                        id="outlined-helperText"
-                        type="number"
-                        label="YY"
-                        defaultValue=""
-                        helperText="Expiry year"
-                        variant="outlined"
-                        value={state.cardyy}
-                        onChange={handleInputChange}
-                        name="cardyy"
-                      />
-                    </div>
-                    <div className="item col-1-4">
-                      <TextField
-                        id="outlined-helperText"
-                        type="number"
-                        label="CVV"
-                        defaultValue="123"
-                        helperText=""
-                        variant="outlined"
-                        value={state.cardcvv}
-                        onChange={handleInputChange}
-                        name="cardcvv"
-                      />
-                    </div>
-                    <div className="item col-1-1">
-                      <TextField
-                        id="outlined-helperText"
-                        label="Full name"
-                        defaultValue="MARKO MARKOVIC"
-                        helperText="Name (as it appears on your card)"
-                        variant="outlined"
-                        value={state.cardname}
-                        onChange={handleInputChange}
-                        name="cardname"
-                      />
-                    </div>
-                    <div className="item col-1-1">
-                      <Button
-                        variant="contained"
-                        color="primary"
-                      >Pay</Button>
-                    </div>
+                      <div className="item col-1-1">
+                        <TextField
+                          id="outlined-helperText"
+                          label="Card number"
+                          defaultValue="1111222233334444"
+                          helperText=""
+                          variant="outlined"
+                          value={inputValues.cardnumber}
+                          onChange={handleInputChange}
+                          name="cardnumber"
+                        />
+                      </div>
+                      <div className="item col-1-6">
+                        <TextField
+                          id="outlined-helperText"
+                          type="number"
+                          label="MM"
+                          defaultValue=""
+                          helperText="Expiry month"
+                          variant="outlined"
+                          value={inputValues.cardmm}
+                          onChange={handleInputChange}
+                          name="cardmm"
+                        />
+                      </div>
+                      <div className="item col-1-6">
+                        <TextField
+                          id="outlined-helperText"
+                          type="number"
+                          label="YY"
+                          defaultValue=""
+                          helperText="Expiry year"
+                          variant="outlined"
+                          value={inputValues.cardyy}
+                          onChange={handleInputChange}
+                          name="cardyy"
+                        />
+                      </div>
+                      <div className="item col-1-4">
+                        <TextField
+                          id="outlined-helperText"
+                          type="number"
+                          label="CVV"
+                          defaultValue="123"
+                          helperText=""
+                          variant="outlined"
+                          value={inputValues.cardcvv}
+                          onChange={handleInputChange}
+                          name="cardcvv"
+                        />
+                      </div>
+                      <div className="item col-1-1">
+                        <TextField
+                          id="outlined-helperText"
+                          label="Full name"
+                          defaultValue="MARKO MARKOVIC"
+                          helperText="Name (as it appears on your card)"
+                          variant="outlined"
+                          value={inputValues.cardname}
+                          onChange={handleInputChange}
+                          name="cardname"
+                        />
+                      </div>
+                      <div className="item col-1-1">
+                        <Button
+                          type="submit"
+                          variant="contained"
+                          color="primary"
 
+                        >Pay</Button>
+                      </div>
+
+                    </div>
                   </div>
-                </div>
+                </form>
 
+                <StripeCheckout
+                  label="Pay now"
+                  name="Tours"
+                  biilingAddress
+                  shippingAddress
+                  description={`Your total is $${total}`}
+                  amount={total * 100}
+                  panelLabel='Pay now'
+                  token={onToken}
+                  stripeKey={publishableKey}
+
+                />
 
               </section>
             </div>

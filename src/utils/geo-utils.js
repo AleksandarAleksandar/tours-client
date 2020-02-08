@@ -1,3 +1,5 @@
+import { Provider } from "react-redux";
+
 let geoUtils = {};
 
 geoUtils.extractL = (geouri) => {
@@ -54,7 +56,69 @@ geoUtils.createOpenStreetMapURL = (ll, zoom) => {
   return url;
 }
 
-// TODO: kreator linkova za google mape, kreator linkova za openstreet mape... dodati zoom opciju i za google maps
+geoUtils.getDistance = (ll, llb) => {
+  let lat1 = ll[0];
+  let lon1 = ll[1];
+  let lat2 = llb[0];
+  let lon2 = llb[1];
+  console.log('GEO LAT LONG', lat1, lon1, lat2, lon2);
 
+  function distance(lat1, lon1, lat2, lon2, unit) {
+    if ((lat1 == lat2) && (lon1 == lon2)) {
+      return 0;
+    } else {
+      var radlat1 = Math.PI * lat1 / 180;
+      var radlat2 = Math.PI * lat2 / 180;
+      var theta = lon1 - lon2;
+      var radtheta = Math.PI * theta / 180;
+      var dist = Math.sin(radlat1) * Math.sin(radlat2) + Math.cos(radlat1) * Math.cos(radlat2) * Math.cos(radtheta);
+      if (dist > 1) {
+        dist = 1;
+      }
+      dist = Math.acos(dist);
+      dist = dist * 180 / Math.PI;
+      dist = dist * 60 * 1.1515;
+      if (unit == "K") { dist = dist * 1.609344 }
+      if (unit == "N") { dist = dist * 0.8684 }
+      return dist;
+    }
+  }
+
+  let km = distance(lat1, lon1, lat2, lon2, 'K');
+  return km;
+}
+
+geoUtils.getMyLocation = (cb) => {
+  if ("geolocation" in window.navigator) {
+    /* geolocation is available */
+    // console.log('geoUtils.getMyLocation() ')
+    window.navigator.geolocation.getCurrentPosition(function (position) {
+      console.log('location data from browser geolocation: ', position, position.coords.latitude, position.coords.longitude);
+      /*
+coords: GeolocationCoordinates
+  latitude: 51.118372
+  longitude: 6.8915451
+  altitude: null
+  accuracy: 25
+  altitudeAccuracy: null
+  heading: null
+  speed: null
+__proto__: GeolocationCoordinates
+timestamp: 1581155134049
+      */
+      if (typeof cb === 'function') {
+        cb(position);
+      }
+    });
+  } else {
+    /* geolocation IS NOT available */
+    console.log('Browser not support geolocation.');
+    if (typeof cb === 'function') {
+      cb(false);
+    }
+  }
+}
+
+// TODO: kreator linkova za google mape, kreator linkova za openstreet mape... dodati zoom opciju i za google maps
 
 export default geoUtils;

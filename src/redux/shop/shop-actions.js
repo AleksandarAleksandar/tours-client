@@ -102,6 +102,28 @@ export const fetchReviewsFailure = () => ({
   type: ShopActionTypes.FETCH_REVIEWS_FAILURE
 })
 
+export const fetchBookingsStart = () => ({
+  type: ShopActionTypes.FETCH_BOOKINGS_START
+})
+export const fetchBookingsSuccess = collectionsMap => ({
+  type: ShopActionTypes.FETCH_BOOKINGS_SUCCESS,
+  payload: collectionsMap
+})
+export const fetchBookingsFailure = () => ({
+  type: ShopActionTypes.FETCH_BOOKINGS_FAILURE
+})
+
+export const fetchOrdersStart = () => ({
+  type: ShopActionTypes.FETCH_ORDERS_START
+})
+export const fetchOrdersSuccess = collectionsMap => ({
+  type: ShopActionTypes.FETCH_ORDERS_SUCCESS,
+  payload: collectionsMap
+})
+export const fetchOrdersFailure = () => ({
+  type: ShopActionTypes.FETCH_ORDERS_FAILURE
+})
+
 
 
 export const toursNeeded = () => {
@@ -244,7 +266,6 @@ export const reviewCreate = (data, cb, cb_error) => {
 
 }
 
-
 export const createTour = (data, cb, cb_error) => {
   return (dispatch) => {
     ajaxPost(apiLib.apiTourCreate(), data, cb_error)
@@ -270,6 +291,35 @@ export const createTour = (data, cb, cb_error) => {
       })
   }
 }
+export const createOrder = (data, cb, cb_error) => {
+  return (dispatch) => {
+    console.log('test create order ');
+    console.log(data);
+    ajaxPost(apiLib.apiCreateOrder(), data, cb_error)
+      .then((response) => {
+        // fetchovanje je zavrsen oi uspelo
+        // step 3: cemo dispatchovati action da je fetchovanje zavrseno ASINHRONO kad se fetchovanje zavrsi.
+        console.log('nas post request je zavrsen')
+
+        console.log(response);
+        if (response && response.data && response.data.status === "success") {
+          // let pripremljeni_podaci_za_state = response.data.data;
+          let pripremljeni_podaci_za_state = response.data.status;
+          // dispatch(fetchReviewsSuccess(pripremljeni_podaci_za_state))
+          if (typeof cb === 'function') {
+            cb(pripremljeni_podaci_za_state);
+          }
+        } else {
+          // dispatch(fetchReviewsFailure())
+          console.log('post request ERROR!!!');
+          if (typeof cb_error === 'function') {
+            cb_error(response);
+          }
+        }
+      })
+  }
+}
+
 
 
 export const updateTour = (id, data, cb, cb_error) => {
@@ -323,3 +373,57 @@ export const deleteTour = (id, cb, cb_error) => {
   }
 }
 
+export const bookingsNeeded = () => {
+  return (dispatch) => {
+    // ovo je tipican redux thunk...
+    console.log('thunk fething...');
+    // step 1: odmah dispatchujemo action da je fetchovanje zapoceto
+    dispatch(fetchBookingsStart());
+    // step 2: odmah zapocinjemo fetchovanje asinhtono
+    // nekiFetchAsync()
+    ajaxGet(apiLib.apiGetBookings())
+      .then((response) => {
+        // fetchovanje je zavrsen oi uspelo
+        // step 3: cemo dispatchovati action da je fetchovanje zavrseno ASINHRONO kad se fetchovanje zavrsi.
+        console.log('nase fetchovanje je zavrseno')
+        console.log(response);
+        if (response && response.data) {
+          let pripremljeni_podaci_za_state = response.data.data.doc;
+          dispatch(fetchBookingsSuccess(pripremljeni_podaci_za_state))
+        } else {
+          dispatch(fetchBookingsFailure())
+        }
+
+      })
+
+    // ajaxPost(API_URL_GET_TOURS)
+  }
+
+}
+export const ordersNeeded = () => {
+  return (dispatch) => {
+    // ovo je tipican redux thunk...
+    console.log('thunk fething...');
+    // step 1: odmah dispatchujemo action da je fetchovanje zapoceto
+    dispatch(fetchOrdersStart());
+    // step 2: odmah zapocinjemo fetchovanje asinhtono
+    // nekiFetchAsync()
+    ajaxGet(apiLib.apiGetOrders())
+      .then((response) => {
+        // fetchovanje je zavrsen oi uspelo
+        // step 3: cemo dispatchovati action da je fetchovanje zavrseno ASINHRONO kad se fetchovanje zavrsi.
+        console.log('nase fetchovanje je zavrseno')
+        console.log(response);
+        if (response && response.data) {
+          let pripremljeni_podaci_za_state = response.data.data.doc;
+          dispatch(fetchOrdersSuccess(pripremljeni_podaci_za_state))
+        } else {
+          dispatch(fetchOrdersFailure())
+        }
+
+      })
+
+    // ajaxPost(API_URL_GET_TOURS)
+  }
+
+}

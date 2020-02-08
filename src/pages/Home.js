@@ -96,24 +96,29 @@ class Home extends React.Component {
     filtered.longest = mini_sort_longest(items)
 
 
-
-
     let stats = [];
     let jsxStats = null
 
     if (this.props.st.shop.stats.isFetching === false) {
       stats = this.props.st.shop.stats.data;
       console.log(stats)
-      let jsxStatsRow = stats.map((item) => {
+      let jsxStatsRows = stats.map((item) => {
         return (
-          <div key={item.id}>{item._id}: {item.numTours}</div>
+          <div key={item.id} className="fact item">
+            <div className="fact-icon"><i class="fas fa-chart-line"></i></div>
+            <div className=""><span className="term-name">{item._id}:</span><span className="term-value">{item.numTours}</span></div>
+          </div>
         )
       })
 
       jsxStats = (
-        <div>
-          <h4>Stats</h4>
-          {jsxStatsRow}
+        <div className="homepage-stats">
+
+          <h3>Stats</h3>
+
+          <div className="facts items horisontal">
+            {jsxStatsRows}
+          </div>
         </div>
       )
 
@@ -156,16 +161,16 @@ class Home extends React.Component {
               </div>
             </section>
 
-            <section className="section">
+            <section className="section homepage-dashboard">
               <div className="inner">
 
-                <h2>Od svega po malo</h2>
+                {/* <h2>Od svega po malo</h2> */}
 
-                <UniversalItems title={'title cheapest'} category={'nema kategorije'} items={filtered.cheapest} limit={4} spinner={true} />
+                <UniversalItems title={'Most popular'} category={'nema kategorije'} items={filtered.mostpopular} limit={4} spinner={true} />
 
-                <UniversalItems title={'title 2'} category={'nema kategorije'} items={filtered.mostpopular} limit={4} spinner={true} />
+                <UniversalItems title={'Most affordable'} category={'nema kategorije'} items={filtered.cheapest} limit={4} spinner={true} />
 
-                <UniversalItems title={'title longest'} category={'nema kategorije'} items={filtered.longest} limit={4} spinner={true} />
+                <UniversalItems title={'Most days'} category={'nema kategorije'} items={filtered.longest} limit={4} spinner={true} />
               </div>
             </section>
 

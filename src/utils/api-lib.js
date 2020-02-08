@@ -31,6 +31,13 @@ const API_URL_GET_REVIEWS = '/api/v1/reviews/'
 const API_URL_GET_USERS = '/api/v1/users/'
 const API_URL_CREATE_TOUR = '/api/v1/tours/'
 const API_URL_TOUR_STATS = '/api/v1/tours/tour-stats'
+const API_URL_BOOK_TOUR = '/api/v1/bookings/checkout-session/'
+const API_URL_GET_BOOKINGS = '/api/v1/bookings/list'
+const API_URL_GET_ORDERS = '/api/v1/orders/list'
+const API_URL_CREATE_ORDER = '/api/v1/orders/checkout-session/'
+
+
+
 
 
 
@@ -43,8 +50,10 @@ apiLib.staticAvatarDefault = () => {
   return STATIC_AVATAR_DEFAULT;
 }
 apiLib.staticCover = (fileName) => {
-  if (fileName.includes('http:') || fileName.includes('https:')) {
-    return fileName
+  if (typeof fileName === 'string') {
+    if (fileName.includes('http:') || fileName.includes('https:')) {
+      return fileName
+    }
   }
   return STATIC_COVER_FOLDER + fileName
 }
@@ -73,7 +82,7 @@ apiLib.apiRegister = () => {
 apiLib.apiPasswordChange = () => {
   return API_PREFIX + API_URL_PASSWORD_CHANGE;
 };
-apiLib.apiPasswordForgot= () => {
+apiLib.apiPasswordForgot = () => {
   return API_PREFIX + API_URL_PASSWORD_FORGOT;
 };
 apiLib.apiPasswordReset = (token) => {
@@ -118,6 +127,23 @@ apiLib.apiTourDelete = (id) => {
 apiLib.apiTourStats = () => {
   return API_PREFIX + API_URL_TOUR_STATS
 }
+
+/*
+apiLib.apiBookTour = (id) => {
+  return API_PREFIX + API_URL_BOOK_TOUR + id;
+};
+*/
+apiLib.apiGetBookings = () => {
+  return API_PREFIX + API_URL_GET_BOOKINGS
+}
+
+apiLib.apiGetOrders = () => {
+  return API_PREFIX + API_URL_GET_ORDERS
+}
+apiLib.apiCreateOrder = () => {
+  return API_PREFIX + API_URL_CREATE_ORDER
+}
+
 
 /*
 // a)

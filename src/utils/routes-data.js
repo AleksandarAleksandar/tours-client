@@ -23,6 +23,13 @@ export const routesData = [
     breadcrumbs: ['HOME', 'CONTACT']
   },
   {
+    routeName: 'PROFILE',
+    path: '/profile',
+    browserTitle: 'User profile',
+    pageTitle: 'User profile',
+    breadcrumbs: ['HOME', 'PROFILE']
+  },
+  {
     routeName: 'SHOP',
     path: '/shop',
     browserTitle: 'Shop',

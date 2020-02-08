@@ -16,7 +16,7 @@ class ResetPassword extends Component {
     this.state = {
       resetpasswordtoken: '',
       password: '',
-      confirmPassword: '',
+      passwordConfirm: '',
       status: '',
       statusMessage: '',
       successEmail: ''
@@ -29,15 +29,15 @@ class ResetPassword extends Component {
     e.preventDefault();
     console.log('submit');
 
-    const { password, confirmPassword } = this.state
-    if (password !== confirmPassword) {
+    const { password, passwordConfirm } = this.state
+    if (password !== passwordConfirm) {
       alert("password don't match")
       return
     }
     const dataToSubmit = {
       resetpasswordtoken: this.state.resetpasswordtoken,
       password: this.state.password,
-      confirmPassword: this.state.confirmPassword
+      passwordConfirm: this.state.passwordConfirm
     }
     console.log(dataToSubmit)
 
@@ -146,11 +146,11 @@ class ResetPassword extends Component {
                 </div>
                 <div className="input-group mb-3">
                   <input
-                    name="confirmPassword"
+                    name="passwordConfirm"
                     type="password"
                     className="form-control"
                     placeholder="Retype password"
-                    value={this.state.confirmPassword}
+                    value={this.state.passwordConfirm}
                     onChange={this.handleInputChange}
                     required
                   />
@@ -187,8 +187,8 @@ class ResetPassword extends Component {
       jsxCongratulations = (
         <div className="register-congratulations text-center">
           <div className="inner">
-            <h2>Thank you for registering. Please verify your account</h2>
-            <p>An email has been sent to <b>{this.state.successEmail}</b>. In order to complete your registration, please click the confirmation link in the email that we have sent to this email.</p>
+            <h2>New password created successfully</h2>
+            <p>You can login now with your new password.</p>
             <p></p>
             <p><Link to={'/'}>Go to home page</Link></p>
           </div>

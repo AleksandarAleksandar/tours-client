@@ -74,7 +74,7 @@ class Shop extends React.Component {
       let title = categories[catId].title;
       let titleLinkRoute = '/category/' + catId;
       jsxCategoriesDashboard.push(
-        <UniversalItems key={catId} title={title} titleLinkRoute={titleLinkRoute} items={filtered[catId]} limit={'bez limita'} spinner={true} />
+        <UniversalItems key={catId} title={title} titleLinkRoute={titleLinkRoute} items={filtered[catId]} limit={'bez limita'} spinner={true} slider={true} />
       )
 
     })

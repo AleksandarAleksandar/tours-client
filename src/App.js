@@ -12,7 +12,6 @@ import Register from './components/Register'
 import Checkout from './pages/Checkout'
 import Cart from './pages/Cart'
 import Product from './pages/Product'
-import { toursNeeded } from './redux/shop/shop-actions'
 import Category from './pages/Category'
 import NotFound from './pages/NotFound'
 import Admin from './pages/Admin'
@@ -27,11 +26,14 @@ import { authUtils } from './utils/auth-utils'
 
 
 import { connect } from 'react-redux'
-import { setCurrentUser } from './redux/user/user-actions'
+import { setCurrentUser, detectMyLocation } from './redux/user/user-actions'
 import Helper from './Helper'
 import PasswordChange from './components/PasswordChange';
 import PasswordForget from './components/PasswordForget';
 import ReviewForm from './components/ReviewForm';
+import UserProfile from './pages/UserProfile'
+
+import Swal from 'sweetalert2'
 
 
 class App extends React.Component {
@@ -149,6 +151,8 @@ class App extends React.Component {
             <PasswordForget isLoggedIn={isLoggedIn} />
           </Route>
 
+
+
           <Route path='/contact'>
             <div className={wrapper_cl}>
               <Header isLoggedIn={isLoggedIn} />
@@ -156,6 +160,15 @@ class App extends React.Component {
               <Footer />
             </div>
           </Route>
+
+          <Route exact path='/profile'>
+            <div className={wrapper_cl}>
+              <Header isLoggedIn={isLoggedIn} />
+              <UserProfile dispatch={this.props.dispatch} />
+              <Footer />
+            </div>
+          </Route>
+
           <Route exact path='/shop'>
             <div className={wrapper_cl}>
               <Header isLoggedIn={isLoggedIn} />

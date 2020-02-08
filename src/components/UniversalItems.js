@@ -2,8 +2,14 @@ import React from 'react'
 import { Link } from 'react-router-dom'
 // import PreviewItem from './PreviewItem'
 import UniversalItem from './UniversalItem'
-
 import SpinnerRow from './SpinnerRow'
+
+import Slider from "react-slick";
+
+
+
+/// TODO: https://github.com/akiran/react-slick
+
 
 /*
 ZADATAK:
@@ -21,10 +27,20 @@ drugi nacin je da obavljamo fetchovanje iz posebnog servisa kojem bi zadali krit
 c)
 najbolji nacin bi bio da imamo frontend servis koji bi nam dao privremene podatke , zatim obavio fetchovanje pa opet izazavo novi action kada stignu svi podaci u potpunosti. To je resenej za lvelike shopove sa velikim brojem artikala.
 
-
-
-
 */
+
+
+
+function SampleNextArrow(props) {
+  const { className, style, onClick } = props;
+  return (
+    <div
+      className={className}
+      style={{ ...style, display: "block", background: "red" }}
+      onClick={onClick}
+    ><i class="fas fa-chevron-circle-right"></i></div>
+  );
+}
 
 
 
@@ -89,13 +105,39 @@ const UniversalItems = (props) => {
     }
   }
 
+  let jsxItemsContainer = (
+    <div className='items grid-items universal-items'>
+      {jsxArr}
+      {jsxSpinner}
+    </div>
+  );
+
+  let settings = {
+    dots: true,
+    infinite: false,
+    speed: 500,
+    slidesToScroll: 1,
+    centerMode: false,
+    variableWidth: true,
+    dots: false
+  };
+
+  if (props.slider === true) {
+    jsxItemsContainer = (
+      <div className='universal-items slider-style'>
+        <Slider {...settings}>
+          {jsxArr}
+        </Slider>
+        {jsxSpinner}
+      </div>
+    );
+  }
+
   return (
     <div className='universal-items-group'>
       {jsxTitle}
-      <div className='items grid-items universal-items'>
-        {jsxArr}
-        {jsxSpinner}
-      </div>
+      {jsxItemsContainer}
+
     </div>
   );
 };

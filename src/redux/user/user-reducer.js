@@ -1,7 +1,20 @@
 import { userActionTypes } from './user-types'
 
+
+/*
+dizeldorf kordinate
+  userLocation: {
+    detected: true,
+    ll: [51.1005, 6.8431]
+  },
+*/
+
 const INITIAL_STATE = {
   currentUser: null,
+  userLocation: {
+    detected: false,
+    ll: [0, 0]
+  },
   auth: {
     isFetching: true,
     isLoggedIn: false,
@@ -36,6 +49,7 @@ const userReducer = (state = INITIAL_STATE, action) => {
           isFetching: false,
           isLoggedIn: true,
           me: {
+            ...state.auth.me,
             id: action.payload._id,
             role: action.payload.role,
             username: action.payload.name,
@@ -101,6 +115,16 @@ const userReducer = (state = INITIAL_STATE, action) => {
           data: []
         }
       }
+
+    case 'USER_LOCATION_DETECTED':
+      return {
+        ...state,
+        userLocation: {
+          detected: true,
+          ll: action.payload
+        }
+      }
+
     default:
       return state;
   }

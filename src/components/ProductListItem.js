@@ -3,8 +3,11 @@ import { Link } from 'react-router-dom'
 import { apiLib } from '../utils/api-lib'
 import { dateUtils } from '../utils/date-utils'
 import { formatUtils } from './../utils/format-utils'
+import { connect } from 'react-redux'
+import geoUtils from '../utils/geo-utils'
+import BtnGeoLocation from './BtnGeoLocation'
 
-export default class ProductListItem extends Component {
+class ProductListItem extends Component {
 
   render() {
     let props = this.props;
@@ -34,6 +37,33 @@ export default class ProductListItem extends Component {
       day = date_parsed.day;
     }
 
+    // console.log(props.state_ceo.user);
+    let jsxDistance = 'not calculated';
+    if (props.state_ceo.user.userLocation.detected === true) {
+      let original_ll = item.startLocation.coordinates;
+      let ll = [original_ll[1], original_ll[0]]; // fixed ll
+      // let original_myll = [0,0];
+      let myll = props.state_ceo.user.userLocation.ll; // no need to fix
+      let raw_distance = geoUtils.getDistance(ll, myll);
+      let distance = formatUtils.formatDistance(raw_distance);
+      jsxDistance = (
+        <div className="distance">Distance: {distance}</div>
+      );
+      /*
+      console.log('-----------------------------------------------------------------');
+      console.log(original_ll);
+      console.log(myll);
+      console.log(raw_distance);
+      console.log(distance);
+      */
+    } else {
+      jsxDistance = (
+        <BtnGeoLocation dispatch={props.dispatch}/>
+      );
+    }
+
+
+
 
     return (
       <div className="item shop-item">
@@ -56,12 +86,19 @@ export default class ProductListItem extends Component {
             <div className="summary">{item.summary}</div>
 
             <div className="price">{price}</div>
+            {jsxDistance}
           </div>
         </div>
       </div>
     )
   }
 }
+
+const mapStateToProps = (state) => ({
+  state_ceo: state
+});
+
+export default connect(mapStateToProps)(ProductListItem)
 
 /*
 startLocation: {type: "Point", description: "Banff, CAN", coordinates: Array(2), address: "224 Banff Ave, Banff, AB, Canada"}

@@ -2,6 +2,7 @@ import { userActionTypes } from './user-types'
 import { apiLib } from '../../utils/api-lib'
 import { ajaxGet, ajaxPost, ajaxPatch } from '../../utils/ajax-abstraction'
 import { authUtils } from './../../utils/auth-utils'
+import geoUtils from '../../utils/geo-utils'
 
 /*
 TODO:
@@ -474,5 +475,50 @@ export const passwordReset = (data, cb, cb_error, token) => {
         }
       });
 
+  }
+}
+
+
+export const detectMyLocation = () => {
+  return (dispatch) => {
+    // ovo je tipican redux thunk...
+    dispatch({type: '*** INFO poceli smo da detektujemo lokaciju'});
+
+    let cb = (position) => {
+      // step 2: callback koji ce biti pozvan kada se detekcija obavi.
+      if (position === false) {
+        //
+        dispatch({
+          type: 'USER_LOCATION_DETECTION_NOT_POSSIBLE'
+        });
+      } else {
+        /*
+  coords: GeolocationCoordinates
+    latitude: 51.118372
+    longitude: 6.8915451
+    altitude: null
+    accuracy: 25
+    altitudeAccuracy: null
+    heading: null
+    speed: null
+  __proto__: GeolocationCoordinates
+  timestamp: 1581155134049
+        */
+        if (position.coords && typeof position.coords.latitude === 'number' && typeof position.coords.longitude === 'number') {
+          let ll = [position.coords.latitude, position.coords.longitude]
+          dispatch({
+            type: 'USER_LOCATION_DETECTED',
+            payload: ll
+          })
+        } else {
+          dispatch({
+            type: 'USER_LOCATION_DETECTION_NOT_POSSIBLE'
+          });
+        }
+      }
+    }
+
+    // step 1: odmah zapocinjemo proces detekcije lokaciej u browseru.
+    geoUtils.getMyLocation(cb);
   }
 }

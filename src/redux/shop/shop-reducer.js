@@ -28,6 +28,14 @@ const INITIAL_STATE = {
   stats: {
     isFetching: false,
     data: []
+  },
+  bookings: {
+    isFetching: false,
+    data: []
+  },
+  orders: {
+    isFetching: false,
+    data: []
   }
 }
 
@@ -41,7 +49,7 @@ const INITIAL_STATE = {
 
 
 const shopReducer = (state = INITIAL_STATE, action) => {
-  let new_reviews;
+  let new_reviews, new_bookings, new_orders;
 
   switch (action.type) {
     case ShopActionTypes.FETCH_COLLECTIONS_START:
@@ -148,6 +156,68 @@ const shopReducer = (state = INITIAL_STATE, action) => {
         isFetching: false,
         errorMessage: action.payload
       }
+
+    case ShopActionTypes.FETCH_BOOKINGS_START:
+      new_bookings = {
+        isFetching: true,
+        data: state.bookings.data
+      }
+      return {
+        ...state,
+        bookings: new_bookings
+      }
+
+    case ShopActionTypes.FETCH_BOOKINGS_SUCCESS:
+      new_bookings = {
+        isFetching: false,
+        data: action.payload
+      }
+      return {
+        ...state,
+        bookings: new_bookings
+      }
+
+    case ShopActionTypes.FETCH_BOOKINGS_FAILURE:
+      new_bookings = {
+        isFetching: false,
+        data: []
+      }
+      return {
+        ...state,
+        bookings: new_bookings
+      }
+
+case ShopActionTypes.FETCH_ORDERS_START:
+      new_orders = {
+        isFetching: true,
+        data: state.bookings.data
+      }
+      return {
+        ...state,
+        orders: new_orders
+      }
+
+    case ShopActionTypes.FETCH_ORDERS_SUCCESS:
+      new_orders = {
+        isFetching: false,
+        data: action.payload
+      }
+      return {
+        ...state,
+        orders: new_orders
+      }
+
+    case ShopActionTypes.FETCH_ORDERS_FAILURE:
+      new_orders = {
+        isFetching: false,
+        data: []
+      }
+      return {
+        ...state,
+        orders: new_orders
+      }
+
+
     default:
       return state
   }

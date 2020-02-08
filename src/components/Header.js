@@ -41,10 +41,13 @@ function Header({ currentUser, hidden, setCurrentUser, isLoggedIn, state_ceo, is
     jsxLoginLogut = (
       <>
         <div className="avatar-group">
-          <div className="avatar-img"><img src={avatar_src} />
+          <div className="avatar-img"><Link to="/profile"><img src={avatar_src} /></Link>
           </div>
-          <div className="nickname"><span className="option hvr-underline-from-center">{nickname}</span></div>
-
+          <div className="nickname">
+            <Link to="/profile">
+              <span className="option hvr-underline-from-center">{nickname}</span>
+            </Link>
+          </div>
           <div className="triangle">
             <div className="triangle-icon">&#9698;</div>
             <div className="popup">

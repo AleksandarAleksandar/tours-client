@@ -244,7 +244,7 @@ class Product extends Component {
                   <div className="btn btn-add-cart" onClick={this.addToCart(item)}><i className="fas fa-cart-plus"></i> Add to cart</div>
                 </div>
 
-                {jsxWriteReview}
+                {/* {jsxWriteReview} */}
 
               </div>
               <div className="item">
