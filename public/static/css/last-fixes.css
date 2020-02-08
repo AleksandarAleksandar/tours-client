@@ -118,7 +118,7 @@ body {
   margin: 8px;
 }
 .jss1284 > * {
-    margin: 8px;
+  margin: 8px;
 }
 .material-ui-form .MuiTextField-root {
   /*width: 200px;*/
@@ -139,4 +139,36 @@ body {
   margin-right: auto;
   max-width: 480px;
   min-width: 240px;
+}
+
+.slick-prev:before {
+  content: unset;
+}
+.slick-next:before {
+  content: unset;
+}
+.slick-arrow.slick-prev,
+.slick-arrow.slick-next {
+  z-index: 99;
+  width: 40px;
+  height: 40px;
+  border-radius: 200px;
+  border: 6px solid rgba(255, 255, 255, 0.8);
+  background-color: rgba(255, 255, 255, 0.8);
+  background-position: center;
+  background-size: cover;
+  box-shadow: 0 4px 5px 0 rgba(0, 0, 0, 0.14), 0 1px 10px 0 rgba(0, 0, 0, 0.12),
+    0 2px 4px -1px rgba(0, 0, 0, 0.3);
+}
+.slick-arrow.slick-prev {
+  background-image: url("/static/img/prev.png");
+}
+.slick-arrow.slick-next {
+  background-image: url("/static/img/next.png");
+}
+
+.slick-arrow.slick-prev:hover,
+.slick-arrow.slick-next:hover {
+  border: 6px solid rgba(255, 255, 255, 1);
+  background-color: rgba(255, 255, 255, 1);
 }

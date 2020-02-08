@@ -12,6 +12,9 @@
       manifest.json provides metadata used when your web app is installed on a
       user's mobile device or desktop. See https://developers.google.com/web/fundamentals/web-app-manifest/
     -->
+
+
+
   <link rel="manifest" href="%PUBLIC_URL%/manifest.json" />
   <!--
       Notice the use of %PUBLIC_URL% in the tags above.
@@ -38,7 +41,7 @@
     integrity="sha512-gZwIG9x3wUXg2hdXF6+rVkLF/0Vi9U8D2Ntg4Ga5I5BZpVkVxlJWbSQtXPSiUTtC0TjtGOmxa1AJPuV0CPthew=="
     crossorigin=""></script>
 
-  <!--START IZMENA ZA ADMINLTE-->
+  <script src=”https://js.stripe.com/v3/"> </script> <!--START IZMENA ZA ADMINLTE-->
   <!-- Font Awesome Icons -->
   <link rel="stylesheet" href="/static/css/adminlte/fontawesome-free/css/all.min.css">
   <!-- Theme style -->
@@ -47,6 +50,9 @@
   <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
 
   <link rel="stylesheet" href="/static/css/hover.css" />
+
+  <link rel="stylesheet" href="/static/css/slick/slick.css" />
+  <link rel="stylesheet" href="/static/css/slick/slick-theme.css" />
 
   <link rel="stylesheet" href="/static/css/last-fixes.css" />
 </head>
@@ -75,6 +81,9 @@
   <script src="/static/js/adminlte/bootstrap.bundle.min.js"></script>
   <!-- AdminLTE App -->
   <script src="/static/js/adminlte/adminlte.min.js"></script>
+
+  <script src="https://js.stripe.com/v3/"></script>
+
 </body>
 
 </html>
