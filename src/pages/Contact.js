@@ -9,10 +9,7 @@ import CollectionOverview from './../components/CollectionsOverview'
 import CategoryPage from './Category'
 import { toursNeeded } from './../redux/shop/shop-actions'
 
-import UniversalItems from './../components/UniversalItems'
-import { createStructuredSelector } from 'reselect'
-import { connect } from 'react-redux'
-import { fetchCollectionsStart } from './../redux/shop/shop-actions'
+import {contactUs} from './../redux/user/user-actions'
 // import { browserUtils } from './../utils/browser-utils'
 import { routingUtils } from './../utils/routing-utils'
 import { updateBrowserTitle } from './../redux/global/global-actions'
@@ -22,6 +19,7 @@ import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import CloudUploadIcon from '@material-ui/icons/CloudUpload';
 import Icon from '@material-ui/core/Icon';
+import Swal from 'sweetalert2'
 
 
 class Contact extends React.Component {
@@ -33,8 +31,8 @@ class Contact extends React.Component {
       message: ''
     }
     this.handleInputChange = this.handleInputChange.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this)
   }
-
 
   componentDidMount() {
     this.props.dispatch(toursNeeded())
@@ -50,6 +48,40 @@ class Contact extends React.Component {
     this.setState({
       [name]: value
     });
+  }
+
+
+  handleSubmit(event) {
+    event.preventDefault();
+    let submitData = {
+      email: this.state.email,
+      fullName: this.state.fullName,
+      message: this.state.message
+    }
+    console.log('submitData', submitData)
+
+    let callbackSuccess = (response) => {
+      console.log('...callback u Komponenti nakon "success" post zahteva :)');
+      console.log(response);
+      this.setState({
+        status: "SUCCESS",
+      })
+      Swal.fire(
+        'Success!',
+       'Mail sent successfully',
+        'success'
+      ).then(() => {
+        // console.log('then posle swal');
+      })
+      // cistimo formu posle uspesnog submita
+      this.setState({
+        email: '',
+        fullName: '',
+        message: ''
+      })
+    }
+
+    this.props.dispatch(contactUs(submitData, callbackSuccess));
   }
 
 
@@ -78,7 +110,6 @@ class Contact extends React.Component {
                   <TextField
                     id="outlined-helperText"
                     label="Your name"
-                    defaultValue=""
                     helperText="First and last name"
                     variant="outlined"
                     value={this.state.fullName}
@@ -89,7 +120,6 @@ class Contact extends React.Component {
                   <TextField
                     id="outlined-helperText"
                     label="Your email"
-                    defaultValue=""
                     helperText="We will answer on this email"
                     variant="outlined"
                     value={this.state.email}
@@ -102,7 +132,6 @@ class Contact extends React.Component {
                     label="Message"
                     multiline
                     rows="4"
-                    defaultValue=""
                     variant="outlined"
                     value={this.state.message}
                     onChange={this.handleInputChange}
@@ -111,19 +140,20 @@ class Contact extends React.Component {
 
                   <Button
                     variant="contained"
-                    endIcon={<i class="fas fa-paper-plane"></i>}
+                    endIcon={<i className="fas fa-paper-plane"></i>}
+                    onClick={this.handleSubmit}
                   >Send</Button>
 
                 </div>
-                </div>
-
               </div>
+
             </div>
+          </div>
         </section>
 
       </div>
-        )
-      }
-    }
-    
-    export default Contact
+    )
+  }
+}
+
+export default Contact

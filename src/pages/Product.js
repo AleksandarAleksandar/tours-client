@@ -15,6 +15,7 @@ import Breadcrumbs from './../components/Breadcrumbs'
 import geoUtils from './../utils/geo-utils'
 import { dateUtils } from './../utils/date-utils'
 import { formatUtils } from './../utils/format-utils'
+import BtnGeoLocation from '../components/BtnGeoLocation'
 
 import { addItem } from '../redux/cart/cart-actions'
 import SpinnerRow from '../components/SpinnerRow'
@@ -49,6 +50,7 @@ class Product extends Component {
   }
 
   render() {
+    let props = this.props;
     console.log('SINGLE TOUR');
     /*
     startLocation: {type: "Point", description: "Aspen, USA", coordinates: Array(2), address: "419 S Mill St, Aspen, CO 81611, USA"}
@@ -86,6 +88,8 @@ class Product extends Component {
 
     let jsxSpinner = <SpinnerRow />
     let jsxReviewsSpinner = <SpinnerRow />
+
+    let jsxDistance = 'not calculated';
 
     if (shop.isFetching === false && shop.tour_item && shop.tour_item.name) {
       validated = false;
@@ -130,6 +134,33 @@ class Product extends Component {
 
       // if fetching false
       cover = apiLib.staticCover(tour.imageCover)
+
+
+
+    
+      if (props.state_ceo.user.userLocation.detected === true) {
+        let original_ll = tour.startLocation.coordinates;
+        let ll = [original_ll[1], original_ll[0]]; // fixed ll
+        // let original_myll = [0,0];
+        let myll = props.state_ceo.user.userLocation.ll; // no need to fix
+        let raw_distance = geoUtils.getDistance(ll, myll);
+        let distance = formatUtils.formatDistance(raw_distance);
+        jsxDistance = (
+          <div className="distance">Distance: {distance}</div>
+        );
+        /*
+        console.log('-----------------------------------------------------------------');
+        console.log(original_ll);
+        console.log(myll);
+        console.log(raw_distance);
+        console.log(distance);
+        */
+      } else {
+        jsxDistance = (
+          <BtnGeoLocation dispatch={props.dispatch} />
+        );
+      }
+
     }
 
     let reviews = [];
@@ -209,33 +240,37 @@ class Product extends Component {
 
                 <div className="facts items">
                   <div className="fact item">
-                    <div className="fact-icon"><i class="fas fa-chart-line"></i></div>
+                    <div className="fact-icon"><i className="fas fa-chart-line"></i></div>
                     <div className=""><span className="term-name">Difficulty:</span><span className="term-value">{item.difficulty}</span></div>
                   </div>
 
                   <div className="fact item">
-                    <div className="fact-icon"><i class="fas fa-hourglass-start"></i></div>
+                    <div className="fact-icon"><i className="fas fa-hourglass-start"></i></div>
                     <div className=""><span className="term-name">Duration:</span><span className="term-value">{item.duration}</span></div>
                   </div>
 
                   <div className="fact item">
-                    <div className="fact-icon"><i class="fas fa-user-friends"></i></div>
+                    <div className="fact-icon"><i className="fas fa-user-friends"></i></div>
                     <div className=""><span className="term-name">Maximum group size:</span><span className="term-value">{item.maxGroupSize}</span></div>
                   </div>
 
                   <div className="fact item">
-                    <div className="fact-icon"><i class="far fa-star"></i></div>
+                    <div className="fact-icon"><i className="far fa-star"></i></div>
                     <div className=""><span className="term-name">Rating:</span><span className="term-value">{item.ratingsAverage}</span></div>
                   </div>
 
                   <div className="fact item">
-                    <div className="fact-icon"><i class="far fa-calendar-alt"></i></div>
+                    <div className="fact-icon"><i className="far fa-calendar-alt"></i></div>
                     <div className=""><span className="term-name">Start:</span><span className="term-value">{firstDate}</span></div>
                   </div>
 
                   <div className="fact item">
-                    <div className="fact-icon"><i class="fas fa-euro-sign"></i></div>
+                    <div className="fact-icon"><i className="fas fa-euro-sign"></i></div>
                     <div className=""><span className="term-name">Price:</span><span className="term-value">{price}</span></div>
+                  </div>
+
+                  <div className="fact item">
+                    {jsxDistance}
                   </div>
 
                 </div>

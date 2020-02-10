@@ -82,7 +82,7 @@ class Cart extends React.Component {
             </div>
 
             <div className="add-to-cart-group">
-              <Link to={'/checkout'} className="btn btn-add-cart"><i class="far fa-credit-card"></i>Checkout</Link>
+              <Link to={'/checkout'} className="btn btn-add-cart"><i className="far fa-credit-card"></i>Checkout</Link>
             </div>
 
           </div>

@@ -335,7 +335,7 @@ const Checkout = (props) => {
 
                       <Button
                         variant="contained"
-                        endIcon={<i class="fas fa-paper-plane"></i>}
+                        endIcon={<i className="fas fa-paper-plane"></i>}
 
                       >Send</Button>
 

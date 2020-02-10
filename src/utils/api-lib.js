@@ -25,6 +25,7 @@ const API_URL_REGISTER = 'api/v1/users/signUp'
 const API_URL_PASSWORD_CHANGE = 'api/v1/users/updateMyPassword'
 const API_URL_PASSWORD_FORGOT = 'api/v1/users/forgotPassword'
 const API_URL_PASSWORD_RESET = 'api/v1/users/resetPassword/'
+const API_URL_CONTACT_US = '/api/v1/users/contactus'
 const API_URL_GET_TOURS = 'api/v1/tours'; // opsi sve ture, nefiltrirane
 const API_URL_GET_SINGLE_TOUR = 'api/v1/tours/'
 const API_URL_GET_REVIEWS = '/api/v1/reviews/'
@@ -35,6 +36,7 @@ const API_URL_BOOK_TOUR = '/api/v1/bookings/checkout-session/'
 const API_URL_GET_BOOKINGS = '/api/v1/bookings/list'
 const API_URL_GET_ORDERS = '/api/v1/orders/list'
 const API_URL_CREATE_ORDER = '/api/v1/orders/checkout-session/'
+
 
 
 
@@ -87,6 +89,9 @@ apiLib.apiPasswordForgot = () => {
 };
 apiLib.apiPasswordReset = (token) => {
   return API_PREFIX + API_URL_PASSWORD_RESET + token;
+};
+apiLib.apiContactUs = () => {
+  return API_PREFIX + API_URL_CONTACT_US;
 };
 
 apiLib.apiToursGet = () => {

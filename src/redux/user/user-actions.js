@@ -482,7 +482,7 @@ export const passwordReset = (data, cb, cb_error, token) => {
 export const detectMyLocation = () => {
   return (dispatch) => {
     // ovo je tipican redux thunk...
-    dispatch({type: '*** INFO poceli smo da detektujemo lokaciju'});
+    dispatch({ type: '*** INFO poceli smo da detektujemo lokaciju' });
 
     let cb = (position) => {
       // step 2: callback koji ce biti pozvan kada se detekcija obavi.
@@ -520,5 +520,22 @@ export const detectMyLocation = () => {
 
     // step 1: odmah zapocinjemo proces detekcije lokaciej u browseru.
     geoUtils.getMyLocation(cb);
+  }
+}
+
+
+export const contactUs = (data, cb) => {
+  return (dispatch) => {
+    // ovo je tipican redux thunk...
+    dispatch({ type: '*** INFO sending email' });
+
+    ajaxPost(apiLib.apiContactUs(), data, cb)
+      .then((response) => {
+        if(typeof cb==='function') {
+          cb()
+        }
+      })
+
+
   }
 }
