@@ -30,6 +30,8 @@ import Breadcrumbs from '../components/Breadcrumbs'
 import { updateBrowserTitle } from './../redux/global/global-actions'
 import { Link } from 'react-router-dom'
 import { formatUtils } from './../utils/format-utils'
+import Swal from 'sweetalert2'
+
 
 const Checkout = (props) => {
 
@@ -82,7 +84,8 @@ const Checkout = (props) => {
   const mInitial = {
     paypal: false,
     card: false,
-    bitcon: false
+    bitcon: false,
+    stripe: false
   }
   const mReducer = (state, action) => {
     switch (action) {
@@ -98,6 +101,10 @@ const Checkout = (props) => {
         return {
           ...mInitial, bitcon: true
         }
+      case 'STRIPE':
+        return {
+          ...mInitial, stripe: true
+        }
       default:
         return state
     }
@@ -111,8 +118,15 @@ const Checkout = (props) => {
   const [inputValues, setInputValues] = useReducer(
     (state, newState) => ({ ...state, ...newState }),
     {}
-
   );
+  let cl_card = '';
+  if (mState.card !== true) {
+    cl_card = ' hide'
+  }
+  let cl_stripe = ''
+  if (mState.stripe !== true) {
+    cl_stripe = ' hide'
+  }
 
   const handleInputChange = event => {
     const { name, value } = event.target;
@@ -198,13 +212,10 @@ const Checkout = (props) => {
     console.log(items);
     let total = 0;
     let tours = [];
-    let jsxCartItems = items.map((item) => {
+    let jsxCartItems = items.forEach((item) => {
       // return <CheckoutItem key={item.id} cartItem={item} />
       total += item.price * item.quantity;
-      tours.push(item.id); // popunjava array sam osa ID-ovima od tura...
-      return (
-        <></>
-      ) // ovo za sada ne koristimo ali smo iskoristili kod radi sabiranja cifre za naplatu...
+      tours.push(item.id); // popunjava array sam osa ID-ovima od tura...yyy
     })
 
     let submitData = {
@@ -242,6 +253,32 @@ const Checkout = (props) => {
   }
   const publishableKey = 'pk_test_uwo2ixsEAZeoQqmFkHcEAW9O00CYR7upAk';
 
+  let counter = 0;
+  let jsxTableRows = items.map((item) => {
+    counter++;
+    let tourid = item.tour;
+    return (
+      <tr key={item._id} data-tour-id={item._id}>
+        <td>{counter}</td>
+        <td><Link to={'/product/' + tourid}>{item.name}</Link></td>
+        <td>{item.price}</td>
+        <td>{item.quantity}</td>
+      </tr>
+    )
+  })
+
+  let payWithCardMessage = () => {
+    Swal.fire(
+      'Error!',
+      'Card payment functionality not available at the moment, please use Stripe instead',
+      'error'
+    ).then(() => {
+      // console.log('then posle swal');
+    })
+  }
+
+
+
   return (
     <>
       <div className="checkout-page">
@@ -277,9 +314,9 @@ const Checkout = (props) => {
                   <div className="item total"><span>Order total: </span><b>{totalDisplay}</b></div>
                 </div>
 
-                <div className="add-to-cart-group">
+                {/* <div className="add-to-cart-group">
                   <Link to={'/checkout'} className="btn btn-add-cart"><i className="fas fa-cart-plus"></i>Checkout</Link>
-                </div>
+                </div> */}
 
               </section>
             </div>
@@ -358,7 +395,21 @@ const Checkout = (props) => {
               </section>
 
               <section className="section step-section">
-                <h2>2. ...</h2>
+                <h2>2. Order Review</h2>
+                <table className="table">
+                  <thead>
+                    <tr>
+                      <th>#</th>
+                      <th>Tour name</th>
+                      <th>Price</th>
+                      <th>Quantity</th>
+                      <th></th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {jsxTableRows}
+                  </tbody>
+                </table>
               </section>
 
               <section className="section step-section">
@@ -367,103 +418,110 @@ const Checkout = (props) => {
                 <FormControl component="fieldset">
                   <RadioGroup name="billingAdress" value={'my'} onChange={(e) => { mDispatch(e.target.value) }}>
                     <FormControlLabel value="PAYPAL" control={<Radio />} label="Pay with PayPal" checked={mState.paypal} />
-                    <FormControlLabel value="BITCOIN" control={<Radio />} label="Pay with Bitcoin" checked={mState.bitcon} />
+                    <FormControlLabel value="STRIPE" control={<Radio />} label="Pay with Stripe" checked={mState.stripe} />
+
+                    <div className={'payment-form-stripe-wrapper ' + cl_stripe}>
+                      <p>NOTE: Please use following information to test payment functionality: <br/>
+                        card number: 4242 4242 4242 4242 <br/>
+                        date: any future date<br/>
+                        cvc: any
+                      </p>
+                      <StripeCheckout
+                        label="Pay now"
+                        name="Tours"
+                        biilingAddress
+                        shippingAddress
+                        description={`Your total is $${total}`}
+                        amount={total * 100}
+                        panelLabel='Pay now'
+                        token={onToken}
+                        stripeKey={publishableKey}
+                      />
+                    </div>
+
+                    <FormControlLabel value="BITCOIN" control={<Radio disabled />} label="Pay with Bitcoin" checked={mState.bitcon} />
                     <FormControlLabel value="CARD" control={<Radio />} label="Pay with credit card" checked={mState.card} />
+
+                    <div className={'payment-form-card-wrapper ' + cl_card}>
+                      <form onSubmit={handleSubmit}>
+                        <div className="material-ui-form payment-form form-items">
+                          <div className="item col-1-1">
+                            <TextField
+                              id="outlined-helperText"
+                              label="Card number"
+                              defaultValue="1111222233334444"
+                              helperText=""
+                              variant="outlined"
+                              value={inputValues.cardnumber}
+                              onChange={handleInputChange}
+                              name="cardnumber"
+                            />
+                          </div>
+                          <div className="item col-1-6">
+                            <TextField
+                              id="outlined-helperText"
+                              type="number"
+                              label="MM"
+                              defaultValue=""
+                              helperText="Expiry month"
+                              variant="outlined"
+                              value={inputValues.cardmm}
+                              onChange={handleInputChange}
+                              name="cardmm"
+                            />
+                          </div>
+                          <div className="item col-1-6">
+                            <TextField
+                              id="outlined-helperText"
+                              type="number"
+                              label="YY"
+                              defaultValue=""
+                              helperText="Expiry year"
+                              variant="outlined"
+                              value={inputValues.cardyy}
+                              onChange={handleInputChange}
+                              name="cardyy"
+                            />
+                          </div>
+                          <div className="item col-1-4">
+                            <TextField
+                              id="outlined-helperText"
+                              type="number"
+                              label="CVV"
+                              defaultValue="123"
+                              helperText=""
+                              variant="outlined"
+                              value={inputValues.cardcvv}
+                              onChange={handleInputChange}
+                              name="cardcvv"
+                            />
+                          </div>
+                          <div className="item col-1-1">
+                            <TextField
+                              id="outlined-helperText"
+                              label="Full name"
+                              defaultValue="MARKO MARKOVIC"
+                              helperText="Name (as it appears on your card)"
+                              variant="outlined"
+                              value={inputValues.cardname}
+                              onChange={handleInputChange}
+                              name="cardname"
+                            />
+                          </div>
+                          <div className="item col-1-1">
+                            <Button
+                              type="submit"
+                              variant="contained"
+                              color="primary"
+                              onClick={payWithCardMessage}
+                            >Pay</Button >
+                          </div>
+                        </div>
+                      </form>
+                    </div>
+
                   </RadioGroup>
                 </FormControl>
-
-                <form onSubmit={handleSubmit}>
-                  <div className={'payment-form-wrapper ' + cl_saved}>
-                    <div className="material-ui-form payment-form form-items">
-
-                      <div className="item col-1-1">
-                        <TextField
-                          id="outlined-helperText"
-                          label="Card number"
-                          defaultValue="1111222233334444"
-                          helperText=""
-                          variant="outlined"
-                          value={inputValues.cardnumber}
-                          onChange={handleInputChange}
-                          name="cardnumber"
-                        />
-                      </div>
-                      <div className="item col-1-6">
-                        <TextField
-                          id="outlined-helperText"
-                          type="number"
-                          label="MM"
-                          defaultValue=""
-                          helperText="Expiry month"
-                          variant="outlined"
-                          value={inputValues.cardmm}
-                          onChange={handleInputChange}
-                          name="cardmm"
-                        />
-                      </div>
-                      <div className="item col-1-6">
-                        <TextField
-                          id="outlined-helperText"
-                          type="number"
-                          label="YY"
-                          defaultValue=""
-                          helperText="Expiry year"
-                          variant="outlined"
-                          value={inputValues.cardyy}
-                          onChange={handleInputChange}
-                          name="cardyy"
-                        />
-                      </div>
-                      <div className="item col-1-4">
-                        <TextField
-                          id="outlined-helperText"
-                          type="number"
-                          label="CVV"
-                          defaultValue="123"
-                          helperText=""
-                          variant="outlined"
-                          value={inputValues.cardcvv}
-                          onChange={handleInputChange}
-                          name="cardcvv"
-                        />
-                      </div>
-                      <div className="item col-1-1">
-                        <TextField
-                          id="outlined-helperText"
-                          label="Full name"
-                          defaultValue="MARKO MARKOVIC"
-                          helperText="Name (as it appears on your card)"
-                          variant="outlined"
-                          value={inputValues.cardname}
-                          onChange={handleInputChange}
-                          name="cardname"
-                        />
-                      </div>
-                      <div className="item col-1-1">
-                        <Button
-                          type="submit"
-                          variant="contained"
-                          color="primary"
-
-                        >Pay</Button>
-                      </div>
-
-                    </div>
-                  </div>
-                </form>
-
-                <StripeCheckout
-                  label="Pay now"
-                  name="Tours"
-                  biilingAddress
-                  shippingAddress
-                  description={`Your total is $${total}`}
-                  amount={total * 100}
-                  panelLabel='Pay now'
-                  token={onToken}
-                  stripeKey={publishableKey}
-
-                />
 
               </section>
             </div>

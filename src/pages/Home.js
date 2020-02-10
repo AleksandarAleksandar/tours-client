@@ -155,11 +155,7 @@ class Home extends React.Component {
               </div>
             </section>
 
-            <section className="section">
-              <div className="inner">
-                {jsxStats}
-              </div>
-            </section>
+
 
             <section className="section homepage-dashboard">
               <div className="inner">
@@ -174,7 +170,11 @@ class Home extends React.Component {
               </div>
             </section>
 
-
+            <section className="section">
+              <div className="inner">
+                {jsxStats}
+              </div>
+            </section>
 
           </div>
 

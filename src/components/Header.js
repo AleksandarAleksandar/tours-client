@@ -54,6 +54,8 @@ function Header({ currentUser, hidden, setCurrentUser, isLoggedIn, state_ceo, is
               <div className="origin">
                 <div className="popup-triangle"></div>
                 <div className="popup-body">
+                  <Link className="option hvr-underline-from-center" to='/passwordchange'>Change password</Link>
+                  <br />
                   <Link className="option hvr-underline-from-center" to='/logout'>Logout</Link>
                 </div>
               </div>
@@ -113,7 +115,7 @@ function Header({ currentUser, hidden, setCurrentUser, isLoggedIn, state_ceo, is
         </div>
       </div>
 
-      <div className="big-title">Up<br />King<br /><div className="big-info">Biking<br />Hiking<br />Swimming<br />Running</div></div>
+      <div className="big-title">Up<br />Tour<br /><div className="big-info">Biking<br />Hiking<br />Swimming<br />Running</div></div>
 
       {jsxAdministrator}
 

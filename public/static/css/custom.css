@@ -962,6 +962,12 @@ h3.section-title {
 .billing-address-form-wrapper.hide {
   display: none;
 }
+.payment-form-card-wrapper.hide {
+  display: none;
+}
+.payment-form-stripe-wrapper.hide {
+  display: none;
+}
 
 .form-items {
   display: flex;
