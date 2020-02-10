@@ -48,11 +48,11 @@ const UniversalItems = (props) => {
 
   console.log(props);
 
-  let jsxSpinner = (
+  let jsxSpinner = null;
+  if (props.spinner === true) {
+    jsxSpinner = (
     <SpinnerRow />
   );
-  if (props.spinner === true) {
-    jsxSpinner = null;
   }
 
   let items = props.items
