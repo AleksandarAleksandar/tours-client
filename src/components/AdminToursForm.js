@@ -27,6 +27,7 @@ class AdminToursForm extends Component {
       users: [],
       guides_for_edit: []
     };
+    let image_cover_placeholder = 'tour-3-cover.jpg'; // TODO: make real placeholder for cover picture
     this.state = {
       status: 'NONE',
       errors: {},
@@ -42,7 +43,7 @@ class AdminToursForm extends Component {
       duration: '',
       maxGroupSize: '',
       price: '',
-      imageCover: 'tour-3-cover.jpg',
+      imageCover: { url: '' },
 
       startGeoUri: '',
       coordinates: [],
@@ -60,14 +61,14 @@ class AdminToursForm extends Component {
 
   handleInputChange(event) {
     const target = event.target;
-    const value = target.type === 'checkbox' ? target.checked : target.value;
+    let value = target.type === 'checkbox' ? target.checked : target.value;
     const name = target.name;
 
-    if(name==='description') {
-      value=value.trim();
+    if (name === 'description') {
+      value = value.trim();
     }
-    if(name==='summary') {
-      value=value.trim()
+    if (name === 'summary') {
+      value = value.trim()
     }
 
     this.setState({
@@ -205,7 +206,7 @@ class AdminToursForm extends Component {
       maxGroupSize: this.state.maxGroupSize,
       price: this.state.price,
 
-      imageCover: this.state.imageCover,
+      imageCover: this.state.imageCover.url,
       startLocation: {
         type: "Point",
         description: this.state.startDescription,
@@ -284,7 +285,7 @@ class AdminToursForm extends Component {
         duration: '',
         maxGroupSize: '',
         price: '',
-        imageCover: 'tour-3-cover.jpg',
+        imageCover: { url: '' },
 
         startGeoUri: '',
         coordinates: [],
@@ -367,7 +368,7 @@ class AdminToursForm extends Component {
           duration: data.duration,
           maxGroupSize: data.maxGroupSize,
           price: data.price,
-          imageCover: data.imageCover,
+          imageCover: { url: data.imageCover },
 
           startGeoUri: '',
           coordinates: data.startLocation.coordinates,
@@ -565,22 +566,48 @@ class AdminToursForm extends Component {
       console.log(newPicture);
       let pictures = [...this.state.pictures, newPicture];
       this.setState({ pictures: pictures })
-      this.setState({ imageCover: pictures[0].url })
+      // this.setState({ imageCover: pictures[0].url })
     }
 
     console.log('pictures');
     console.log(this.state.pictures);
-    let jsxPictures = this.state.pictures.map((item) => {
+
+    let jsxPictures = this.state.pictures.map((pic) => {
       return (
-        <div key={item.id} className={'id_is_' + item.id}>Picture name/url: {item.url}
+        <div key={pic.id} className={'id_is_' + pic.id}>Picture name/url: <a target="_blank" href={pic.url}>{pic.url}</a>
           <button
             type="button"
             className="btn btn-outline-danger btn-xs"
-            onClick={() => { cb_delete_picture(item.id) }}
+            onClick={() => { cb_delete_picture(pic.id) }}
           ><i className="fas fa-times"></i></button>
         </div>
       )
     })
+
+
+    let cb_delete_picture_cover = () => {
+      console.log('callback delete picture cover');
+      this.setState({ imageCover: { url: '' } })
+    }
+    let cb_add_picture_cover = (newPicture) => {
+      console.log('callback add picture cover');
+      console.log(newPicture);
+      this.setState({ imageCover: newPicture })
+    }
+    let pic = this.state.imageCover;
+    let jsxPictureCover = null;
+    if (pic.url !== '') {
+      jsxPictureCover = (
+        <div className={'id_is_IMAGE_COVER_NIJE_U_ARRAYU_NE_TREBA_ID'}>Picture name/url: <a target="_blank" href={pic.url}>{pic.url}</a>
+          <button
+            type="button"
+            className="btn btn-outline-danger btn-xs"
+            onClick={() => { cb_delete_picture_cover() }}
+          ><i className="fas fa-times"></i></button>
+        </div>
+      )
+    }
+
 
     let submitTitle = "Submit new tour"
     if (mode === 'UPDATE') {
@@ -823,6 +850,10 @@ class AdminToursForm extends Component {
             </div>
           </div>
         </form>
+
+        <h2>Cover picture</h2>
+        {jsxPictureCover}
+        <FormPicture cb={cb_add_picture_cover} />
 
         <h2>Pictures</h2>
         {jsxPictures}

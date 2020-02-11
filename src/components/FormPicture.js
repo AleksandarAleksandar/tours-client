@@ -81,17 +81,19 @@ export default class FormPicture extends Component {
 
     // *********** Upload file to Cloudinary ******************** //
     function uploadFile(file) {
+      console.log(file)
+      console.log(file.name);
 
-      const cloudName = 'tbaustin';
+      const cloudName = 'dcimz9cam';
       const url = `https://api.cloudinary.com/v1_1/${cloudName}/image/upload`;
 
       const timestamp = Date.now() / 1000;
-      const uploadPreset = 'cnh7rzwp';
+      const uploadPreset = 'mbpsrnvj';
 
       let formData = new FormData();
-      formData.append("api_key", '');
+      formData.append("api_key", '211348262474915');
       formData.append("file", file);
-      formData.append("public_id", "sample_image");
+      formData.append("public_id", file.name);
       formData.append("timestamp", timestamp);
       formData.append("upload_preset", uploadPreset);
 
@@ -108,17 +110,11 @@ export default class FormPicture extends Component {
         .catch((err) => {
           console.log(err);
         })
-
-
-
     }
-
 
     let the_file = this.state.the_file;
     uploadFile(the_file)
   }
-
-
 
   render() {
     /*
@@ -131,14 +127,25 @@ export default class FormPicture extends Component {
       jsxSpinner = <SpinnerRow />
     }
 
+    let addIsDisabled = false;
+    if (!this.state.url || this.state.url === '') {
+      addIsDisabled = true;
+    }
+    let uploadIsDisabled = true;
+    if (this.state.the_file) {
+      uploadIsDisabled = false
+    } else {
+      addIsDisabled = true;
+    }
+
     return (
       <>
         <div className="subform-picture">
 
-          <form method="post" enctype="multipart/form-data">
+          <form method="post" encType="multipart/form-data">
 
             <div className='form-group'>
-              <label>Choose file o upload</label>
+              <label>Choose file to upload</label>
               <input
                 type="file"
                 name="thefile"
@@ -151,6 +158,7 @@ export default class FormPicture extends Component {
 
             <div className='form-group'>
               <button
+                disabled={uploadIsDisabled}
                 type="button"
                 className="btn btn-sm btn-secondary"
                 onClick={this._upload}
@@ -176,6 +184,7 @@ export default class FormPicture extends Component {
           <p>...</p>
 
           <button
+            disabled={addIsDisabled}
             type="button"
             className="btn btn-sm btn-info"
             onClick={this._add}

@@ -142,7 +142,7 @@ export default class FormLocation extends Component {
             type="button"
             className="btn btn-sm btn-info"
             onClick={this._add}
-          ><i class="fas fa-map-marker-alt"></i> Add location</button>
+          ><i className="fas fa-map-marker-alt"></i> Add location</button>
 
         </div>
       </>
