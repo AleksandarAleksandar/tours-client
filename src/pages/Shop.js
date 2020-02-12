@@ -209,45 +209,9 @@ class Shop extends React.Component {
     let jsxSearchResults = <UniversalItems title={''} items={searchResults} limit={'bez limita'} spinner={isFetching} slider={false} />
 
 
-
-    let filtered = {};
-    // let categories = {
-    //   "running": {
-    //     title: "RUNNING"
-    //   },
-    //   "hiking": {
-    //     title: "HIKING"
-    //   },
-    //   "swimming": { title: "SWIMMING" },
-    //   "biking": { title: "BIKING" }
-    // }
-    let categories = this.props.st.shop.categories
-    Object.keys(categories).forEach((catId) => {
-      filtered[catId] = items.filter((item) => {
-        // console.log(item.category, category)
-        if (catId === 'all') {
-          return true;
-        }
-        if (item.category === catId) {
-          return true
-        } else {
-          return false
-        }
-      })
-      //
-      let title = categories[catId].title;
-      let titleLinkRoute = '/category/' + catId;
-      jsxCategoriesDashboard.push(
-        <UniversalItems key={catId} title={title} titleLinkRoute={titleLinkRoute} items={filtered[catId]} limit={'bez limita'} spinner={true} slider={true} />
-      )
-
-    })
-
-
     let thisPageRoute = routingUtils.getRouteData('SHOP');
     let breadcrumbs = thisPageRoute.breadcrumbs;
     let activeRoute = thisPageRoute.routeName;
-
 
     return (
       <div className="shop-page">
@@ -258,107 +222,109 @@ class Shop extends React.Component {
               <Breadcrumbs breadcrumbs={breadcrumbs} activeRoute={activeRoute} />
             </div>
             <h1>Ovo je shop stranica sa 4 kategorije</h1>
-            <div className="shop-filter">
-              <div className="search-row">
-                <form onSubmit={this.handleSubmit}>
-                  <input
-                    name="search"
-                    type="text"
-                    value={this.state.search}
-                    onChange={this.handleInputChange}
-                  />
-                </form>
-              </div>
 
+            <div className="shop-filter-widget">
 
-              <div className="form-group">
-                <div className="filters-panel">
-                  <h4>Filter</h4>
-
-                  <div className="row">
-
-                    <div className="col xs-2">
+              <div className="filters-panel">
+                <div className="row search-row">
+                  <div className="col-12 col-sm-6 col-lg-4">
+                    <form onSubmit={this.handleSubmit}>
                       <div className="form-group">
-                        <label>Price min.</label>
-                        <input
-                          name="pricemin"
-                          type="number"
-                          className="form-control"
-                          placeholder="0"
-                          value={this.state.pricemin}
-                          onChange={this.handleInputChange}
-                        />
+                        <label>&nbsp;</label>
+                        <div className="input-group">
+                          <div className="input-group-prepend">
+                            <span className="input-group-text"><i className="fas fa-search"></i></span>
+                          </div>
+                          <input
+                            className="form-control"
+                            placeholder="type here..."
+                            name="search"
+                            type="text"
+                            value={this.state.search}
+                            onChange={this.handleInputChange}
+                          />
+                        </div>
                       </div>
-                    </div>
+                    </form>
+                  </div>
 
-                    <div className="col xs-2">
-                      <div className="form-group">
-                        <label>Price max.</label>
-                        <input
-                          name="pricemax"
-                          type="number"
-                          className="form-control"
-                          placeholder="0"
-                          value={this.state.pricemax}
-                          onChange={this.handleInputChange}
-                        />
-                      </div>
+                  <div className="col-6 col-sm-3 col-lg-2">
+                    <div className="form-group">
+                      <label>Price min.</label>
+                      <input
+                        name="pricemin"
+                        type="number"
+                        className="form-control"
+                        placeholder="0"
+                        value={this.state.pricemin}
+                        onChange={this.handleInputChange}
+                      />
                     </div>
+                  </div>
 
-                    <div className="col xs-4">
-                      <div className="form-group">
-                        <label>Category</label>
-                        <select
-                          name="category"
-                          className="form-control"
-                          value={this.state.category}
-                          onChange={this.handleInputChange}
-                        >
-                          <option value="all">All Categories</option>
-                          <option value="biking">Biking</option>
-                          <option value="hiking">Hiking</option>
-                          <option value="running">Running</option>
-                          <option value="swimming">Swimming</option>
-                        </select>
-                      </div>
+                  <div className="col-6 col-sm-3 col-lg-2">
+                    <div className="form-group">
+                      <label>Price max.</label>
+                      <input
+                        name="pricemax"
+                        type="number"
+                        className="form-control"
+                        placeholder="0"
+                        value={this.state.pricemax}
+                        onChange={this.handleInputChange}
+                      />
                     </div>
+                  </div>
 
-                    <div className="col xs-3">
-                      <div className="form-group">
-                        <label>Difficulty</label>
-                        <select
-                          name="difficulty"
-                          className="form-control"
-                          value={this.state.difficulty}
-                          onChange={this.handleInputChange}
-                        >
-                          <option value="all">All Difficulties</option>
-                          <option value="easy">Easy</option>
-                          <option value="medium">Medium</option>
-                          <option value="difficult">Difficult</option>
-                        </select>
-                      </div>
+                  <div className="col-12 col-sm-6 col-lg-2">
+                    <div className="form-group">
+                      <label>Category</label>
+                      <select
+                        name="category"
+                        className="form-control"
+                        value={this.state.category}
+                        onChange={this.handleInputChange}
+                      >
+                        <option value="all">All Categories</option>
+                        <option value="biking">Biking</option>
+                        <option value="hiking">Hiking</option>
+                        <option value="running">Running</option>
+                        <option value="swimming">Swimming</option>
+                      </select>
                     </div>
+                  </div>
 
+                  <div className="col-12 col-sm-6 col-lg-2">
+                    <div className="form-group">
+                      <label>Difficulty</label>
+                      <select
+                        name="difficulty"
+                        className="form-control"
+                        value={this.state.difficulty}
+                        onChange={this.handleInputChange}
+                      >
+                        <option value="all">All Difficulties</option>
+                        <option value="easy">Easy</option>
+                        <option value="medium">Medium</option>
+                        <option value="difficult">Difficult</option>
+                      </select>
+                    </div>
                   </div>
 
                 </div>
+
               </div>
 
             </div>
+
             <div className="search-results">
               {jsxSearchResults}
             </div>
 
-            <div className="cetegories-dashboard">
-              <h1>Cateogories</h1>
-              {jsxCategoriesDashboard}
-              {jsxSpinner}
-            </div>
           </div>
         </section>
 
-      </div>
+      </div >
     )
   }
 }

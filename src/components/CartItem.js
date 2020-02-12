@@ -53,31 +53,31 @@ export default function CartItem(props) {
 
           <div className="facts items">
             <div className="fact item">
-              <div className="fact-icon"><i class="fas fa-chart-line"></i></div>
+              <div className="fact-icon"><i className="fas fa-chart-line"></i></div>
               <div className=""><span className="term-name">Difficulty:</span><span className="term-value">{item.difficulty}</span></div>
             </div>
 
             <div className="fact item">
-              <div className="fact-icon"><i class="fas fa-hourglass-start"></i></div>
+              <div className="fact-icon"><i className="fas fa-hourglass-start"></i></div>
               <div className=""><span className="term-name">Start:</span><span className="term-value">{startDate}</span></div>
             </div>
 
             <div className="fact item">
-              <div className="fact-icon"><i class="far fa-calendar-alt"></i></div>
-              <div className=""><span className="term-name">Duration:</span><span className="term-value">{item.duration}</span></div>
+              <div className="fact-icon"><i className="far fa-calendar-alt"></i></div>
+              <div className=""><span className="term-name">Duration:</span><span className="term-value">{item.duration} days</span></div>
             </div>
 
             <div className="fact item">
-              <div className="fact-icon"><i class="fas fa-euro-sign"></i></div>
-              <div className=""><span className="term-name">Price per person:</span><span className="term-value">{price}</span></div>
+              <div className="fact-icon"><i className="fas fa-euro-sign"></i></div>
+              <div className=""><span className="term-name"></span><span className="term-value">{price}</span></div>
             </div>
 
           </div>
 
           <div className="quantity">
-            <div className="arrow minus" onClick={() => dispatch(removeItem(item))}><i class="fas fa-user-minus"></i></div>
+            <div className="arrow minus" onClick={() => dispatch(removeItem(item))}><i className="fas fa-user-minus"></i></div>
             <div className="value">{quantity} persons</div>
-            <div className="arrow plus" onClick={() => dispatch(addItem(item))}><i class="fas fa-user-plus"></i></div>
+            <div className="arrow plus" onClick={() => dispatch(addItem(item))}><i className="fas fa-user-plus"></i></div>
           </div>
 
 

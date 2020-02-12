@@ -21,6 +21,7 @@ import Radio from '@material-ui/core/Radio';
 import RadioGroup from '@material-ui/core/RadioGroup';
 import FormHelperText from '@material-ui/core/FormHelperText';
 import StripePayment from './StripePayment'
+import Paypal from './../components/Paypal'
 
 // import { selectCartItems, selectCartTotal } from '../redux/cart/cart-selectors'
 
@@ -277,6 +278,40 @@ const Checkout = (props) => {
     })
   }
 
+  let jsxFeedback;
+
+  const transactionError = data => {
+    console.log(data);
+
+  }
+  const transactionCanceled = data => {
+    console.log(data);
+
+  }
+  const transactionSuccess = (data) => {
+
+    let items = props.state_ceo.cart.cartItems; // itemsi iz carta koji na backendu moraj uda se upisu u tabelu OrderItems odnosno bookings...
+    // console.log(items);
+    let total = 0;
+    let tours = [];
+    let jsxCartItems = items.forEach((item) => {
+      // return <CheckoutItem key={item.id} cartItem={item} />
+      total += item.price * item.quantity;
+      tours.push(item.id); // popunjava array sam osa ID-ovima od tura...yyy
+    })
+
+    let submitData = {
+      amount: total,
+      tours: tours,
+      data
+    }
+    console.log(submitData);
+    axios.post(`http://localhost:3002/api/v1/users/successbuy`, submitData).then((response) => {
+      console.log(response);
+    }, (error) => {
+      console.log(error);
+    });
+  }
 
 
   return (
@@ -418,12 +453,23 @@ const Checkout = (props) => {
                 <FormControl component="fieldset">
                   <RadioGroup name="billingAdress" value={'my'} onChange={(e) => { mDispatch(e.target.value) }}>
                     <FormControlLabel value="PAYPAL" control={<Radio />} label="Pay with PayPal" checked={mState.paypal} />
+
+
+                    <Paypal
+                      toPay={total}
+                      transactionError={(data) => transactionError(data)}
+                      transactionCanceled={(data) => transactionCanceled(data)}
+                      onSuccess={(data) => transactionSuccess(data)}
+                    />
+
+                    {jsxFeedback}
+
                     <FormControlLabel value="STRIPE" control={<Radio />} label="Pay with Stripe" checked={mState.stripe} />
 
                     <div className={'payment-form-stripe-wrapper ' + cl_stripe}>
-                      <p>NOTE: Please use following information to test payment functionality: <br/>
-                        card number: 4242 4242 4242 4242 <br/>
-                        date: any future date<br/>
+                      <p>NOTE: Please use following information to test payment functionality: <br />
+                        card number: 4242 4242 4242 4242 <br />
+                        date: any future date<br />
                         cvc: any
                       </p>
                       <StripeCheckout

@@ -12,6 +12,7 @@ import { updateBrowserTitle } from './../redux/global/global-actions'
 import { sortingUtils } from '../utils/sorting-utils'
 import Header from '../components/Header'
 import Footer from '../components/Footer'
+import CategoriesDashboard from './../components/CategoriesDashboard'
 
 
 class Home extends React.Component {
@@ -27,7 +28,7 @@ class Home extends React.Component {
 
   render() {
     let props = this.props;
-    let spinner = true
+    let isFetching = true;
     let items = []; // all tours
     let filtered = {
       cheapest: [],
@@ -38,6 +39,7 @@ class Home extends React.Component {
     if (this.props.st.shop.isFetching === false) {
       console.log('test 3 ');
       console.log(this.props.st.shop);
+      isFetching = false
       items = this.props.st.shop.tours_items; // all tourse unfiltered
     }
 
@@ -162,17 +164,23 @@ class Home extends React.Component {
 
                 {/* <h2>Od svega po malo</h2> */}
 
-                <UniversalItems title={'Most popular'} category={'nema kategorije'} items={filtered.mostpopular} limit={4} spinner={true} />
+                <UniversalItems title={'Most popular'} category={'nema kategorije'} items={filtered.mostpopular} limit={4} spinner={isFetching} />
 
-                <UniversalItems title={'Most affordable'} category={'nema kategorije'} items={filtered.cheapest} limit={4} spinner={true} />
+                <UniversalItems title={'Most affordable'} category={'nema kategorije'} items={filtered.cheapest} limit={4} spinner={isFetching} />
 
-                <UniversalItems title={'Most days'} category={'nema kategorije'} items={filtered.longest} limit={4} spinner={true} />
+                <UniversalItems title={'Most days'} category={'nema kategorije'} items={filtered.longest} limit={4} spinner={isFetching} />
               </div>
             </section>
 
             <section className="section">
               <div className="inner">
-                {jsxStats}
+                {/* {jsxStats} */}
+              </div>
+            </section>
+
+            <section className="section">
+              <div className="inner">
+                <CategoriesDashboard />
               </div>
             </section>
 
