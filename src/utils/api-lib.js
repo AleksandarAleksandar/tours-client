@@ -1,11 +1,13 @@
 // biblioteka svih APi url-ova i ostalih URL-ova
+import { config } from './config'
+import { liveConfig } from './live-config'
 
 export const apiLib = {};
 
-const config = {
-  environment: 'LIVE',
-  simulate: true
-}
+// const config = {
+//   environment: 'LIVE',
+//   simulate: true
+// }
 
 const STATIC_AVATAR_FOLDER = '/static/img/users/'
 const STATIC_AVATAR_DEFAULT = '/static/img/users/default.jpg';
@@ -14,8 +16,17 @@ const STATIC_COVER_FOLDER = '/static/img/tours/'
 const PRIMER_API_PREFIX = 'htttps://api.nekisajt.com/services/';
 const PRIMER_API_PREFIX_DEV = 'htttps://testapi.nekisajt.com/services/';
 
-const API_PREFIX = 'http://localhost:3000/';
-// const API_POSTS_GET = '/api/v1/posts';
+const API_PREFIX_LOCAL = 'http://localhost:3000/';
+// const API_PREFIX_PROD = 'http://nekisajt.com/';
+const API_PREFIX_PROD = config.API_PREFIX_PROD
+
+let apiPrefix = () => {
+  let prefix = API_PREFIX_PROD;
+  if (liveConfig.isDevEnv() === true) {
+    prefix = API_PREFIX_LOCAL;
+  }
+  return prefix;
+}
 
 
 const API_URL_LOGIN = 'api/v1/users/login'
@@ -70,89 +81,89 @@ apiLib.categoryUrl = (id) => {
 
 // API URLs
 apiLib.apiLogin = () => {
-  return API_PREFIX + API_URL_LOGIN;
+  return apiPrefix() + API_URL_LOGIN;
 };
 apiLib.apiAutologin = () => {
-  return API_PREFIX + API_URL_AUTOLOGIN;
+  return apiPrefix() + API_URL_AUTOLOGIN;
 };
 apiLib.apiLogout = () => {
-  return API_PREFIX + API_URL_LOGOUT;
+  return apiPrefix() + API_URL_LOGOUT;
 };
 apiLib.apiRegister = () => {
-  return API_PREFIX + API_URL_REGISTER;
+  return apiPrefix() + API_URL_REGISTER;
 };
 apiLib.apiPasswordChange = () => {
-  return API_PREFIX + API_URL_PASSWORD_CHANGE;
+  return apiPrefix() + API_URL_PASSWORD_CHANGE;
 };
 apiLib.apiPasswordForgot = () => {
-  return API_PREFIX + API_URL_PASSWORD_FORGOT;
+  return apiPrefix() + API_URL_PASSWORD_FORGOT;
 };
 apiLib.apiPasswordReset = (token) => {
-  return API_PREFIX + API_URL_PASSWORD_RESET + token;
+  return apiPrefix() + API_URL_PASSWORD_RESET + token;
 };
 apiLib.apiContactUs = () => {
-  return API_PREFIX + API_URL_CONTACT_US;
+  return apiPrefix() + API_URL_CONTACT_US;
 };
 
 apiLib.apiToursGet = () => {
-  return API_PREFIX + API_URL_GET_TOURS;
+  return apiPrefix() + API_URL_GET_TOURS;
 };
 
 apiLib.apiToursGet = () => {
-  return API_PREFIX + API_URL_GET_TOURS;
+  return apiPrefix() + API_URL_GET_TOURS;
 };
 apiLib.apiSingleTourGet = (id) => {
-  return API_PREFIX + API_URL_GET_SINGLE_TOUR + id;
+  return apiPrefix() + API_URL_GET_SINGLE_TOUR + id;
 };
 apiLib.apiGetReviews = () => {
-  return API_PREFIX + API_URL_GET_REVIEWS;
+  return apiPrefix() + API_URL_GET_REVIEWS;
 }
 apiLib.apiCreateReview = () => {
-  return API_PREFIX + API_URL_GET_REVIEWS
+  return apiPrefix() + API_URL_GET_REVIEWS
 }
 apiLib.apiGetsingleUser = (id) => {
-  return API_PREFIX + API_URL_GET_USERS + id;
+  return apiPrefix() + API_URL_GET_USERS + id;
 }
 apiLib.apiGetUsers = () => {
-  return API_PREFIX + API_URL_GET_USERS;
+  return apiPrefix() + API_URL_GET_USERS;
 }
 
 apiLib.apiTourCreate = () => {
-  return API_PREFIX + API_URL_CREATE_TOUR;
+  return apiPrefix() + API_URL_CREATE_TOUR;
 }
 
 apiLib.apiTourUpdate = (id) => {
-  return API_PREFIX + API_URL_CREATE_TOUR + id;
+  return apiPrefix() + API_URL_CREATE_TOUR + id;
 }
 
 apiLib.apiTourDelete = (id) => {
-  return API_PREFIX + API_URL_CREATE_TOUR + id;
+  return apiPrefix() + API_URL_CREATE_TOUR + id;
 }
 
 apiLib.apiTourStats = () => {
-  return API_PREFIX + API_URL_TOUR_STATS
+  return apiPrefix() + API_URL_TOUR_STATS
 }
 
 /*
 apiLib.apiBookTour = (id) => {
-  return API_PREFIX + API_URL_BOOK_TOUR + id;
+  return apiPrefix() + API_URL_BOOK_TOUR + id;
 };
 */
 apiLib.apiGetBookings = () => {
-  return API_PREFIX + API_URL_GET_BOOKINGS
+  return apiPrefix() + API_URL_GET_BOOKINGS
 }
 
 apiLib.apiGetOrders = () => {
-  return API_PREFIX + API_URL_GET_ORDERS
+  return apiPrefix() + API_URL_GET_ORDERS
 }
 apiLib.apiCreateOrder = () => {
-  return API_PREFIX + API_URL_CREATE_ORDER
+  return apiPrefix() + API_URL_CREATE_ORDER
 }
 
 
 /*
 // a)
-// apiLib.apiPostsGet_var = API_PREFIX + API_POSTS_GET;
+// apiLib.apiPostsGet_var = apiPrefix() + API_POSTS_GET;
 
 // b)
 apiLib.apiPostsGet = () => {
@@ -164,9 +175,9 @@ apiLib.apiPostsGet = () => {
 
 apiLib.apiPostsGet = (userId, limit, after) => {
   let url = '';
-  let prefix = API_PREFIX;
+  let prefix = apiPrefix();
   if (config.envirnment === 'DEV') {
-    prefix = API_PREFIX_DEV;
+    prefix = apiPrefix()_DEV;
   }
   if (limit) {
     url = prefix + API_POSTS_GET + '?limit=' + limit;
