@@ -107,7 +107,7 @@ class Home extends React.Component {
       let jsxStatsRows = stats.map((item) => {
         return (
           <div key={item.id} className="fact item">
-            <div className="fact-icon"><i class="fas fa-chart-line"></i></div>
+            <div className="fact-icon"><i className="fas fa-chart-line"></i></div>
             <div className=""><span className="term-name">{item._id}:</span><span className="term-value">{item.numTours}</span></div>
           </div>
         )

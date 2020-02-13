@@ -11,7 +11,7 @@ export default function BtnGeoLocation(props) {
       title: 'Detect your location',
       text: 'Please allowe us to detect your location in order to find the closest routes for you.',
       icon: 'question',
-      iconHtml: '<i class="fas fa-map-marker-alt"></i>',
+      iconHtml: '<i className="fas fa-map-marker-alt"></i>',
       confirmButtonText: 'Detect',
       cancelButtonText: 'No thanks',
       showCancelButton: true,

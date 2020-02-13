@@ -163,7 +163,7 @@ class AdminToursList extends React.Component {
           <td>
             <div className="btn-group">
               <Link to={'/product/' + item.id}>
-                <button type="button" className="btn btn-block btn-success btn-xs" data-id={item.id}><i class="far fa-eye"></i> Open</button>
+                <button type="button" className="btn btn-block btn-success btn-xs" data-id={item.id}><i className="far fa-eye"></i> Open</button>
               </Link>
               <Link to={'/admin/tours/edit/' + item.id}>
                 <button type="button" className="btn btn-block btn-primary btn-xs" data-id={item.id}><i className="fas fa-edit"></i> Edit</button>

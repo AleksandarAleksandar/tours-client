@@ -38,7 +38,7 @@ function SampleNextArrow(props) {
       className={className}
       style={{ ...style, display: "block", background: "red" }}
       onClick={onClick}
-    ><i class="fas fa-chevron-circle-right"></i></div>
+    ><i className="fas fa-chevron-circle-right"></i></div>
   );
 }
 

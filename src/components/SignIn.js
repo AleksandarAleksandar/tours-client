@@ -163,7 +163,7 @@ class SignIn extends Component {
                 </div>
               </form>
 
-              <div class="social-auth-links text-center mb-3"></div>
+              <div className="social-auth-links text-center mb-3"></div>
 
               <p className="mb-1">
                 <Link to={'/passwordforget'} className="text-center">I forgot my password</Link>

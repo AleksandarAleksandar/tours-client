@@ -127,7 +127,7 @@ class PasswordForget extends Component {
                 </div>
               </form>
 
-              <p class="mt-3 mb-1">
+              <p className="mt-3 mb-1">
                 <Link to={'/'} className="text-center">Cancel</Link>
               </p>
 
