@@ -26,9 +26,8 @@ axiosConfigurator.axiosPostConfig = {
 }
 axiosConfigurator.setHeader = (key, value) => {
   axiosConfigurator.axiosPostConfig.headers[key] = value;
+  console.log('*** HEADER CHANGED', axiosConfigurator)
 }
-
-
 
 
 const ajaxErrorHandle = (err) => {
