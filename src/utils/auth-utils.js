@@ -1,4 +1,5 @@
 
+import { config } from './config';
 import { storageUtils } from './storage-utils'
 import { autologin, logout } from './../redux/user/user-actions'
 import { axiosConfigurator } from './ajax-abstraction'
@@ -15,60 +16,59 @@ authUtils.jwtDecode = (token) => {
 
 // TODO: metod da uzme token iz cookie sa argumentom KEY a key je naziv cookiea
 
-let config = {
-  solution: 'STORAGE'
-}
-/* ostale mogu biti na primer:
+let solution = 'STORAGE'; // what we use to store token localy
+
+/*
+const appConfig = {
+  TOKEN_STORAGE_KEY: 'stoken',
+  TOKEN_HEADER_KEY: 'X-AuthToken',
+  use_jwt: true,
+  useCookieToken: true,
+  useHeaderToken: true
+};
+// ostale mogu biti na primer:
 cookie...
 */
 
 authUtils.storeToken = (tokenName, token) => {
-  if (config.solution === "STORAGE") {
+  if (solution === "STORAGE") {
     storageUtils.upsert(tokenName, token);
   }
 }
 
 authUtils.deleteToken = (tokenName) => {
-  if (config.solution === "STORAGE") {
+  if (solution === "STORAGE") {
     storageUtils.delete(tokenName)
   }
 }
 
 authUtils.getToken = (key) => {
-  if (config.solution === "STORAGE") {
+  if (solution === "STORAGE") {
     return storageUtils.get(key);
   }
 }
 
-const appConfig = {
-  tokenStorageKey: 'stoken',
-  tokenHeaderKey: 'X-AuthToken',
-  use_jwt: true,
-  useCookieToken: true,
-  useHeaderToken: true
-};
-
-authUtils.afterLoginProcedure = (token) => {
+authUtils.afterLoginFormProcedure = (token) => {
   // ovo je procedura koja se u sutini poziva samo nakon logovanja kada nam server kreira novi token.
-  authUtils.storeToken(appConfig.tokenStorageKey, token);
+  authUtils.storeToken(config.TOKEN_STORAGE_KEY, token);
 }
 
 authUtils.autoLoginProcedure = (dispatch) => {
   console.log(' ...AUTOLOGIN PROCEDURE');
   // ovo je procedura univerzalna koja treba da se obavi svaki put kad se aplikacija startuje i nakon login, nakon logout...
-  let token = authUtils.getToken(appConfig.tokenStorageKey);
+  let token = authUtils.getToken(config.TOKEN_STORAGE_KEY);
   let decoded;
-  if (appConfig.use_jwt === true) {
+  if (config.use_jwt === true) {
     decoded = authUtils.jwtDecode;
   }
-  if (appConfig.useCookieToken === true) {
+  if (config.useCookieToken === true) {
     // TODO
   }
-  if (appConfig.useHeaderToken === true) {
+  if (config.useHeaderToken === true) {
     // TODO: pozvati funkciju iz AJAX UTILS koja vrsi podesavanja za ajax pozive
     let token_value = 'Bearer ' + token;
 
-    axiosConfigurator.setHeader(appConfig.tokenHeaderKey, token_value); // set axios header
+    axiosConfigurator.setHeader(config.TOKEN_HEADER_KEY, token_value); // set axios header
   }
 
   let cb = (data) => {
@@ -85,14 +85,14 @@ authUtils.logoutProcedure = (dispatch) => {
   console.log(' ...LOGOUT PROCEDURE');
   // ovo je procedura univerzalna koja treba da se obavi svaki put kad se aplikacija startuje i nakon login, nakon logout...
 
-  authUtils.deleteToken(appConfig.tokenStorageKey)
+  authUtils.deleteToken(config.TOKEN_STORAGE_KEY)
 
-  if (appConfig.useCookieToken === true) {
+  if (config.useCookieToken === true) {
     // TODO
   }
-  if (appConfig.useHeaderToken === true) {
+  if (config.useHeaderToken === true) {
     // TODO: pozvati funkciju iz AJAX UTILS koja vrsi podesavanja za ajax pozive
-    axiosConfigurator.setHeader(appConfig.tokenHeaderKey, ''); // set axios header to empty token
+    axiosConfigurator.setHeader(config.TOKEN_HEADER_KEY, ''); // set axios header to empty token
   }
 
   let cb = (data) => {

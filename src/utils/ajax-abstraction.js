@@ -36,12 +36,13 @@ const ajaxErrorHandle = (err) => {
   console.error(err);
 }
 
+// export const ajaxGet = async function (url) {
 export const ajaxGet = async function (url) {
   if (config.solution === 'AXIOS') {
     // axios je vec asinhroni i poziv axios metoda axios.get() odmah vraca promise.
     // i mi taj promise vracamo sada.
     // ona funkcija koja ga je pozcvala nasu asinhronu funkciju ajaxGet() treba da ima .then() da bi uhvatila podatke kad se obecanej ispuni.
-    return axios.get(url)
+    return axios.get(url, axiosConfigurator.axiosPostConfig)
       .then((response) => {
         console.log(response);
         return response;

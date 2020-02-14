@@ -32,7 +32,7 @@ class SignIn extends Component {
       console.log('callback nakon logina');
       console.log(response);
       let token = response.token;
-      authUtils.afterLoginProcedure(token);
+      authUtils.afterLoginFormProcedure(token);
       authUtils.autoLoginProcedure(this.props.dispatch);
     }
     let cb_error = res => {
