@@ -191,6 +191,19 @@ export const login = (data, cb, cb_error) => {
         // step 3: cemo dispatchovati action da je fetchovanje zavrseno ASINHRONO kad se fetchovanje zavrsi.
         console.log('nase fetchovanje je zavrseno')
         console.log(response);
+/*
+{ 
+   "status":"success",
+   "token":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVlMjk3OGM0ZmRhNGViMmRmNDc2ZGY2MCIsImlhdCI6MTU4MTcwMjAyMCwiZXhwIjoxNTg5NDc4MDIwfQ.zl5CGJp7kUTe_-3a0RRFYnt590PaUvOwEOnWSnfuzSI",
+   "data":{ 
+      "user":{ 
+         "role":"admin",
+         "_id":"5e2978c4fda4eb2df476df60",
+         "name":"Aleksandar Vasiljevic",
+         "email":"aa@gmail.com",
+    }
+      }
+*/
         if (response && response.data && response.data.status === 'success') {
           let pripremljeni_podaci_za_state = response.data; // data.token i data.data
           dispatch(loginSuccess(pripremljeni_podaci_za_state)); // reducer ga ignorise za sada

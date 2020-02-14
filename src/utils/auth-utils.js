@@ -1,6 +1,7 @@
 
 import { storageUtils } from './storage-utils'
 import { autologin, logout } from './../redux/user/user-actions'
+import { axiosConfigurator } from './ajax-abstraction'
 
 // https://github.com/auth0/node-jsonwebtoken#readme
 var jwt = require('jsonwebtoken');
@@ -41,10 +42,16 @@ authUtils.getToken = (key) => {
 
 const appConfig = {
   tokenStorageKey: 'stoken',
+  tokenHeaderKey: 'X-AuthToken',
   use_jwt: true,
   useCookieToken: true,
   useHeaderToken: true
 };
+
+authUtils.afterLoginProcedure = (token) => {
+  // ovo je procedura koja se u sutini poziva samo nakon logovanja kada nam server kreira novi token.
+  authUtils.storeToken(appConfig.tokenStorageKey, token);
+}
 
 authUtils.autoLoginProcedure = (dispatch) => {
   console.log(' ...AUTOLOGIN PROCEDURE');
@@ -59,6 +66,9 @@ authUtils.autoLoginProcedure = (dispatch) => {
   }
   if (appConfig.useHeaderToken === true) {
     // TODO: pozvati funkciju iz AJAX UTILS koja vrsi podesavanja za ajax pozive
+    let token_value = 'Bearer ' + token;
+
+    axiosConfigurator.setHeader(appConfig.tokenHeaderKey, token_value); // set axios header
   }
 
   let cb = (data) => {
@@ -82,6 +92,7 @@ authUtils.logoutProcedure = (dispatch) => {
   }
   if (appConfig.useHeaderToken === true) {
     // TODO: pozvati funkciju iz AJAX UTILS koja vrsi podesavanja za ajax pozive
+    axiosConfigurator.setHeader(appConfig.tokenHeaderKey, ''); // set axios header to empty token
   }
 
   let cb = (data) => {
