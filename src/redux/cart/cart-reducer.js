@@ -23,13 +23,18 @@ const cartReducer = (state = INITIAL_STATE, action) => {
         ...state,
         cartItems: state.cartItems.filter(cartItem => cartItem.id !== action.payload.id
         )
-
       }
     case CartActionTypes.REMOVE_ITEM:
       return {
         ...state,
         cartItems: removeItemFromCart(state.cartItems, action.payload)
       }
+    case CartActionTypes.EMPTY_CART:
+      return {
+        ...state,
+        cartItems: []
+      }
+
     default:
       return state
   }

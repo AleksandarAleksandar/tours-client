@@ -16,6 +16,7 @@ import FormGroup from '@material-ui/core/FormGroup';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Checkbox from '@material-ui/core/Checkbox';
 import { createOrder } from './../redux/shop/shop-actions'
+import { emptyCart } from '../redux/cart/cart-actions'
 
 import Radio from '@material-ui/core/Radio';
 import RadioGroup from '@material-ui/core/RadioGroup';
@@ -128,6 +129,10 @@ const Checkout = (props) => {
   if (mState.stripe !== true) {
     cl_stripe = ' hide'
   }
+  let cl_paypal = ''
+  if (mState.paypal !== true) {
+    cl_paypal = ' hide'
+  }
 
   const handleInputChange = event => {
     const { name, value } = event.target;
@@ -185,8 +190,20 @@ const Checkout = (props) => {
   let total = subtotal + tax;
   let totalDisplay = formatUtils.formatPrice(total, '€');
 
+  let cb_order_success = (response) => {
+    console.log('callback order success', response)
+    Swal.fire(
+      'Payment successfull!',
+      'Order created (maybe)!',
+      'success'
+    ).then(() => {
+      // console.log('then posle swal');
+    })
+    // TOD: pocititi cart nakon payment success
+  }
 
   const onToken = token => {
+    // stripe success callback
     console.log(token);
     /*
     // primer koda koji koristi samo jedan item pri kupovini
@@ -226,7 +243,7 @@ const Checkout = (props) => {
     }
     console.log(submitData)
 
-    props.dispatch(createOrder(submitData))
+    props.dispatch(createOrder(submitData, cb_order_success))
   }
 
   let handleSubmit = async (e) => {
@@ -278,7 +295,7 @@ const Checkout = (props) => {
     })
   }
 
-  let jsxFeedback;
+  let jsxPaypalFeedback;
 
   const transactionError = data => {
     console.log(data);
@@ -454,15 +471,15 @@ const Checkout = (props) => {
                   <RadioGroup name="billingAdress" value={'my'} onChange={(e) => { mDispatch(e.target.value) }}>
                     <FormControlLabel value="PAYPAL" control={<Radio />} label="Pay with PayPal" checked={mState.paypal} />
 
-
-                    <Paypal
-                      toPay={total}
-                      transactionError={(data) => transactionError(data)}
-                      transactionCanceled={(data) => transactionCanceled(data)}
-                      onSuccess={(data) => transactionSuccess(data)}
-                    />
-
-                    {jsxFeedback}
+                    <div className={'payment-form-paypal-wrapper ' + cl_paypal}>
+                      <Paypal
+                        toPay={total}
+                        transactionError={(data) => transactionError(data)}
+                        transactionCanceled={(data) => transactionCanceled(data)}
+                        onSuccess={(data) => transactionSuccess(data)}
+                      />
+                      {jsxPaypalFeedback}
+                    </div>
 
                     <FormControlLabel value="STRIPE" control={<Radio />} label="Pay with Stripe" checked={mState.stripe} />
 

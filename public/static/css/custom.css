@@ -966,6 +966,9 @@ h3.section-title {
 .payment-form-stripe-wrapper.hide {
   display: none;
 }
+.payment-form-paypal-wrapper.hide {
+  display: none;
+}
 
 .form-items {
   display: flex;

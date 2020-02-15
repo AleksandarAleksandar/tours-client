@@ -15,7 +15,7 @@ import CheckoutItem from './../components/CheckoutItem'
 import CartItem from './../components/CartItem'
 import { formatUtils } from './../utils/format-utils'
 
-import { addItem } from '../redux/cart/cart-actions'
+import { emptyCart } from '../redux/cart/cart-actions'
 import { Link } from 'react-router-dom'
 
 
@@ -37,6 +37,9 @@ class Cart extends React.Component {
   }
 
   render() {
+    let props = this.props;
+    let dispatch = props.dispatch;
+
     let jsxSpinner = null;
 
     let thisPageRoute = routingUtils.getRouteData('CART');
@@ -83,6 +86,7 @@ class Cart extends React.Component {
 
             <div className="add-to-cart-group">
               <Link to={'/checkout'} className="btn btn-add-cart"><i className="far fa-credit-card"></i>Checkout</Link>
+              <div className="btn btn-add-cart" onClick={() => { dispatch(emptyCart()) }}><i className="fas fa-times"></i> Empty cart</div>
             </div>
 
           </div>

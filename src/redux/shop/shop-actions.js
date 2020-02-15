@@ -304,7 +304,7 @@ export const createOrder = (data, cb, cb_error) => {
         console.log(response);
         if (response && response.data && response.data.status === "success") {
           // let pripremljeni_podaci_za_state = response.data.data;
-          let pripremljeni_podaci_za_state = response.data.status;
+          let pripremljeni_podaci_za_state = response.data;
           // dispatch(fetchReviewsSuccess(pripremljeni_podaci_za_state))
           if (typeof cb === 'function') {
             cb(pripremljeni_podaci_za_state);
