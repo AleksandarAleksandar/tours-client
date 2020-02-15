@@ -537,18 +537,42 @@ export const detectMyLocation = () => {
 }
 
 
-export const contactUs = (data, cb) => {
+export const contactUs = (data, cb, cb_error) => {
   return (dispatch) => {
     // ovo je tipican redux thunk...
     dispatch({ type: '*** INFO sending email' });
 
-    ajaxPost(apiLib.apiContactUs(), data, cb)
+    ajaxPost(apiLib.apiContactUs(), data, cb_error)
       .then((response) => {
-        if(typeof cb==='function') {
-          cb()
+        console.log('contact ', response)
+/*
+{ 
+   "status":"error",
+   "error":{ 
+      "code":"EENVELOPE",
+      "command":"API",
+      "statusCode":500,
+      "status":"error"
+   },
+   "message":"No recipients defined",
+   "stack":"Error: No recipients defined\n 
+*/
+/*
+{ 
+   "status":"success",
+   "message":"Email sent with no errors."
+}
+*/
+        if (response && response.data && response.data.status === 'success') {
+          let pripremljeni_podaci_za_state = response.data; // data.token i data.data
+          // dispatch(loginSuccess(pripremljeni_podaci_za_state)); // reducer ga ignorise za sada
+          if (typeof cb === 'function') {
+            cb(pripremljeni_podaci_za_state); // ovo ce da pozove AUTOLOGIN proceduru
+          }
+          // dispatch(registerSubmitSuccess(pripremljeni_podaci_za_state))
+        } else {
         }
       })
-
 
   }
 }

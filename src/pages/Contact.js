@@ -9,7 +9,7 @@ import CollectionOverview from './../components/CollectionsOverview'
 import CategoryPage from './Category'
 import { toursNeeded } from './../redux/shop/shop-actions'
 
-import {contactUs} from './../redux/user/user-actions'
+import { contactUs } from './../redux/user/user-actions'
 // import { browserUtils } from './../utils/browser-utils'
 import { routingUtils } from './../utils/routing-utils'
 import { updateBrowserTitle } from './../redux/global/global-actions'
@@ -68,7 +68,7 @@ class Contact extends React.Component {
       })
       Swal.fire(
         'Success!',
-       'Mail sent successfully',
+        'Mail sent successfully',
         'success'
       ).then(() => {
         // console.log('then posle swal');
@@ -81,7 +81,24 @@ class Contact extends React.Component {
       })
     }
 
-    this.props.dispatch(contactUs(submitData, callbackSuccess));
+    let cb_error = (response) => {
+      console.log('...callback error');
+      console.log(response);
+      let message = 'Unknown error. Mail not sent!';
+      if (response && response.data && response.data.message) {
+        message = response.data.message;
+      }
+
+      Swal.fire(
+        'Error!',
+        message,
+        'error'
+      ).then(() => {
+        // console.log('then posle swal');
+      })
+    }
+
+    this.props.dispatch(contactUs(submitData, callbackSuccess, cb_error));
   }
 
 
