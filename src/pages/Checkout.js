@@ -4,6 +4,7 @@ import { connect } from 'react-redux'
 import { routingUtils } from './../utils/routing-utils'
 import axios from 'axios'
 import StripeCheckout from 'react-stripe-checkout'
+import { Link, Redirect } from 'react-router-dom'
 
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
@@ -15,7 +16,7 @@ import FormControl from '@material-ui/core/FormControl';
 import FormGroup from '@material-ui/core/FormGroup';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Checkbox from '@material-ui/core/Checkbox';
-import { createOrder } from './../redux/shop/shop-actions'
+import { createOrder, paymentPaypal } from './../redux/shop/shop-actions'
 import { emptyCart } from '../redux/cart/cart-actions'
 
 import Radio from '@material-ui/core/Radio';
@@ -30,12 +31,12 @@ import CheckoutItem from '../components/CheckoutItem'
 // import StripeCheckoutButton from '../components/StripeButton'
 import Breadcrumbs from '../components/Breadcrumbs'
 import { updateBrowserTitle } from './../redux/global/global-actions'
-import { Link } from 'react-router-dom'
 import { formatUtils } from './../utils/format-utils'
 import Swal from 'sweetalert2'
 
 
 const Checkout = (props) => {
+  let jsxRedirect = null;
 
   /*
     componentDidMount() {
@@ -49,6 +50,8 @@ const Checkout = (props) => {
     }
   */
   // let breadcrumbs = []
+  const [needRedirect, setNeedRedirect] = useState(false)
+
   const [savedAddress, setSavedAddress] = useState('NEW')
   let toggleAddressForm = (event) => {
     setSavedAddress(event.target.value);
@@ -190,6 +193,7 @@ const Checkout = (props) => {
   let total = subtotal + tax;
   let totalDisplay = formatUtils.formatPrice(total, '€');
 
+
   let cb_order_success = (response) => {
     console.log('callback order success', response)
     Swal.fire(
@@ -197,10 +201,20 @@ const Checkout = (props) => {
       'Order created (maybe)!',
       'success'
     ).then(() => {
-      // console.log('then posle swal');
+      console.log('then posle swal ... REDIRECT');
+      setNeedRedirect(true)
     })
     // TOD: pocititi cart nakon payment success
+    props.dispatch(emptyCart())
+
   }
+
+  if (needRedirect === true) {
+    jsxRedirect = (
+      <Redirect to="/profile" />
+    );
+  }
+
 
   const onToken = token => {
     // stripe success callback
@@ -306,6 +320,7 @@ const Checkout = (props) => {
 
   }
   const transactionSuccess = (data) => {
+    //paypal success callback
 
     let items = props.state_ceo.cart.cartItems; // itemsi iz carta koji na backendu moraj uda se upisu u tabelu OrderItems odnosno bookings...
     // console.log(items);
@@ -317,6 +332,7 @@ const Checkout = (props) => {
       tours.push(item.id); // popunjava array sam osa ID-ovima od tura...yyy
     })
 
+    /*
     let submitData = {
       amount: total,
       tours: tours,
@@ -328,11 +344,22 @@ const Checkout = (props) => {
     }, (error) => {
       console.log(error);
     });
+    */
+
+    // identican zavrsetak kao za stripa success callback
+    let submitData = {
+      amount: total,
+      tours: tours
+    }
+    console.log(submitData)
+
+    props.dispatch(paymentPaypal(submitData, cb_order_success))
   }
 
 
   return (
     <>
+      {jsxRedirect}
       <div className="checkout-page">
 
         <section className="section">

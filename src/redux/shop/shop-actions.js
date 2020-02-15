@@ -292,10 +292,40 @@ export const createTour = (data, cb, cb_error) => {
   }
 }
 export const createOrder = (data, cb, cb_error) => {
+  // ovo je za STRIPE
   return (dispatch) => {
     console.log('test create order ');
     console.log(data);
-    ajaxPost(apiLib.apiCreateOrder(), data, cb_error)
+    ajaxPost(apiLib.apiPaymentStripe(), data, cb_error)
+      .then((response) => {
+        // fetchovanje je zavrsen oi uspelo
+        // step 3: cemo dispatchovati action da je fetchovanje zavrseno ASINHRONO kad se fetchovanje zavrsi.
+        console.log('nas post request je zavrsen')
+
+        console.log(response);
+        if (response && response.data && response.data.status === "success") {
+          // let pripremljeni_podaci_za_state = response.data.data;
+          let pripremljeni_podaci_za_state = response.data;
+          // dispatch(fetchReviewsSuccess(pripremljeni_podaci_za_state))
+          if (typeof cb === 'function') {
+            cb(pripremljeni_podaci_za_state);
+          }
+        } else {
+          // dispatch(fetchReviewsFailure())
+          console.log('post request ERROR!!!');
+          if (typeof cb_error === 'function') {
+            cb_error(response);
+          }
+        }
+      })
+  }
+}
+
+export const paymentPaypal = (data, cb, cb_error) => {
+  return (dispatch) => {
+    console.log('test create order ');
+    console.log(data);
+    ajaxPost(apiLib.apiPaymentPaypal(), data, cb_error)
       .then((response) => {
         // fetchovanje je zavrsen oi uspelo
         // step 3: cemo dispatchovati action da je fetchovanje zavrseno ASINHRONO kad se fetchovanje zavrsi.

@@ -155,7 +155,10 @@ const UserProfile = (props) => {
     console.log(bookings_groups);
   }
 
-  jsxGroups = bookings_groups.map((group) => {
+  let bookings_groups_reversed = bookings_groups.reverse(); // NOT WORKING ??
+  console.log(bookings_groups_reversed);
+
+  jsxGroups = bookings_groups_reversed.map((group) => {
     /*
     let jsxGroup = group.tours.map((item) => {
       return (

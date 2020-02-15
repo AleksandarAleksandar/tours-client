@@ -43,10 +43,13 @@ const API_URL_GET_REVIEWS = 'api/v1/reviews/'
 const API_URL_GET_USERS = 'api/v1/users/'
 const API_URL_CREATE_TOUR = 'api/v1/tours/'
 const API_URL_TOUR_STATS = 'api/v1/tours/tour-stats'
-const API_URL_BOOK_TOUR = 'api/v1/bookings/checkout-session/'
+// const API_URL_BOOK_TOUR = 'api/v1/bookings/checkout-session/'
 const API_URL_GET_BOOKINGS = 'api/v1/bookings/list'
 const API_URL_GET_ORDERS = 'api/v1/orders/list'
-const API_URL_CREATE_ORDER = 'api/v1/orders/checkout-session/'
+// const API_URL_CREATE_ORDER = 'api/v1/orders/checkout-session/'
+const API_URL_PAYMENT_STRIPE = 'api/v1/orders/stripe-payment/'
+const API_URL_PAYMENT_PAYPAL = 'api/v1/orders/paypal-payment/'
+
 
 
 
@@ -156,8 +159,11 @@ apiLib.apiGetBookings = () => {
 apiLib.apiGetOrders = () => {
   return apiPrefix() + API_URL_GET_ORDERS
 }
-apiLib.apiCreateOrder = () => {
-  return apiPrefix() + API_URL_CREATE_ORDER
+apiLib.apiPaymentStripe = () => {
+  return apiPrefix() + API_URL_PAYMENT_STRIPE
+}
+apiLib.apiPaymentPaypal = () => {
+  return apiPrefix() + API_URL_PAYMENT_PAYPAL
 }
 
 
