@@ -16,7 +16,7 @@ import FormControl from '@material-ui/core/FormControl';
 import FormGroup from '@material-ui/core/FormGroup';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Checkbox from '@material-ui/core/Checkbox';
-import { createOrder, paymentPaypal } from './../redux/shop/shop-actions'
+import { paymentStripe, paymentPaypal } from './../redux/shop/shop-actions'
 import { emptyCart } from '../redux/cart/cart-actions'
 
 import Radio from '@material-ui/core/Radio';
@@ -24,6 +24,9 @@ import RadioGroup from '@material-ui/core/RadioGroup';
 import FormHelperText from '@material-ui/core/FormHelperText';
 import StripePayment from './StripePayment'
 import Paypal from './../components/Paypal'
+import { selectCartItems } from './../redux/cart/cart-selectors'
+import { createStructuredSelector } from 'reselect'
+
 
 // import { selectCartItems, selectCartTotal } from '../redux/cart/cart-selectors'
 
@@ -179,7 +182,7 @@ const Checkout = (props) => {
   let activeRoute = thisPageRoute.routeName;
 
 
-  let items = props.state_ceo.cart.cartItems; // itemsi iz carta koji na backendu moraj uda se upisu u tabelu 
+  let items = props.cartItems; // itemsi iz carta koji na backendu moraj uda se upisu u tabelu 
   if (!Array.isArray(items)) {
     items = [];
   }
@@ -195,6 +198,7 @@ const Checkout = (props) => {
 
 
   let cb_order_success = (response) => {
+    console.log('==============================================');
     console.log('callback order success', response)
     Swal.fire(
       'Payment successfull!',
@@ -206,9 +210,7 @@ const Checkout = (props) => {
     })
     // TOD: pocititi cart nakon payment success
     props.dispatch(emptyCart())
-
   }
-
   if (needRedirect === true) {
     jsxRedirect = (
       <Redirect to="/profile" />
@@ -217,30 +219,7 @@ const Checkout = (props) => {
 
 
   const onToken = token => {
-    // stripe success callback
-    console.log(token);
-    /*
-    // primer koda koji koristi samo jedan item pri kupovini
-    const id = '5c88fa8cf4afda39709c2955'
-    props.dispatch(createOrder({ amount: price, tourId: id, token }))
-    */
-    // axios({
-    //   url: `http://127.0.0.1:3002/api/v1/bookings/checkout-session/5c88fa8cf4afda39709c2955`,
-    //   method: 'post',
-    //   data: {
-    //     amount: price,
-    //     token
-    //   }
-    //   }).then(response => {
-    //     alert('success')
-    //     console.log(token, response);
-    //   }).catch(error => {
-    //     alert('unsuccessfull')
-    //     console.log(error);
-    //   })
-
-    // NOVO kod koji koristi ceo array itema iz carta
-    let items = props.state_ceo.cart.cartItems; // itemsi iz carta koji na backendu moraj uda se upisu u tabelu OrderItems odnosno bookings...
+    let items = props.cartItems; // itemsi iz carta koji na backendu moraj uda se upisu u tabelu OrderItems odnosno bookings...
     console.log(items);
     let total = 0;
     let tours = [];
@@ -249,39 +228,17 @@ const Checkout = (props) => {
       total += item.price * item.quantity;
       tours.push(item.id); // popunjava array sam osa ID-ovima od tura...yyy
     })
-
     let submitData = {
       amount: total,
       tours: tours,
       token
     }
     console.log(submitData)
-
-    props.dispatch(createOrder(submitData, cb_order_success))
+    props.dispatch(paymentStripe(submitData, cb_order_success))
   }
 
   let handleSubmit = async (e) => {
     e.preventDefault();
-    // console.log('submit');
-    // const id = '5c88fa8cf4afda39709c2955'
-    // // props.dispatch(bookTour(id))
-    // try{
-    // const session = await axios(`http://127.0.0.1:3002/api/v1/bookings/checkout-session/${id}`)
-    // console.log(session);
-    // await
-    // }catch (err) {
-    //   console.log(err);
-
-    // }
-    // onToken = async token => {
-    //   console.log(token);
-    // let session = await axios({
-    //   method: 'GET',
-    //   url: `http://localhost:3002/api/v1/bookings/checkout-session/5c88fa8cf4afda39709c2955`
-    // })
-    // console.log(session);
-    // alert('Payment successfull')
-    // }
   }
   const publishableKey = 'pk_test_uwo2ixsEAZeoQqmFkHcEAW9O00CYR7upAk';
 
@@ -308,21 +265,17 @@ const Checkout = (props) => {
       // console.log('then posle swal');
     })
   }
-
-  let jsxPaypalFeedback;
-
   const transactionError = data => {
     console.log(data);
-
   }
   const transactionCanceled = data => {
     console.log(data);
 
   }
-  const transactionSuccess = (data) => {
+  const transactionSuccess = () => {
     //paypal success callback
 
-    let items = props.state_ceo.cart.cartItems; // itemsi iz carta koji na backendu moraj uda se upisu u tabelu OrderItems odnosno bookings...
+    let items = props.cartItems; // itemsi iz carta koji na backendu moraj uda se upisu u tabelu OrderItems odnosno bookings...
     // console.log(items);
     let total = 0;
     let tours = [];
@@ -331,29 +284,15 @@ const Checkout = (props) => {
       total += item.price * item.quantity;
       tours.push(item.id); // popunjava array sam osa ID-ovima od tura...yyy
     })
-
-    /*
-    let submitData = {
-      amount: total,
-      tours: tours,
-      data
-    }
-    console.log(submitData);
-    axios.post(`http://localhost:3002/api/v1/users/successbuy`, submitData).then((response) => {
-      console.log(response);
-    }, (error) => {
-      console.log(error);
-    });
-    */
-
     // identican zavrsetak kao za stripa success callback
     let submitData = {
       amount: total,
       tours: tours
     }
     console.log(submitData)
-
     props.dispatch(paymentPaypal(submitData, cb_order_success))
+    console.log();
+
   }
 
 
@@ -417,7 +356,7 @@ const Checkout = (props) => {
 
                       <TextField
                         id="outlined-helperText"
-                        label="Your name"
+                        label="Full name"
                         defaultValue=""
                         helperText="First and last name"
                         variant="outlined"
@@ -428,32 +367,47 @@ const Checkout = (props) => {
 
                       <TextField
                         id="outlined-helperText"
-                        label="Your email"
+                        label="Your street name and house number"
                         defaultValue=""
-                        helperText="We will answer on this email"
+                        helperText="Address"
                         variant="outlined"
-                        value={inputValues.email}
+                        value={inputValues.address}
                         onChange={handleInputChange}
-                        name="email"
+                        name="address"
                       />
 
                       <TextField
-                        id="outlined-multiline-static"
-                        label="Message"
-                        multiline
-                        rows="4"
+                        id="outlined-helperText"
+                        label="Town/City"
                         defaultValue=""
+                        helperText="Town"
                         variant="outlined"
-                        value={inputValues.message}
+                        value={inputValues.town}
                         onChange={handleInputChange}
-                        name="message"
+                        name="town"
                       />
 
-                      <Button
-                        variant="contained"
-                        endIcon={<i className="fas fa-paper-plane"></i>}
-
-                      >Send</Button>
+                           <TextField
+                        id="outlined-helperText"
+                        label="Postcode"
+                        defaultValue=""
+                        helperText="Postcode"
+                        variant="outlined"
+                        value={inputValues.postcode}
+                        onChange={handleInputChange}
+                        name="postcode"
+                      />
+                      
+                      <TextField
+                        id="outlined-helperText"
+                        label="Country"
+                        defaultValue=""
+                        helperText="Country"
+                        variant="outlined"
+                        value={inputValues.country}
+                        onChange={handleInputChange}
+                        name="country"
+                      />
 
                     </div>
                   </div>
@@ -496,7 +450,7 @@ const Checkout = (props) => {
 
                 <FormControl component="fieldset">
                   <RadioGroup name="billingAdress" value={'my'} onChange={(e) => { mDispatch(e.target.value) }}>
-                    <FormControlLabel value="PAYPAL" control={<Radio />} label="Pay with PayPal" checked={mState.paypal} />
+                    <FormControlLabel value="PAYPAL" disabled={true} control={<Radio />} label="Pay with PayPal" checked={mState.paypal} />
 
                     <div className={'payment-form-paypal-wrapper ' + cl_paypal}>
                       <Paypal
@@ -505,7 +459,15 @@ const Checkout = (props) => {
                         transactionCanceled={(data) => transactionCanceled(data)}
                         onSuccess={(data) => transactionSuccess(data)}
                       />
-                      {jsxPaypalFeedback}
+
+                      <Button
+                        type="submit"
+                        variant="contained"
+                        color="primary"
+                        onClick={transactionSuccess}
+                      ><i class="fab fa-cc-paypal"></i></Button >
+
+
                     </div>
 
                     <FormControlLabel value="STRIPE" control={<Radio />} label="Pay with Stripe" checked={mState.stripe} />
@@ -539,7 +501,7 @@ const Checkout = (props) => {
                             <TextField
                               id="outlined-helperText"
                               label="Card number"
-                              defaultValue="1111222233334444"
+                              defaultValue=""
                               helperText=""
                               variant="outlined"
                               value={inputValues.cardnumber}
@@ -578,7 +540,7 @@ const Checkout = (props) => {
                               id="outlined-helperText"
                               type="number"
                               label="CVV"
-                              defaultValue="123"
+                              defaultValue=""
                               helperText=""
                               variant="outlined"
                               value={inputValues.cardcvv}
@@ -590,7 +552,7 @@ const Checkout = (props) => {
                             <TextField
                               id="outlined-helperText"
                               label="Full name"
-                              defaultValue="MARKO MARKOVIC"
+                              defaultValue=""
                               helperText="Name (as it appears on your card)"
                               variant="outlined"
                               value={inputValues.cardname}
@@ -623,7 +585,7 @@ const Checkout = (props) => {
   )
 }
 
-const mapStateToProps = state => ({
-  state_ceo: state
-})
+const mapStateToProps = createStructuredSelector({
+  cartItems: selectCartItems
+});
 export default connect(mapStateToProps)(Checkout)

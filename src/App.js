@@ -144,7 +144,7 @@ class App extends React.Component {
           />
 
           <Route path='/passwordchange'>
-            <PasswordChange isLoggedIn={isLoggedIn} />
+            <PasswordChange dispatch={this.dispatch} isLoggedIn={isLoggedIn} />
           </Route>
 
           <Route path='/passwordforget'>

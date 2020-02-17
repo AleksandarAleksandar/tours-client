@@ -16,8 +16,8 @@ import { fetchCollectionsStart } from './../redux/shop/shop-actions'
 // import { browserUtils } from './../utils/browser-utils'
 import { routingUtils } from './../utils/routing-utils'
 import { updateBrowserTitle } from './../redux/global/global-actions'
-import { selectCollections } from './../redux/shop/shop-selector'
 import SpinnerRow from '../components/SpinnerRow'
+import { selectIsCollectionFetching, selectTours, selectCategories } from './../redux/shop/shop-selector'
 
 class Shop extends React.Component {
   constructor() {
@@ -181,21 +181,21 @@ class Shop extends React.Component {
 
 
   render() {
-    const { match } = this.props
+    let { match, categories, isFetching, tours_items } = this.props
     let items = [];
     let filteredItems = []
-    let isFetching = true;
+    // isFetching = false;
     let jsxCategoriesDashboard = [];
     let jsxSpinner = <SpinnerRow />
 
     let searchResults = []
-    if (this.props.st.shop.isFetching === false) {
+    if (isFetching === false) {
       isFetching = false;
       jsxSpinner = null;
       console.log('state.shop ');
-      console.log(this.props.st.shop);
-      items = this.props.st.shop.tours_items; // unfiltered
-      let unfiltered_items = this.props.st.shop.tours_items; // unfiltered
+      // console.log(this.props.st.shop);
+      items = tours_items; // unfiltered
+      let unfiltered_items = tours_items; // unfiltered
       searchResults = this.search(unfiltered_items)
     }
 
@@ -328,8 +328,9 @@ class Shop extends React.Component {
     )
   }
 }
-const mapStateToProps = (state) => ({
-  st: state
+const mapStateToProps = createStructuredSelector({
+  tours_items: selectTours,
+  isFetching: selectIsCollectionFetching
 });
 
 export default connect(mapStateToProps)(Shop)

@@ -291,7 +291,7 @@ export const createTour = (data, cb, cb_error) => {
       })
   }
 }
-export const createOrder = (data, cb, cb_error) => {
+export const paymentStripe = (data, cb, cb_error) => {
   // ovo je za STRIPE
   return (dispatch) => {
     console.log('test create order ');

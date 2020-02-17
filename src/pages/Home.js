@@ -13,6 +13,8 @@ import { sortingUtils } from '../utils/sorting-utils'
 import Header from '../components/Header'
 import Footer from '../components/Footer'
 import CategoriesDashboard from './../components/CategoriesDashboard'
+import { selectIsCollectionFetching, selectTours, selectStats } from './../redux/shop/shop-selector'
+import { createStructuredSelector } from 'reselect'
 
 
 class Home extends React.Component {
@@ -36,11 +38,11 @@ class Home extends React.Component {
       longest: []
     }
 
-    if (this.props.st.shop.isFetching === false) {
+    if (this.props.isFetching === false) {
       console.log('test 3 ');
-      console.log(this.props.st.shop);
+      // console.log(this.props.st.shop);
       isFetching = false
-      items = this.props.st.shop.tours_items; // all tourse unfiltered
+      items = this.props.tours_items; // all tourse unfiltered
     }
 
     /*
@@ -101,8 +103,8 @@ class Home extends React.Component {
     let stats = [];
     let jsxStats = null
 
-    if (this.props.st.shop.stats.isFetching === false) {
-      stats = this.props.st.shop.stats.data;
+    if (this.props.isFetching === false) {
+      stats = this.props.stats.data;
       console.log(stats)
       let jsxStatsRows = stats.map((item) => {
         return (
@@ -194,9 +196,11 @@ class Home extends React.Component {
 
 }
 
-const mapStateToProps = state => ({
-  st: state
-})
+const mapStateToProps = createStructuredSelector({
+  tours_items: selectTours,
+  isFetching: selectIsCollectionFetching,
+  stats: selectStats
+});
 
 export default connect(mapStateToProps)(Home)
 

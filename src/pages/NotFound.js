@@ -20,7 +20,6 @@ class NotFound extends Component {
 }
 
 const mapStateToProps = (state) => ({
-  st: state
 });
 
 export default connect(mapStateToProps)(NotFound)

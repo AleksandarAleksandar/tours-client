@@ -9,17 +9,19 @@ import SpinnerRow from './../components/SpinnerRow'
 import Breadcrumbs from './../components/Breadcrumbs'
 import { Link } from 'react-router-dom'
 import BookingsGroup from '../components/BookingsGroup'
+import { selectBookings, selectOrders } from './../redux/shop/shop-selector'
+import { createStructuredSelector } from 'reselect'
 
 
-const UserProfile = (props) => {
+const UserProfile = ({dispatch, bookings, orders}) => {
 
   useEffect(() => {
-    props.dispatch(bookingsNeeded())
-    props.dispatch(ordersNeeded())
+    dispatch(bookingsNeeded())
+    dispatch(ordersNeeded())
 
     let thisPageRoute = routingUtils.getRouteData('PROFILE');
-    props.dispatch(updateBrowserTitle(thisPageRoute.browserTitle))
-    props.dispatch(updateCurrentRoute('PROFILE'))
+    dispatch(updateBrowserTitle(thisPageRoute.browserTitle))
+    dispatch(updateCurrentRoute('PROFILE'))
   }, [])
 
 
@@ -32,14 +34,14 @@ const UserProfile = (props) => {
   let jsxOrdersSpinner = <SpinnerRow />;
   let jsxSpinner = <SpinnerRow />
 
-  let shop = props.state_ceo.shop;
+  // let shop = props.state_ceo.shop;
+ 
+  // let bookings = [];
+  // let orders = [];
 
-  let bookings = [];
-  let orders = [];
 
-
-  let isBookingsFetching = shop.bookings.isFetching;
-  let isOrdersFetching = shop.orders.isFetching;
+  let isBookingsFetching = bookings.isFetching;
+  let isOrdersFetching = orders.isFetching;
   let isFetching = true;
 
   let jsxOrders = null;
@@ -48,7 +50,7 @@ const UserProfile = (props) => {
 
   if (isBookingsFetching === false) {
     jsxBookingsSpinner = null;
-    bookings = shop.bookings.data
+    bookings = bookings.data
     jsxBookings = bookings.map((item) => {
       console.log('Bokings Iteeeeeeeeeeeeeeeeeem');
       console.log(item);
@@ -85,7 +87,7 @@ const UserProfile = (props) => {
   }
   if (isOrdersFetching === false) {
     jsxOrdersSpinner = null;
-    orders = shop.orders.data
+    orders = orders.data
     jsxOrders = orders.map((item) => {
       console.log('Order iteeeeeeeeeeeeeeeeeeeeem');
       console.log(item);
@@ -210,8 +212,9 @@ const UserProfile = (props) => {
     </div>
   )
 }
-const mapStateToProps = (state) => ({
-  state_ceo: state
+const mapStateToProps = createStructuredSelector({
+  bookings: selectBookings,
+  orders: selectOrders,
 });
 
 export default connect(mapStateToProps)(UserProfile)

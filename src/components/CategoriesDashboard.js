@@ -3,6 +3,9 @@ import { connect } from 'react-redux'
 import { toursNeeded } from '../redux/shop/shop-actions'
 import UniversalItems from './UniversalItems'
 import SpinnerRow from './SpinnerRow'
+import { selectIsCollectionFetching, selectTours, selectCategories } from './../redux/shop/shop-selector'
+import { createStructuredSelector } from 'reselect'
+
 
 class CategoriesDashboard extends React.Component {
   constructor() {
@@ -111,8 +114,6 @@ class CategoriesDashboard extends React.Component {
         }
         return test;
       }
-      // console.log(item.price, price_min, price_max, item.price < price_max);
-
       let test_2 = () => {
         let test = true;
         if (this.state.category === "all") {
@@ -159,19 +160,20 @@ class CategoriesDashboard extends React.Component {
 
 
   render() {
-    const { match } = this.props
+    let { tours_items, isFetching, categories } = this.props
+    console.log(this.props);
+    console.log('............ssssssssssssssssssss......................x');
+    
     let items = [];
-    let isFetching = true;
+    // isFetching = true;
     let jsxCategoriesDashboard = [];
     let jsxSpinner = <SpinnerRow />
 
     let searchResults = []
-    if (this.props.st.shop.isFetching === false) {
+    if (isFetching === false) {
       isFetching = false;
       jsxSpinner = null;
-      console.log('state.shop ');
-      console.log(this.props.st.shop);
-      items = this.props.st.shop.tours_items; // unfiltered
+      items = tours_items; // unfiltered
     }
 
     let filtered = {};
@@ -185,10 +187,12 @@ class CategoriesDashboard extends React.Component {
     //   "swimming": { title: "SWIMMING" },
     //   "biking": { title: "BIKING" }
     // }
-    let categories = this.props.st.shop.categories;
-    Object.keys(categories).forEach((catId) => {
+    let categ = categories;
+    console.log('.......xxxxxxxxxxxxxxxxxxxxxxx.......................');
+    console.log(categ);
+    
+    Object.keys(categ).forEach((catId) => {
       filtered[catId] = items.filter((item) => {
-        // console.log(item.category, category)
         if (catId === 'all') {
           return true;
         }
@@ -199,10 +203,10 @@ class CategoriesDashboard extends React.Component {
         }
       })
       //
-      let title = categories[catId].title;
+      let title = categ[catId].title;
       let titleLinkRoute = '/category/' + catId;
       jsxCategoriesDashboard.push(
-        <UniversalItems key={catId} title={title} titleLinkRoute={titleLinkRoute} items={filtered[catId]} limit={'bez limita'} spinner={isFetching} slider={true} />
+        <UniversalItems key={catId} title={title} titleLinkRoute={titleLinkRoute} items={filtered[catId]} limit={'no limit'} spinner={isFetching} slider={true} />
       )
 
     })
@@ -217,8 +221,10 @@ class CategoriesDashboard extends React.Component {
     )
   }
 }
-const mapStateToProps = (state) => ({
-  st: state
+const mapStateToProps = createStructuredSelector({
+  tours_items: selectTours,
+  isFetching: selectIsCollectionFetching,
+  categories: selectCategories
 });
 
 export default connect(mapStateToProps)(CategoriesDashboard)

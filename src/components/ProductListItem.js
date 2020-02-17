@@ -6,6 +6,9 @@ import { formatUtils } from './../utils/format-utils'
 import { connect } from 'react-redux'
 import geoUtils from '../utils/geo-utils'
 import BtnGeoLocation from './BtnGeoLocation'
+import { selectUsersLocation } from './../redux/user/user-selector'
+import { createStructuredSelector } from 'reselect'
+
 
 class ProductListItem extends Component {
 
@@ -14,9 +17,7 @@ class ProductListItem extends Component {
     let item = props.item;
     let title = item.name;
     let price = formatUtils.formatPrice(item.price, '€');
-
     let product_key = item.id;
-
 
     let cover = apiLib.staticCover(item.imageCover);
 
@@ -39,11 +40,11 @@ class ProductListItem extends Component {
 
     // console.log(props.state_ceo.user);
     let jsxDistance = 'not calculated';
-    if (props.state_ceo.user.userLocation.detected === true) {
+    if (props.userLocation.detected === true) {
       let original_ll = item.startLocation.coordinates;
       let ll = [original_ll[1], original_ll[0]]; // fixed ll
       // let original_myll = [0,0];
-      let myll = props.state_ceo.user.userLocation.ll; // no need to fix
+      let myll = props.userLocation.ll; // no need to fix
       let raw_distance = geoUtils.getDistance(ll, myll);
       let distance = formatUtils.formatDistance(raw_distance);
       jsxDistance = (
@@ -58,7 +59,7 @@ class ProductListItem extends Component {
       */
     } else {
       jsxDistance = (
-        <BtnGeoLocation dispatch={props.dispatch}/>
+        <BtnGeoLocation dispatch={props.dispatch} />
       );
     }
 
@@ -94,9 +95,9 @@ class ProductListItem extends Component {
   }
 }
 
-const mapStateToProps = (state) => ({
-  state_ceo: state
-});
+const mapStateToProps = createStructuredSelector({
+  userLocation: selectUsersLocation //naming???
+})
 
 export default connect(mapStateToProps)(ProductListItem)
 

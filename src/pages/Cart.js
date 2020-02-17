@@ -2,7 +2,8 @@ import React from 'react'
 
 import { connect } from 'react-redux'
 
-import { selectCollection } from '../redux/shop/shop-selector'
+import { selectCartItems } from './../redux/cart/cart-selectors'
+import { createStructuredSelector } from 'reselect'
 import CollectionItem from '../components/PreviewItem'
 import UniversalItems from '../components/UniversalItems'
 import { toursNeeded } from './../redux/shop/shop-actions'
@@ -46,7 +47,7 @@ class Cart extends React.Component {
     let breadcrumbs = thisPageRoute.breadcrumbs;
     let activeRoute = thisPageRoute.routeName;
 
-    let items = this.props.state_ceo.cart.cartItems
+    let items = this.props.cartItems
     console.log(items);
 
     let total = 0;
@@ -97,7 +98,7 @@ class Cart extends React.Component {
   }
 };
 
-const mapStateToProps = (state) => ({
-  state_ceo: state
+const mapStateToProps = createStructuredSelector({
+  cartItems: selectCartItems
 });
 export default connect(mapStateToProps)(Cart);

@@ -15,7 +15,7 @@ import { fetchCollectionsStart } from './../redux/shop/shop-actions'
 // import { browserUtils } from './../utils/browser-utils'
 import { routingUtils } from './../utils/routing-utils'
 import { updateBrowserTitle } from './../redux/global/global-actions'
-import { selectCollections } from './../redux/shop/shop-selector'
+import { selectIsCollectionFetching, selectTours } from './../redux/shop/shop-selector'
 
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
@@ -110,14 +110,15 @@ class ReviewForm extends React.Component {
 
     let mode = 'CREATE'
     let id = this.props.match.params.id;
+    let {isFetching, tours_items} = this.props
 
     let jsxTourName = '...';
     let jsxSpinner = <SpinnerRow />
-    let shop = this.props.state_ceo.shop
-    if (shop.isFetching === false && shop.tour_item && shop.tour_item.name) {
+    // let shop = this.props.state_ceo.shop
+    if (isFetching === false && tours_items && tours_items.name) {
       jsxSpinner = null;
       jsxTourName = (
-        <Link to={'/product/' + id}>{shop.tour_item.name}</Link >
+        <Link to={'/product/' + id}>{tours_items.name}</Link >
       );
     }
 
@@ -200,8 +201,9 @@ class ReviewForm extends React.Component {
   }
 }
 
-const mapStateToProps = (state) => ({
-  state_ceo: state
+const mapStateToProps =createStructuredSelector ({
+  tours_items: selectTours,
+  isFetching: selectIsCollectionFetching
 });
 
 export default connect(mapStateToProps)(ReviewForm)

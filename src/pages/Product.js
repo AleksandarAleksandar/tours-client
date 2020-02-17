@@ -1,7 +1,6 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { selectCollectionsForPreview } from './../redux/shop/shop-selector'
-import { createStructuredSelector } from 'reselect'
 import { singleTourNeeded, reviewsNeeded } from './../redux/shop/shop-actions'
 import UniversalMap from './../components/UniversalMap'
 import UniversalItem from './../components/UniversalItem'
@@ -20,6 +19,9 @@ import BtnGeoLocation from '../components/BtnGeoLocation'
 import { addItem } from '../redux/cart/cart-actions'
 import SpinnerRow from '../components/SpinnerRow'
 import { Link } from 'react-router-dom'
+import { selectIsCollectionFetching, selectTour, selectReviews } from './../redux/shop/shop-selector'
+import { selectUsersLocation , selectCurrentUser} from './../redux/user/user-selector'
+import { createStructuredSelector } from 'reselect'
 
 class Product extends Component {
 
@@ -50,7 +52,7 @@ class Product extends Component {
   }
 
   render() {
-    let props = this.props;
+    let { tour_item, reviews, isFetching, userLocation, auth  } = this.props;
     console.log('SINGLE TOUR');
     /*
     startLocation: {type: "Point", description: "Aspen, USA", coordinates: Array(2), address: "419 S Mill St, Aspen, CO 81611, USA"}
@@ -84,14 +86,14 @@ class Product extends Component {
     let guides = [];
     let cover = ""
     let validated = true;
-    let shop = this.props.state_ceo.shop;
+    // let shop = this.props.state_ceo.shop;
 
     let jsxSpinner = <SpinnerRow />
     let jsxReviewsSpinner = <SpinnerRow />
 
     let jsxDistance = 'not calculated';
 
-    if (shop.isFetching === false && shop.tour_item && shop.tour_item.name) {
+    if (isFetching === false && tour_item && tour_item.name) {
       validated = false;
     }
 
@@ -105,11 +107,11 @@ class Product extends Component {
     let locations;
     if (validated === false) {
       console.log('test 4 SHOP ');
-      console.log(shop);
+      // console.log(shop);
 
       jsxSpinner = null;
 
-      tour = shop.tour_item;
+      tour = tour_item;
       item = tour;
 
       console.log(tour);
@@ -137,12 +139,12 @@ class Product extends Component {
 
 
 
-    
-      if (props.state_ceo.user.userLocation.detected === true) {
+
+      if (userLocation.detected === true) {
         let original_ll = tour.startLocation.coordinates;
         let ll = [original_ll[1], original_ll[0]]; // fixed ll
         // let original_myll = [0,0];
-        let myll = props.state_ceo.user.userLocation.ll; // no need to fix
+        let myll = userLocation.ll; // no need to fix
         let raw_distance = geoUtils.getDistance(ll, myll);
         let distance = formatUtils.formatDistance(raw_distance);
         jsxDistance = (
@@ -157,23 +159,23 @@ class Product extends Component {
         */
       } else {
         jsxDistance = (
-          <BtnGeoLocation dispatch={props.dispatch} />
+          <BtnGeoLocation dispatch={this.props.dispatch} />
         );
       }
 
     }
 
-    let reviews = [];
-    let reviewsFetching = shop.reviews.isFetching;
+    let review = [];
+    let reviewsFetching = reviews.isFetching;
     if (reviewsFetching === false) {
       jsxReviewsSpinner = null;
-      reviews = shop.reviews.data
+      review = reviews.data
     }
 
-    console.log(reviews);
+    // console.log(reviews);
     let id = this.props.match.params.id; // path='/category/:id'
     // console.log(id);
-    let filteredReviews = reviews.filter((item) => {
+    let filteredReviews = review.filter((item) => {
       // console.log(item.id, item._id);
 
       if (item.tour === id) {
@@ -211,7 +213,7 @@ class Product extends Component {
         <div className="btn btn-add-cart"><Link to={'/writereview/' + id}><i className="fas fa-pencil-alt"></i> Write a review</Link></div>
       </div>
     )
-    if (this.props.state_ceo.user.auth.me.role === 'admin') {
+    if (auth.me.role === 'admin') {
       jsxWriteReview = (
         <div className="add-to-cart-group">
           <div className="btn btn-add-cart disabled"><span><i className="fas fa-pencil-alt"></i> Write a review</span></div>
@@ -335,8 +337,12 @@ const mapStateToProps = createStructuredSelector({
   })
   */
 
-const mapStateToProps = (state) => ({
-  state_ceo: state
+const mapStateToProps = createStructuredSelector({
+  tour_item: selectTour,
+  isFetching: selectIsCollectionFetching,
+  reviews: selectReviews,
+  userLocation: selectUsersLocation,
+  auth: selectCurrentUser
 });
 
 export default connect(mapStateToProps)(Product)

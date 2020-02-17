@@ -9,6 +9,9 @@ import { connect } from 'react-redux'
 import { counterUtils } from '../utils/counter-utils'
 import FormLocation from './FormLocation'
 import FormPicture from './FormPicture'
+import {createStructuredSelector} from 'reselect'
+import {selectUsers} from './../redux/user/user-selector'
+import {selectTourAdvanced} from './../redux/shop/shop-selector'
 
 
 import Swal from 'sweetalert2'
@@ -409,8 +412,8 @@ class AdminToursForm extends Component {
   }
 
   componentDidUpdate(prevProps) {
-    if (this.props.state_ceo.shop.tour_advanced !== prevProps.state_ceo.shop.tour_advanced) {
-      let tour_advanced = this.props.state_ceo.shop.tour_advanced;
+    if (this.props.tour_advanced !== prevProps.tour_advanced) {
+      let tour_advanced = this.props.tour_advanced;
       if (tour_advanced.isFetching === false) {
         // ? TODO: treba bezbedinije da ne bi se stalno izvrsavalo
         this._formInit(tour_advanced.data);
@@ -462,9 +465,9 @@ class AdminToursForm extends Component {
     }
 
     let users = [];
-    let usersFetching = this.props.state_ceo.user.users.isFetching;
+    let usersFetching = this.props.users.isFetching;
     if (usersFetching === false) {
-      users = this.props.state_ceo.user.users.data;
+      users = this.props.users.data;
     }
 
     let guides = this.state.multicheckbox;
@@ -865,8 +868,9 @@ class AdminToursForm extends Component {
 
 // 2021-07-20T09:00:00.000Z
 
-const mapStateToProps = (state) => ({
-  state_ceo: state
-});
+const mapStateToProps = createStructuredSelector ({
+  users: selectUsers, 
+  tour_advanced: selectTourAdvanced
+})
 
 export default connect(mapStateToProps)(AdminToursForm)

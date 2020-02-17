@@ -22,10 +22,7 @@ export default function BtnGeoLocation(props) {
         dispatch(detectMyLocation());
       }
     })
-
   }
-
-
   return (
     <div className="distance"><span className="btn" onClick={showModel}>Calculate distance</span></div>
   )

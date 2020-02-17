@@ -71,7 +71,6 @@ class ResetPassword extends Component {
     // TODO: ovde treba dase submituej link sa pravim tokenom za reset passworda
     let token = this.props.match.params.token; // path="/resetpassword/:token"
     this.props.dispatch(passwordReset(dataToSubmit, cb, cb_error, token))
-
   }
 
 

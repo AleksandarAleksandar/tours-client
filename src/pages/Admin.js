@@ -10,6 +10,10 @@ import AdminGuidesAdd from '../components/AdminGuidesAdd'
 import AdminToursForm from './../components/AdminToursForm'
 import AdminToursList from './../components/AdminToursList'
 import AdminNotFound from './../components/AdminNotFound'
+import { selectCurrentUser } from './../redux/user/user-selector'
+import { selectCurrentRoute } from './../redux/global/global-selector'
+import { createStructuredSelector } from 'reselect'
+
 
 
 class Admin extends Component {
@@ -25,7 +29,7 @@ class Admin extends Component {
 
     // let pageTitle = thisPageRoute.pageTitle;
     let pageTitle = '...';
-    let currentRoute = this.props.state_ceo.global.currentRoute;
+    let currentRoute = this.props.currentRoute;
     pageTitle = currentRoute.pageTitle;
 
     let activeRoute = currentRoute.routeName;
@@ -111,7 +115,7 @@ class Admin extends Component {
     })
 
 
-    let nickname = this.props.state_ceo.user.auth.me.nickname;
+    let nickname = this.props.auth.me.nickname;
     let avatar_src = '/static/img/users/avatar5.png';
 
     return (
@@ -401,9 +405,6 @@ class Admin extends Component {
             </div>
           </aside>
 
-
-
-
           <footer className="main-footer">
             <div className="float-right d-none d-sm-inline">AdminLTE 3.0.1</div>
 
@@ -417,8 +418,9 @@ class Admin extends Component {
   }
 }
 
-const mapStateToProps = state => ({
-  state_ceo: state
+const mapStateToProps = createStructuredSelector({
+  auth: selectCurrentUser, //naming???
+  currentRoute: selectCurrentRoute
 })
 
 export default connect(mapStateToProps)(Admin);

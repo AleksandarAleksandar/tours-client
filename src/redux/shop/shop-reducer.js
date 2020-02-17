@@ -1,23 +1,15 @@
-import SHOP_DATA from './shop.data'
 import ShopActionTypes from './shop-types'
-import axios from 'axios'
-
 
 let categories = {
-  "running": {
-    title: "RUNNING"
-  },
-  "hiking": {
-    title: "HIKING"
-  },
+  "running": { title: "RUNNING" },
+  "hiking": { title: "HIKING" },
   "swimming": { title: "SWIMMING" },
   "biking": { title: "BIKING" }
 }
 
 const INITIAL_STATE = {
-  collections: SHOP_DATA,
+  collections: [],
   isFetching: false,
-  test_podatak: 'OVO JE TEST',
   tours_items: [],
   errorMessage: undefined,
   categories: categories,
@@ -187,7 +179,7 @@ const shopReducer = (state = INITIAL_STATE, action) => {
         bookings: new_bookings
       }
 
-case ShopActionTypes.FETCH_ORDERS_START:
+    case ShopActionTypes.FETCH_ORDERS_START:
       new_orders = {
         isFetching: true,
         data: state.bookings.data

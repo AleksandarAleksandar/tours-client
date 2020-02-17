@@ -7,6 +7,8 @@ import CollectionItem from '../components/PreviewItem'
 import UniversalItems from '../components/UniversalItems'
 import { toursNeeded } from '../redux/shop/shop-actions'
 import shopActionTypes from '../redux/shop/shop-types'
+import { selectIsCollectionFetching, selectTours, selectCategories } from './../redux/shop/shop-selector'
+import { createStructuredSelector } from 'reselect'
 
 class Dashboard extends React.Component {
   constructor(props) {
@@ -46,10 +48,10 @@ class Dashboard extends React.Component {
     let items = [];
     let filteredItems = []
 
-    if (this.props.state_ceo.shop.isFetching === false) {
+    if (this.props.isFetching === false) {
       console.log('test 3 ');
-      console.log(this.props.state_ceo.shop);
-      items = this.props.state_ceo.shop.tours_items;
+      // console.log(this.props.state_ceo.shop);
+      items = this.props.tours_items;
 
     }
     console.log(items)
@@ -86,7 +88,8 @@ class Dashboard extends React.Component {
   }
 };
 
-const mapStateToProps = (state) => ({
-  state_ceo: state
+const mapStateToProps = createStructuredSelector({
+  tours_items: selectTours,
+  isFetching: selectIsCollectionFetching,
 });
 export default connect(mapStateToProps)(Dashboard);

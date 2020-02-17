@@ -1,3 +1,5 @@
+//DA se obrise?
+
 import React from 'react'
 import { connect } from 'react-redux'
 import { selectDirectorySection } from '../redux/directory/directory-selectors'

@@ -48,7 +48,7 @@ let Breadcrumbs = (props) => {
   let jsx = breadcrumbsMake();
   return (
     <>
-      <ol className="breadcrumb float-sm-right">
+      <ol className="breadcrumb float-sm-right clearfix">
         {jsx}
       </ol>
 

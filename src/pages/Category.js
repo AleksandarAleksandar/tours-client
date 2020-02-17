@@ -12,6 +12,8 @@ import { updateBrowserTitle } from './../redux/global/global-actions'
 import { routingUtils } from './../utils/routing-utils'
 import Breadcrumbs from './../components/Breadcrumbs'
 import SpinnerRow from './../components/SpinnerRow'
+import { selectIsCollectionFetching, selectTours, selectCategories } from './../redux/shop/shop-selector'
+import { createStructuredSelector } from 'reselect'
 
 
 class Category extends React.Component {
@@ -44,7 +46,7 @@ class Category extends React.Component {
     //   "swimming": { title: "SWIMMING" },
     //   "biking": { title: "BIKING" }
     // }
-    let categories = this.props.state_ceo.shop.categories
+    let categories = this.props.categories
     let category = categories[catId]
 
     if (category && category.title) {
@@ -61,11 +63,11 @@ class Category extends React.Component {
       <SpinnerRow/>
     );
 
-    if (this.props.state_ceo.shop.isFetching === false) {
-      console.log('test 3 ');
-      console.log(this.props.state_ceo.shop);
+    if (this.props.isFetching === false) {
+      console.log('test 3----------------------------------------------------------------- ');
+      // console.log(this.props.state_ceo.shop);
       jsxSpinner = null;
-      items = this.props.state_ceo.shop.tours_items;
+      items = this.props.tours_items;
     }
     console.log('before filtering');
     console.log(items)
@@ -109,7 +111,9 @@ class Category extends React.Component {
   }
 };
 
-const mapStateToProps = (state) => ({
-  state_ceo: state
+const mapStateToProps = createStructuredSelector({
+  tours_items: selectTours,
+  isFetching: selectIsCollectionFetching,
+  categories: selectCategories
 });
 export default connect(mapStateToProps)(Category);

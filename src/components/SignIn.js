@@ -2,9 +2,11 @@ import React, { Component } from 'react'
 import axios from 'axios'
 import FormInput from '../components/FormInput'
 import CustomeButton from './CustomButton'
+import { createStructuredSelector } from 'reselect'
 
 import { connect } from 'react-redux'
 import { login, setCurrentUser } from './../redux/user/user-actions'
+import {selectCurrentUser} from './../redux/user/user-selector'
 import { authUtils } from '../utils/auth-utils'
 import { Switch, Route, Redirect, Link } from 'react-router-dom'
 import SpinnerRow from './SpinnerRow'
@@ -88,7 +90,7 @@ class SignIn extends Component {
 
     let props = this.props
     let autologinFetching = true;
-    if (this.props.state_ceo.user.auth.isFetching === false) {
+    if (props.auth.isFetching === false) {
       autologinFetching = false;
     }
     let jsxRedirect = null;
@@ -208,8 +210,8 @@ class SignIn extends Component {
   }
 }
 
-const mapStateToProps = state => ({
-  state_ceo: state
+const mapStateToProps = createStructuredSelector({
+  auth: selectCurrentUser //naming???
 })
 
 /*

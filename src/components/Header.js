@@ -10,19 +10,19 @@ import CartIcon from './CartIcon'
 
 // import '../css/styles.scss'
 import CartDropdown from './CartDropdown'
-import { selectCurrentUser } from '../redux/user/user-selector'
-import { selectCartHidden } from '../redux/cart/cart-selectors'
+import { selectCurrentUser } from './../redux/user/user-selector'
+import { selectCartItems } from '../redux/cart/cart-selectors'
 // import { logout } from '../../../controllers/authControler'
 
 
-function Header({ currentUser, hidden, setCurrentUser, isLoggedIn, state_ceo, isHomePage }) {
+function Header({ currentUser, hidden, setCurrentUser, isLoggedIn, state_ceo, auth, cartItems, isHomePage }) {
 
   console.log('header');
   console.log(currentUser);
 
   let avatar_src = apiLib.staticAvatarDefault();
-  if (typeof state_ceo.user.auth.me.photo === 'string') {
-    avatar_src = state_ceo.user.auth.me.photo;
+  if (typeof auth.me.photo === 'string') {
+    avatar_src = auth.me.photo;
   }
 
   let jsxAdministrator = null;
@@ -30,8 +30,8 @@ function Header({ currentUser, hidden, setCurrentUser, isLoggedIn, state_ceo, is
     <Link className="option hvr-underline-from-center" to='/signin'>login</Link>
   );
   if (isLoggedIn) {
-    let nickname = state_ceo.user.auth.me.nickname;
-    if (state_ceo.user.auth.me.role === 'admin') {
+    let nickname = auth.me.nickname;
+    if (auth.me.role === 'admin') {
       jsxAdministrator = (
         <div className="floating-ap-bar">
           < Link className="" to='/admin'>Admin Panel</Link>
@@ -75,7 +75,7 @@ function Header({ currentUser, hidden, setCurrentUser, isLoggedIn, state_ceo, is
   let notificationDot = 0;
   let jsxNotificationDot = null;
   let countDots = () => {
-    let count = state_ceo.cart.cartItems.length;
+    let count = cartItems.length;
     if (count > 0) {
       return count
     }
@@ -129,12 +129,9 @@ const mapStateToProps = createStructuredSelector({
   hidden: selectCartHidden
 })
 */
-const mapStateToProps = state => ({
-  state_ceo: state
-})
-
-const mapDispatchToProps = dispatch => ({
-  setCurrentUser: user => dispatch(setCurrentUser(user)),
+const mapStateToProps = createStructuredSelector({
+  auth: selectCurrentUser, //naming???
+  cartItems: selectCartItems
 })
 
 export default connect(mapStateToProps, null)(Header)

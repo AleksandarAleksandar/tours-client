@@ -4,6 +4,8 @@ import { login, setCurrentUser } from './../redux/user/user-actions'
 import { authUtils } from '../utils/auth-utils'
 import { Switch, Route, Redirect, Link } from 'react-router-dom'
 import Spinner from './Spinner'
+import { selectCurrentUser } from './../redux/user/user-selector'
+import { createStructuredSelector } from 'reselect'
 
 
 class AuthLogout extends Component {
@@ -16,7 +18,7 @@ class AuthLogout extends Component {
   render() {
     let jsxRedirect = null;
     let isLoggedIn = false;
-    if (this.props.state_ceo.user.auth.isLoggedIn === true) {
+    if (this.props.auth.isLoggedIn === true) {
       console.log('*** JESMO ULOGOVANI');
       // ako smo jos uvek ulogovani prikazuje se ova komponenta sa spinnerom
       isLoggedIn = true;
@@ -37,7 +39,7 @@ class AuthLogout extends Component {
   }
 }
 
-const mapStateToProps = state => ({
-  state_ceo: state
+const mapStateToProps = createStructuredSelector({
+  auth: selectCurrentUser //naming???
 })
 export default connect(mapStateToProps)(AuthLogout);

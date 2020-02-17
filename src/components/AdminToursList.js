@@ -10,6 +10,8 @@ import { connect } from 'react-redux'
 import { Link } from 'react-router-dom'
 import { toursNeeded } from './../redux/shop/shop-actions'
 import Spinner from './Spinner'
+import { selectIsCollectionFetching, selectTours } from './../redux/shop/shop-selector'
+import { createStructuredSelector } from 'reselect'
 
 
 class AdminToursList extends React.Component {
@@ -76,11 +78,10 @@ class AdminToursList extends React.Component {
     let jsxCategoriesDashboard = [];
 
 
-    if (this.props.st.shop.isFetching === false) {
+
+    if (this.props.isFetching === false) {
       jsxSpinner = null;
-      console.log('test 3 ');
-      console.log(this.props.st.shop);
-      items = this.props.st.shop.tours_items;
+      items = this.props.tours_items;
     }
 
     filteredItems = items.filter((item) => {
@@ -299,8 +300,9 @@ class AdminToursList extends React.Component {
     )
   }
 }
-const mapStateToProps = (state) => ({
-  st: state
+const mapStateToProps = createStructuredSelector({
+  tours_items: selectTours,
+  isFetching: selectIsCollectionFetching
 });
 
 export default connect(mapStateToProps)(AdminToursList)
