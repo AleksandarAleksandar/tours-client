@@ -3,7 +3,6 @@ import { Link } from 'react-router-dom'
 // import PreviewItem from './PreviewItem'
 import UniversalItem from './UniversalItem'
 import SpinnerRow from './SpinnerRow'
-
 import Slider from "react-slick";
 
 

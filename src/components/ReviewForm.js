@@ -107,6 +107,10 @@ class ReviewForm extends React.Component {
     let thisPageRoute = routingUtils.getRouteData('REVIEW_CREATE');
     let breadcrumbs = thisPageRoute.breadcrumbs;
     let activeRoute = thisPageRoute.routeName;
+    console.log(this.props);
+    console.log('0000000000000000000000000000000000000000000000');
+    
+    
 
     let mode = 'CREATE'
     let id = this.props.match.params.id;

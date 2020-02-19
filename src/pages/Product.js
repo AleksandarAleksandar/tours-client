@@ -52,6 +52,10 @@ class Product extends Component {
   }
 
   render() {
+    console.log(this.props);
+    console.log('xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx');
+        
+    
     let { tour_item, reviews, isFetching, userLocation, auth  } = this.props;
     console.log('SINGLE TOUR');
     /*
