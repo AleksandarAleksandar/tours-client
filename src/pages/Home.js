@@ -40,6 +40,11 @@ class Home extends React.Component {
     browserUtils.updateTitle(thisPageRoute.browserTitle)
     this.props.dispatch(updateBrowserTitle(thisPageRoute.browserTitle));
 
+    // quotes widget
+    if (window.quoteswidget && typeof window.quoteswidget.init === 'function') {
+      window.quoteswidget.init();
+    }
+
 
     const intervalId = setInterval(() =>
       this.setState({
@@ -240,6 +245,11 @@ class Home extends React.Component {
                   </Slider>
                 </div>
                 <div className="visible-area-overlay slide-quotes">
+                  <span
+                    className="txt-rotate"
+                    data-period={"2000"}
+                    data-rotate={'[ "nerdy.", "simple.", "vanilla JS.", "fun!" ]'}>
+                  </span>
                   <TextTransition
                     text={TEXTS[index % TEXTS.length]}
                     springConfig={presets.wobbly}
@@ -292,5 +302,6 @@ const mapStateToProps = createStructuredSelector({
   isFetching: selectIsCollectionFetching,
   stats: selectStats
 });
+
 
 export default connect(mapStateToProps)(Home)
