@@ -265,15 +265,9 @@ const Checkout = (props) => {
       // console.log('then posle swal');
     })
   }
-  const transactionError = data => {
-    console.log(data);
-  }
-  const transactionCanceled = data => {
-    console.log(data);
 
-  }
-  const transactionSuccess = () => {
-    //paypal success callback
+  const handlePaypalTransaction = () => {
+    // paypal success callback
 
     let items = props.cartItems; // itemsi iz carta koji na backendu moraj uda se upisu u tabelu OrderItems odnosno bookings...
     // console.log(items);
@@ -290,9 +284,17 @@ const Checkout = (props) => {
       tours: tours
     }
     console.log(submitData)
-    props.dispatch(paymentPaypal(submitData, cb_order_success))
-    console.log();
 
+    let cb_order_success = response => {
+      console.log('PayPal success response from our backend')
+      console.log(response);
+      let redirectUrl = response.redirectUrl;
+      console.log('we will redirect to: ', redirectUrl);
+      window.open(redirectUrl, '_blank');
+
+    }
+
+    props.dispatch(paymentPaypal(submitData, cb_order_success))
   }
 
 
@@ -387,7 +389,7 @@ const Checkout = (props) => {
                         name="town"
                       />
 
-                           <TextField
+                      <TextField
                         id="outlined-helperText"
                         label="Postcode"
                         defaultValue=""
@@ -397,7 +399,7 @@ const Checkout = (props) => {
                         onChange={handleInputChange}
                         name="postcode"
                       />
-                      
+
                       <TextField
                         id="outlined-helperText"
                         label="Country"
@@ -450,24 +452,23 @@ const Checkout = (props) => {
 
                 <FormControl component="fieldset">
                   <RadioGroup name="billingAdress" value={'my'} onChange={(e) => { mDispatch(e.target.value) }}>
-                    <FormControlLabel value="PAYPAL" disabled={true} control={<Radio />} label="Pay with PayPal" checked={mState.paypal} />
+                    <FormControlLabel value="PAYPAL" disabled={false} control={<Radio />} label="Pay with PayPal" checked={mState.paypal} />
 
                     <div className={'payment-form-paypal-wrapper ' + cl_paypal}>
-                      <Paypal
+                      {/* <Paypal
                         toPay={total}
                         transactionError={(data) => transactionError(data)}
                         transactionCanceled={(data) => transactionCanceled(data)}
                         onSuccess={(data) => transactionSuccess(data)}
-                      />
+                      /> */}
 
                       <Button
                         type="submit"
                         variant="contained"
                         color="primary"
-                        onClick={transactionSuccess}
-                      ><i class="fab fa-cc-paypal"></i></Button >
-
-
+                        onClick={handlePaypalTransaction}
+                      ><i class="fab fa-cc-paypal"></i>
+                      </Button >
                     </div>
 
                     <FormControlLabel value="STRIPE" control={<Radio />} label="Pay with Stripe" checked={mState.stripe} />

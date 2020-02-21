@@ -161,7 +161,7 @@ class Home extends React.Component {
       arrows: false,
       dots: false,
       infinite: true,
-      speed: 500,
+      speed: 1600,
       fade: true,
       cssEase: 'linear'
     };
@@ -223,14 +223,10 @@ class Home extends React.Component {
                 <div className="visible-area">
                   <Slider {...settings}>
                     <div className="slide-img slide-img-1">
-                      <div className="slide-quotes">“I am not the same having seen the moon shine on the other side of the world.” – Mary Anne Radmacher</div>
                     </div>
-                    <div className="slide-img slide-img-1">
-                      <div className="slide-quotes">“Certainly, travel is more than the seeing of sights; it is a change that goes on, deep and permanent, in the ideas of living.” – Miriam Beard</div>
+                    <div className="slide-img slide-img-2">
                     </div>
                     <div className="slide-img slide-img-3">
-                      <div className="slide-quotes">“Wherever you go, go with all your heart.” – Confucius
-                    </div>
                     </div>
                   </Slider>
                 </div>
