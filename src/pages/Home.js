@@ -16,12 +16,6 @@ import CategoriesDashboard from './../components/CategoriesDashboard'
 import { selectIsCollectionFetching, selectTours, selectStats } from './../redux/shop/shop-selector'
 import { createStructuredSelector } from 'reselect'
 import Slider from "react-slick";
-import TextTransition, { presets } from "react-text-transition";
-
-import TextLoop from "react-text-loop";
-import { Motion, spring } from 'react-motion';
-
-
 
 
 class Home extends React.Component {
@@ -45,11 +39,6 @@ class Home extends React.Component {
       window.quoteswidget.init();
     }
 
-
-    const intervalId = setInterval(() =>
-      this.setState({
-        index: this.state.index + 1
-      }), 2845); // every 3 seconds
   }
 
   render() {
@@ -179,13 +168,14 @@ class Home extends React.Component {
 
 
     // text transitions...
-    const TEXTS = [
+    // [ "nerdy.", "simple.", "vanilla JS.", "fun!" ]
+    const QUOTES = [
       '“I am not the same having seen the moon shine on the other side of the world.” – Mary Anne Radmacher',
       '“Certainly, travel is more than the seeing of sights; it is a change that goes on, deep and permanent, in the ideas of living.” – Miriam Beard',
       '“Wherever you go, go with all your heart.” – Confucius',
       '“Our happiest moments as tourists always seem to come when we stumble upon one thing while in pursuit of something else.” — Lawrence Block'
     ];
-    let index = this.state.index;
+    let quotes_string = JSON.stringify(QUOTES);
 
 
     return (
@@ -248,12 +238,8 @@ class Home extends React.Component {
                   <span
                     className="txt-rotate"
                     data-period={"2000"}
-                    data-rotate={'[ "nerdy.", "simple.", "vanilla JS.", "fun!" ]'}>
+                    data-rotate={quotes_string}>
                   </span>
-                  <TextTransition
-                    text={TEXTS[index % TEXTS.length]}
-                    springConfig={presets.wobbly}
-                  />
                 </div>
                 <div className="clip-bottom"></div>
               </div>

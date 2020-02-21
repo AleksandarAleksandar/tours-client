@@ -7,6 +7,7 @@ import Header from './components/Header'
 import Footer from './components/Footer'
 import { authUtils } from './utils/auth-utils'
 import ErrorBoundery from './components/ErrorBoundary'
+import NotFound from './pages/NotFound'
 
 
 import { connect } from 'react-redux'
@@ -16,23 +17,20 @@ import SpinnerRow from './components/SpinnerRow'
 const Contact = lazy(() => import('./pages/Contact'))
 const Product = lazy(() => import('./pages/Product'))
 const Category = lazy(() => import('./pages/Category'))
-const NotFound = lazy(() => import('./pages/NotFound'))
+// const NotFound = lazy(() => import('./pages/NotFound'))
 const Admin = lazy(() => import('./pages/Admin'))
 const Cart = lazy(() => import('./pages/Cart'))
 const UserProfile = lazy(() => import('./pages/UserProfile'))
+const Shop = lazy(() => import('./pages/Shop'))
 const Checkout = lazy(() => import('./pages/Checkout'))
+const SignInUp = lazy(() => import('./pages/SignInandUpPaga'))
 const Register = lazy(() => import('./components/Register'))
 const SignIn = lazy(() => import('./components/SignIn'))
-const SignInUp = lazy(() => import('./pages/SignInandUpPaga'))
-const Shop = lazy(() => import('./pages/Shop'))
 const ResetPassword = lazy(() => import('./components/ResetPassword'))
 const AuthLogout = lazy(() => import('./components/AuthLogout'))
 const PasswordChange = lazy(() => import('./components/PasswordChange'))
 const PasswordForget = lazy(() => import('./components/PasswordForget'))
 const ReviewForm = lazy(() => import('./components/ReviewForm'))
-
-
-
 
 
 
@@ -82,9 +80,10 @@ class App extends React.Component {
       <>
 
         <Helper />
-        <Switch>
-          <ErrorBoundery>
-            <Suspense fallback={<SpinnerRow />}>
+        <ErrorBoundery>
+          <Suspense fallback={<SpinnerRow />}>
+
+            <Switch>
               <Route exact path='/'>
                 <Home isLoggedIn={isLoggedIn} />
               </Route>
@@ -211,9 +210,10 @@ class App extends React.Component {
                   <NotFound />
                 </>
               </Route>
-            </Suspense>
-          </ErrorBoundery>
-        </Switch >
+            </Switch >
+
+          </Suspense>
+        </ErrorBoundery>
       </>
     );
   }

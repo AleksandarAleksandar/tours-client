@@ -972,15 +972,16 @@ h3.section-title {
 }
 .homepage-slider-group .visible-area {
   z-index: 1;
+  overflow: hidden;
 }
 .homepage-slider-group .visible-area-overlay {
   z-index: 50;
+  overflow: hidden;
   position: absolute;
   top: 120px;
   left: 0px;
   right: 0px;
   bottom: 0px;
-  /* background: orange; */
 }
 .homepage-slider-group .slick-slide {
   position: relative;
