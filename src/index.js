@@ -8,6 +8,12 @@ import * as serviceWorker from './serviceWorker'
 
 import { store, persistor } from './redux/store'
 
+console.log('react version: ', React.version)
+console.log(process.env.PUBLIC_URL)
+console.log(process.cwd())
+console.log(__dirname)
+
+
 ReactDOM.render(
   <Provider store={store}>
     <BrowserRouter>

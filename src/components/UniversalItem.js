@@ -15,8 +15,6 @@ function UniversalItem(props) {
 
   let itemType = props.itemType
 
-
-
   // nekakav "router" za tip itema....
   let jsxItem = null;
   let product_key = item.id;
