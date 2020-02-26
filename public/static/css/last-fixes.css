@@ -141,6 +141,13 @@ body {
   min-width: 240px;
 }
 
+.slick-prev {
+  left: 0px;
+}
+.slick-next {
+  right: 0px;
+}
+
 .slick-prev:before {
   content: unset;
 }

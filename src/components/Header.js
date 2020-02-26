@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { connect } from 'react-redux'
 import axios from 'axios'
@@ -17,6 +17,16 @@ import { selectCartItems } from '../redux/cart/cart-selectors'
 
 function Header({ currentUser, hidden, setCurrentUser, isLoggedIn, state_ceo, auth, cartItems, isHomePage }) {
 
+  const [opened, setOpened] = useState(false)
+
+  let toggleMenu = () => {
+    if (opened) {
+      setOpened(false)
+    } else {
+      setOpened(true)
+    }
+  }
+
   console.log('header');
   console.log(currentUser);
 
@@ -26,7 +36,12 @@ function Header({ currentUser, hidden, setCurrentUser, isLoggedIn, state_ceo, au
   }
 
   let jsxAdministrator = null;
+  let jsxAdministratorSmall = null;
+
   let jsxLoginLogut = (
+    <Link className="option hvr-underline-from-center" to='/signin'>login</Link>
+  );
+  let jsxLoginLogutSmall = (
     <Link className="option hvr-underline-from-center" to='/signin'>login</Link>
   );
   if (isLoggedIn) {
@@ -36,6 +51,9 @@ function Header({ currentUser, hidden, setCurrentUser, isLoggedIn, state_ceo, au
         <div className="floating-ap-bar">
           < Link className="" to='/admin'>Admin Panel</Link>
         </div>
+      );
+      jsxAdministratorSmall = (
+        < Link className="option hvr-underline-from-center danger" to='/admin'>Admin Panel</Link>
       );
     }
     jsxLoginLogut = (
@@ -65,12 +83,24 @@ function Header({ currentUser, hidden, setCurrentUser, isLoggedIn, state_ceo, au
         </div>
       </>
     )
+
+    jsxLoginLogutSmall = (
+      <>
+        <div className="avatar-group">
+          <div className="avatar-img"><Link to="/profile"><img src={avatar_src} /></Link>
+          </div>
+          <div className="nickname">
+            <Link to="/profile">
+              <span className="option hvr-underline-from-center">{nickname}</span>
+            </Link>
+          </div>
+        </div>
+        <Link className="suboption option hvr-underline-from-center" to='/passwordchange'>Change password</Link>
+        <Link className="suboption option hvr-underline-from-center" to='/logout'>Logout</Link>
+      </>
+    )
   }
 
-  let cl_header = 'header';
-  if (isHomePage === true) {
-    cl_header = 'header frontpage'
-  }
 
   let notificationDot = 0;
   let jsxNotificationDot = null;
@@ -88,30 +118,76 @@ function Header({ currentUser, hidden, setCurrentUser, isLoggedIn, state_ceo, au
     )
   }
 
+  let jsxOptions = (
+    <div className="options">
+      <Link to='/shop' className='option hvr-underline-from-center'>Shop</Link>
+      <Link to='/contact' className='option hvr-underline-from-center'>Contact</Link>
+      {jsxLoginLogut}
+      <div className="cart-icon">
+        <Link to='/cart' className='option hvr-underline-from-center'><i className="fa fa-shopping-cart"></i></Link>
+        {jsxNotificationDot}
+      </div>
+    </div>
+  )
+  let jsxOptionsSmall = (
+    <div className="options">
+      {jsxAdministratorSmall}
+      <Link to='/shop' className='option hvr-underline-from-center'>Shop</Link>
+      <Link to='/contact' className='option hvr-underline-from-center'>Contact</Link>
+      {jsxLoginLogutSmall}
+      <div className="cart-icon">
+        <Link to='/cart' className='option hvr-underline-from-center'><i className="fa fa-shopping-cart"></i></Link>
+        {jsxNotificationDot}
+      </div>
+    </div>
+  )
 
+
+  let cl_opened = '';
+  if (opened) {
+    cl_opened = ' menu-opened';
+  }
+
+  let cl_header = 'header' + cl_opened;
+  if (isHomePage === true) {
+    cl_header = 'header frontpage' + cl_opened
+  }
 
   return (
     <div className={cl_header}>
       <div className="header-line">
-        <div className="inner">
-          <div className="header-nav">
+        <div className="header-line-big">
+          <div className="inner">
+            <div className="header-nav">
+              <div className="logo">
+                <Link to="/">
+                  <h2>Home</h2>
+                </Link>
+              </div>
+              <div className="big-nav">
+                {jsxOptions}
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div className="header-line-small">
+
+          <div className="logo-and-hamburger">
             <div className="logo">
               <Link to="/">
                 <h2>Home</h2>
               </Link>
             </div>
-
-            <div className="options">
-              <Link to='/shop' className='option hvr-underline-from-center'>Shop</Link>
-              <Link to='/contact' className='option hvr-underline-from-center'>Contact</Link>
-              {jsxLoginLogut}
-              <div className="cart-icon">
-                <Link to='/cart' className='option hvr-underline-from-center'><i className="fa fa-shopping-cart"></i></Link>
-                {jsxNotificationDot}
-              </div>
+            <div className="hamburger-icon" onClick={toggleMenu}>
+              <i className="fas fa-bars"></i>
             </div>
-
           </div>
+
+          <div className="small-options-container">
+            {jsxOptionsSmall}
+          </div>
+
         </div>
       </div>
 
@@ -126,7 +202,7 @@ function Header({ currentUser, hidden, setCurrentUser, isLoggedIn, state_ceo, au
 /*
 const mapStateToProps = createStructuredSelector({
     currentUser: selectCurrentUser,
-  hidden: selectCartHidden
+hidden: selectCartHidden
 })
 */
 const mapStateToProps = createStructuredSelector({

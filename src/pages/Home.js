@@ -171,9 +171,9 @@ class Home extends React.Component {
     // [ "nerdy.", "simple.", "vanilla JS.", "fun!" ]
     const QUOTES = [
       '“I am not the same having seen the moon shine on the other side of the world.” – Mary Anne Radmacher',
-      '“Certainly, travel is more than the seeing of sights; it is a change that goes on, deep and permanent, in the ideas of living.” – Miriam Beard',
-      '“Wherever you go, go with all your heart.” – Confucius',
-      '“Our happiest moments as tourists always seem to come when we stumble upon one thing while in pursuit of something else.” — Lawrence Block'
+      '“‘It’s a dangerous business, Frodo, going out your door. You step onto the road, and if you don’t keep your feet, there’s no knowing where you might be swept off to.” – J.R.R Tolkien',
+      '“Two roads diverged in a wood, and I – I took the one less traveled by.” – Robert Frost',
+      '“Once a year, go somewhere you have never been before.” — Dalai Lama'
     ];
     let quotes_string = JSON.stringify(QUOTES);
 
