@@ -59,6 +59,22 @@ class Cart extends React.Component {
 
     let totalPrice = formatUtils.formatPrice(total, '€')
 
+    let jsxGoToCheckout = (
+      <div className="add-to-cart-group">
+        <div className="btn btn-add-cart disabled"><i className="far fa-credit-card"></i>Checkout</div>
+        <div className="btn btn-add-cart btn-empty-cart disabled" > <i className="fas fa-times"></i> Empty cart</div>
+      </div>
+    );
+
+    if (items.length > 0) {
+      jsxGoToCheckout = (
+        <div className="add-to-cart-group">
+          <Link to={'/checkout'} className="btn btn-add-cart"><i className="far fa-credit-card"></i>Checkout</Link>
+          <div className="btn btn-add-cart btn-empty-cart" onClick={() => { dispatch(emptyCart()) }}><i className="fas fa-times"></i> Empty cart</div>
+        </div>
+      );
+    }
+
     return (
       <div className='cart-page' >
 
@@ -85,10 +101,7 @@ class Cart extends React.Component {
               <div className="total">TOTAL: {totalPrice}</div>
             </div>
 
-            <div className="add-to-cart-group">
-              <Link to={'/checkout'} className="btn btn-add-cart"><i className="far fa-credit-card"></i>Checkout</Link>
-              <div className="btn btn-add-cart" onClick={() => { dispatch(emptyCart()) }}><i className="fas fa-times"></i> Empty cart</div>
-            </div>
+            {jsxGoToCheckout}
 
           </div>
         </section>

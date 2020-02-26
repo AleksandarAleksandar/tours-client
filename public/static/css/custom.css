@@ -224,7 +224,6 @@ h3.section-title {
   overflow: hidden;
 }
 
-
 .homepage-dashboard .universal-items-group {
   padding-top: 10px;
   padding-bottom: 10px;
@@ -412,6 +411,16 @@ h3.section-title {
   background-position: center;
   background-size: cover;
   padding-top: 0px;
+}
+
+.header .logo-img {
+  height: 70px;
+  width: 100px;
+  padding-left: 20px;
+}
+.header .logo-img img {
+  width: 70px;
+  height: 70px;
 }
 
 .header .big-title .big-info {
@@ -669,6 +678,10 @@ h3.section-title {
   background-color: black;
   color: white;
   cursor: pointer;
+}
+
+.btn.btn-add-cart.btn-empty-cart {
+  margin-left: 20px;
 }
 
 .section {
@@ -953,7 +966,10 @@ h3.section-title {
   font-weight: 600;
   padding-bottom: 3px;
 }
-.tour-card .summary {
+
+.tour-card .summary,
+.homepage .tour-card .summary,
+.peoduct-page .tour-card .summary {
   font-size: 13px;
   font-weight: 400;
   text-align: left;
@@ -1159,6 +1175,7 @@ h3.section-title {
 
 .bookings-group {
   padding-bottom: 20px;
+  min-width: 640px;
 }
 .bookings-group-header {
   display: flex;
