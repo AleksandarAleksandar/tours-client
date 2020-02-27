@@ -204,13 +204,13 @@ class Home extends React.Component {
                 <div className="summary">We are here to remind you that the joy of discovery is the single most important thing in life. Don’t forget it.</div>
 
                 <div className="grid-items">
-                  <div className="item">
+                  {/* <div className="item">
 
                     {jsxStats}
 
-                  </div>
-                  <div className="item">
-                    <div className="description text-justify">After gliding down Lake Naivasha, get ready to encounter natural Kenyan wonders and see zebras, giraffes, hippos, gazelles, buffalo, birds and more in their natural habitat. Feel the cool breeze on your face as you take a refreshing boat ride to Crescent Island, where you’ll be treated to a guided walk through the game park. This tranquil island sanctuary boasts more animals per acre than any other park in Kenya.</div>
+                  </div> */}
+                  <div className="header-intro">
+                    <div className="description text-justify">Swimm between islands in Greece, the mythic stomping ground of Poseidon and in a medley of beautiful sand stretches and pebbly coves. Come face to face with  powerful images of Italy's lost peasant culture, rugged mountains and fiery volcanoes while biking through south Italy. Hike among the pastel-coloured homes in Norway and under dancing Aurora Boreallis, or come and share the experience with us of running/sightseeing Paris, Berlin or Vatican.</div>
                   </div>
                 </div>
 

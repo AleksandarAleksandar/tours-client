@@ -68,7 +68,7 @@ class Contact extends React.Component {
       })
       Swal.fire(
         'Success!',
-        'Mail sent successfully',
+        'Message sent successfully',
         'success'
       ).then(() => {
         // console.log('then posle swal');
@@ -127,7 +127,7 @@ class Contact extends React.Component {
                   <TextField
                     id="outlined-helperText"
                     label="Your name"
-                    helperText="First and last name"
+                    // helperText="First and last name"
                     variant="outlined"
                     value={this.state.fullName}
                     onChange={this.handleInputChange}
@@ -137,7 +137,7 @@ class Contact extends React.Component {
                   <TextField
                     id="outlined-helperText"
                     label="Your email"
-                    helperText="We will answer on this email"
+                    // helperText="We will answer on this email"
                     variant="outlined"
                     value={this.state.email}
                     onChange={this.handleInputChange}

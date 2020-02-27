@@ -77,6 +77,16 @@ h3.section-title {
   border-top: 4px solid black;
   padding-top: 1em;
 }
+.header-intro {
+  display: flex;
+  flex-direction: row;
+  /* justify-content: space-between; */
+  /* justify-content: center; */
+  max-width: 1100px;
+  align-items: center;
+  min-height: 24px;
+
+}
 
 .checkout-summary-items {
 }
