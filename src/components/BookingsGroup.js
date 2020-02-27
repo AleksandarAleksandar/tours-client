@@ -47,12 +47,13 @@ const BookingsGroup = (props) => {
   let dateDisplay = date.day + ' ' + date.monthLong + ' ' + date.year;
 
 
+  let order_content = 'ORDER # ' + order._id;
   return (
     <div className="bookings-group">
       <div className="bookings-group-header">
         <div className="pair"><span>Order placed: </span><span>{dateDisplay}</span></div>
         <div className="pair"><span>Total: </span><span>{price}</span></div>
-        <div className="pair">ORDER # {order._id}</div>
+        <div className="pair pair-order">{order_content}</div>
 
       </div>
       <div className="bookings-group-body">

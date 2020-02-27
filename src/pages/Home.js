@@ -171,7 +171,7 @@ class Home extends React.Component {
     // [ "nerdy.", "simple.", "vanilla JS.", "fun!" ]
     const QUOTES = [
       '“I am not the same having seen the moon shine on the other side of the world.” – Mary Anne Radmacher',
-      '“‘It’s a dangerous business, Frodo, going out your door. You step onto the road, and if you don’t keep your feet, there’s no knowing where you might be swept off to.” – J.R.R Tolkien',
+      '“Every man’s life ends the same way. It is only the details of how he lived that distinguish one man from another.” – Ernest Hemingway',
       '“Two roads diverged in a wood, and I – I took the one less traveled by.” – Robert Frost',
       '“Once a year, go somewhere you have never been before.” — Dalai Lama'
     ];
@@ -200,8 +200,8 @@ class Home extends React.Component {
             <section className="section NOVVA_SEKCIJA">
               <div className="inner">
 
-                <h1>GLAVNI NASLOV</h1>
-                <div className="summary">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</div>
+                <h1>Who si Up Tour</h1>
+                <div className="summary">We are here to remind you that the joy of discovery is the single most important thing in life. Don’t forget it.</div>
 
                 <div className="grid-items">
                   <div className="item">
@@ -210,7 +210,7 @@ class Home extends React.Component {
 
                   </div>
                   <div className="item">
-                    <div className="description text-justify">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</div>
+                    <div className="description text-justify">After gliding down Lake Naivasha, get ready to encounter natural Kenyan wonders and see zebras, giraffes, hippos, gazelles, buffalo, birds and more in their natural habitat. Feel the cool breeze on your face as you take a refreshing boat ride to Crescent Island, where you’ll be treated to a guided walk through the game park. This tranquil island sanctuary boasts more animals per acre than any other park in Kenya.</div>
                   </div>
                 </div>
 
@@ -227,6 +227,8 @@ class Home extends React.Component {
                     <div className="slide-img slide-img-2">
                     </div>
                     <div className="slide-img slide-img-3">
+                    </div>
+                    <div className="slide-img slide-img-4">
                     </div>
                   </Slider>
                 </div>

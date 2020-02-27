@@ -62,7 +62,7 @@ function BookingsItem(props) {
       <td>{date}</td>
       <td>
         <div className="add-to-cart-groupDNOT">
-          <div className="btn btn-add-cart"><Link to={'/writereview/' + tourid}><i className="fas fa-pencil-alt"></i> Write a review</Link></div>
+          <div className="btn btn-add-cart"><Link to={'/writereview/' + tourid}><i className="fas fa-pencil-alt"></i> <span>Write a review</span></Link></div>
         </div>
       </td>
     </tr>
