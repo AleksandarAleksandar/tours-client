@@ -1,13 +1,7 @@
 import React, { Component } from 'react'
-import axios from 'axios'
-import FormInput from './FormInput'
-import Button from './CustomButton'
 import { passwordReset } from '../redux/user/user-actions'
 import { connect } from 'react-redux'
 import { Link } from 'react-router-dom'
-// import { auth, createUsersProfileDocument } from './firebase.utills'
-
-// import '../css/styles.scss'
 
 class ResetPassword extends Component {
   constructor() {
@@ -27,8 +21,6 @@ class ResetPassword extends Component {
 
   handleSubmit = async e => {
     e.preventDefault();
-    console.log('submit');
-
     const { password, passwordConfirm } = this.state
     if (password !== passwordConfirm) {
       alert("password don't match")
@@ -42,25 +34,12 @@ class ResetPassword extends Component {
     console.log(dataToSubmit)
 
     let cb = (response) => {
-      console.log('callback nakon register');
-      console.log(response);
-      // authUtils.autoLoginProcedure(this.props.dispatch);
       this.setState({
         status: 'SUCCESS',
         successEmail: response.data.user.email
       })
     }
     let cb_error = res => {
-      console.log("err");
-      console.log(res);
-      /*
-      data:
-      status: "fail"
-      error: {statusCode: 401, status: "fail", isOperational: true}
-      message
-      */
-      console.log(res.data.status);
-      console.log(res.data.message);
       if (res.data && res.data.status === 'fail') {
         this.setState({
           status: 'ERROR',
@@ -68,11 +47,10 @@ class ResetPassword extends Component {
         })
       }
     }
-    // TODO: ovde treba dase submituej link sa pravim tokenom za reset passworda
+    // TODO:need to submit link for token reset
     let token = this.props.match.params.token; // path="/resetpassword/:token"
     this.props.dispatch(passwordReset(dataToSubmit, cb, cb_error, token))
   }
-
 
   handleInputChange(event) {
     const target = event.target;
@@ -85,14 +63,14 @@ class ResetPassword extends Component {
   }
 
   componentDidMount() {
-    let token = this.props.match.params.token; // path="/resetpassword/:token"
+    let token = this.props.match.params.token;
     this.setState({
       resetpasswordtoken: token
     })
   }
 
   render() {
-    let token = this.props.match.params.token; // path="/resetpassword/:token"
+    let token = this.props.match.params.token;
 
     let jsxError = null;
     if (this.state.status === 'ERROR') {

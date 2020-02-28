@@ -8,7 +8,6 @@ let categories = {
 }
 
 const INITIAL_STATE = {
-  collections: [],
   isFetching: false,
   tours_items: [],
   errorMessage: undefined,
@@ -32,14 +31,6 @@ const INITIAL_STATE = {
 }
 
 
-// const shopReducer = (state = INITIAL_STATE, action) => {
-//   switch (action.type) {
-//     default:
-//       return state;
-//   }
-// };
-
-
 const shopReducer = (state = INITIAL_STATE, action) => {
   let new_reviews, new_bookings, new_orders;
 
@@ -53,7 +44,6 @@ const shopReducer = (state = INITIAL_STATE, action) => {
       return {
         ...state,
         isFetching: false,
-        collections: action.payload,
         tours_items: action.payload
       }
     case ShopActionTypes.FETCH_COLLECTIONS_FAILURE:
@@ -124,7 +114,6 @@ const shopReducer = (state = INITIAL_STATE, action) => {
         isFetching: true,
         tour_advanced: {
           isFetching: true,
-          key: 'tu treba action.payload.key',
           key: action.payload.id,
           data: {}
         },
@@ -134,7 +123,6 @@ const shopReducer = (state = INITIAL_STATE, action) => {
         ...state,
         isFetching: false,
         tour_item: action.payload.data,
-        blabla: 'nista',
         tour_advanced: {
           isFetching: false,
           key: action.payload.id,
@@ -208,8 +196,6 @@ const shopReducer = (state = INITIAL_STATE, action) => {
         ...state,
         orders: new_orders
       }
-
-
     default:
       return state
   }

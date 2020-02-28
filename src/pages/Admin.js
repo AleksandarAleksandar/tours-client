@@ -1,8 +1,7 @@
 import React, { Component } from 'react'
-// import { routesData } from './../utils/routes-data'
 import { routingUtils } from './../utils/routing-utils'
 import Breadcrumbs from './../components/Breadcrumbs'
-import { Switch, Route, Redirect, Link } from 'react-router-dom'
+import { Switch, Route, Link } from 'react-router-dom'
 import { connect } from 'react-redux'
 import AdminWelcome from './../components/AdminWelcome'
 import AdminGuidesList from './../components/AdminGuidesList'
@@ -18,41 +17,14 @@ import { createStructuredSelector } from 'reselect'
 
 class Admin extends Component {
   render() {
-    console.log(this.props);
-    // let id = this.props.match.params.id; // path='/category/:id'
     let match = this.props.match;
     let dispatch = this.props.dispatch;
-
-    let thisPageRoute = routingUtils.getRouteData('HOME');
-    // let breadcrumbs = thisPageRoute.breadcrumbs;
-    // let activeRoute = thisPageRoute.routeName;
-
-    // let pageTitle = thisPageRoute.pageTitle;
     let pageTitle = '...';
     let currentRoute = this.props.currentRoute;
     pageTitle = currentRoute.pageTitle;
-
     let activeRoute = currentRoute.routeName;
-    // zastita od slucaja da breadcrumbs nije spreman je ugradjena u Breqacrumbs komponentu
     let breadcrumbs = currentRoute.breadcrumbs;
 
-
-
-
-    /*
-    <li className="nav-item">
-      <a href="#" className="nav-link active">
-        <i className="far fa-circle nav-icon"></i>
-        <p>Active Page</p>
-      </a>
-    </li>
-    <li className="nav-item">
-      <a href="#" className="nav-link">
-        <i className="far fa-circle nav-icon"></i>
-        <p>Inactive Page</p>
-      </a>
-    </li>
-    */
     let menuOptions = [
       {
         routeName: 'AP',
@@ -121,27 +93,21 @@ class Admin extends Component {
     return (
       <>
         <div className="wrapper adminlte">
-
-
           <nav className="main-header navbar navbar-expand navbar-dark navbar-teal">
-
             <ul className="navbar-nav">
-              <li className="nav-item">
+              {/* <li className="nav-item">
                 <a className="nav-link" data-widget="pushmenu" href="#"><i className="fas fa-bars"></i></a>
-              </li>
+              </li> */}
               <li className="nav-item d-none d-sm-inline-block">
                 <Link to={'/'} className="nav-link">Home</Link>
               </li>
-              <li className="nav-item d-none d-sm-inline-block">
+              {/* <li className="nav-item d-none d-sm-inline-block">
                 <a href="#" className="nav-link">Contact</a>
-              </li>
+              </li> */}
             </ul>
-
-
-
             <ul className="navbar-nav ml-auto">
 
-              <li className="nav-item dropdown">
+              {/* <li className="nav-item dropdown">
                 <a className="nav-link" data-toggle="dropdown" href="#">
                   <i className="far fa-comments"></i>
                   <span className="badge badge-danger navbar-badge">3</span>
@@ -197,9 +163,9 @@ class Admin extends Component {
                   <div className="dropdown-divider"></div>
                   <a href="#" className="dropdown-item dropdown-footer">See All Messages</a>
                 </div>
-              </li>
+              </li> */}
 
-              <li className="nav-item dropdown">
+              {/* <li className="nav-item dropdown">
                 <a className="nav-link" data-toggle="dropdown" href="#">
                   <i className="far fa-bell"></i>
                   <span className="badge badge-warning navbar-badge">15</span>
@@ -224,25 +190,24 @@ class Admin extends Component {
                   <div className="dropdown-divider"></div>
                   <a href="#" className="dropdown-item dropdown-footer">See All Notifications</a>
                 </div>
-              </li>
+              </li> */}
 
 
               <li className="nav-item dropdown user-menu">
                 <a href="#" className="nav-link dropdown-toggle" data-toggle="dropdown" aria-expanded="true">
-                  <img src={avatar_src} className="user-image img-circle elevation-2" alt="User Image" />
+                  <img alt="avatar" src={avatar_src} className="user-image img-circle elevation-2" />
                   <span className="d-none d-md-inline">{nickname}</span>
                 </a>
                 <ul className="dropdown-menu dropdown-menu-lg dropdown-menu-right">
 
                   <li className="user-header bg-primary">
-                    <img src={avatar_src} className="img-circle elevation-2" alt="User Image" />
-
+                    <img alt="avatar" src={avatar_src} className="img-circle elevation-2" />
                     <p>
-                      {nickname} - Web Developer <small>Member since Nov. 2012</small>
+                      {nickname} - Web Developer <small>Member since 2020</small>
                     </p>
                   </li>
 
-                  <li className="user-body">
+                  {/* <li className="user-body">
                     <div className="row">
                       <div className="col-4 text-center">
                         <a href="#">Followers</a>
@@ -251,48 +216,42 @@ class Admin extends Component {
                         <a href="#">Sales</a>
                       </div>
                       <div className="col-4 text-center">
-                        <a href="#">Friends</a>
+                        <p>Friends</p>
                       </div>
                     </div>
 
-                  </li>
+                  </li> */}
 
                   <li className="user-footer">
-                    <a href="#" className="btn btn-default btn-flat">Profile</a>
+                    <Link className="btn btn-default btn-flat" to='/profile'>Profile</Link>
                     <Link className="btn btn-default btn-flat float-right" to='/logout'>Logout</Link>
                   </li>
                 </ul>
               </li>
 
-
               <li className="nav-item">
-                <a className="nav-link" data-widget="control-sidebar" data-slide="true" href="#"><i
+                <a className="nav-link" data-widget="control-sidebar" data-slide="true" href=""><i
                   className="fas fa-th-large"></i></a>
               </li>
             </ul>
           </nav>
-
-
-
-
-
 
           <aside className="main-sidebar sidebar-dark-primary elevation-4">
 
             <a href="index3.html" className="brand-link">
               <img src="/static/img/AdminLTELogo.png" alt="AdminLTE Logo" className="brand-image img-circle elevation-3"
                 style={{ opacity: 0.8 }} />
-              <span className="brand-text font-weight-light">AdminLTE 3</span>
+              <span className="brand-text font-weight-light">Up Tour</span>
             </a>
 
             <div className="sidebar">
 
               <div className="user-panel mt-3 pb-3 mb-3 d-flex">
                 <div className="image">
-                  <img src={avatar_src} className="img-circle elevation-2" alt="User Image" />
+                  <img src={avatar_src} className="img-circle elevation-2" alt="avatar" />
                 </div>
                 <div className="info">
-                  <a href="#" className="d-block">{nickname}</a>
+                  <Link to='/profile' className="d-block">{nickname}</Link>
                 </div>
               </div>
 
@@ -305,22 +264,13 @@ class Admin extends Component {
                       <i className="nav-icon fas fa-tachometer-alt"></i>
                       <p>
                         Starter Pages
-                <i className="right fas fa-angle-left"></i>
+                        <i className="right fas fa-angle-left"></i>
                       </p>
                     </a>
                     <ul className="nav nav-treeview">
                       {jsxSidebarMenu}
 
                     </ul>
-                  </li>
-                  <li className="nav-item">
-                    <a href="#" className="nav-link">
-                      <i className="nav-icon fas fa-th"></i>
-                      <p>
-                        Simple Link
-                <span className="right badge badge-danger">New</span>
-                      </p>
-                    </a>
                   </li>
                 </ul>
               </nav>
@@ -390,28 +340,21 @@ class Admin extends Component {
                   </>
                 </Route>
               </Switch>
-
-
             </section>
           </div>
-
-
-
           <aside className="control-sidebar control-sidebar-dark">
-
             <div className="p-3">
               <h5>Title</h5>
               <p>Sidebar content</p>
             </div>
           </aside>
 
-          <footer className="main-footer">
+          {/* <footer className="main-footer">
             <div className="float-right d-none d-sm-inline">AdminLTE 3.0.1</div>
 
             <span><strong>Copyright &copy; 2014-2019 <a href="https://adminlte.io">AdminLTE.io</a>.</strong> All rights reservedy</span>
 
-          </footer>
-
+          </footer> */}
         </div>
       </>
     )
@@ -419,7 +362,7 @@ class Admin extends Component {
 }
 
 const mapStateToProps = createStructuredSelector({
-  auth: selectCurrentUser, //naming???
+  auth: selectCurrentUser, 
   currentRoute: selectCurrentRoute
 })
 

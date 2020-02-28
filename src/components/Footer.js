@@ -1,17 +1,5 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
-import { connect } from 'react-redux'
-import axios from 'axios'
-import { createStructuredSelector } from 'reselect'
-import { setCurrentUser } from '../redux/user/user-actions'
-
-import CartIcon from './CartIcon'
-
-// import '../css/styles.scss'
-import CartDropdown from './CartDropdown'
-import { selectCurrentUser } from '../redux/user/user-selector'
-import { selectCartHidden } from '../redux/cart/cart-selectors'
-// import { logout } from '../../../controllers/authControler'
 
 
 function Footer(props) {

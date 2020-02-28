@@ -1,14 +1,11 @@
 import React, { Component } from 'react'
-import axios from 'axios'
-import FormInput from '../components/FormInput'
-import CustomeButton from './CustomButton'
 import { createStructuredSelector } from 'reselect'
 
 import { connect } from 'react-redux'
-import { login, setCurrentUser } from './../redux/user/user-actions'
+import { login } from './../redux/user/user-actions'
 import {selectCurrentUser} from './../redux/user/user-selector'
 import { authUtils } from '../utils/auth-utils'
-import { Switch, Route, Redirect, Link } from 'react-router-dom'
+import { Redirect, Link } from 'react-router-dom'
 import SpinnerRow from './SpinnerRow'
 
 class SignIn extends Component {
@@ -22,32 +19,16 @@ class SignIn extends Component {
     }
   }
 
-
   handleSubmit = async e => {
     e.preventDefault();
-    console.log('submit');
-
-    const { email, password } = this.state
     const dataToSubmit = { email: this.state.email, password: this.state.password }
 
     let cb = (response) => {
-      console.log('callback nakon logina');
-      console.log(response);
       let token = response.token;
       authUtils.afterLoginFormProcedure(token);
       authUtils.autoLoginProcedure(this.props.dispatch);
     }
     let cb_error = res => {
-      console.log("err");
-      console.log(res);
-      /*
-      data:
-      status: "fail"
-      error: {statusCode: 401, status: "fail", isOperational: true}
-      message
-      */
-      console.log(res.data.status);
-      console.log(res.data.message);
       if (res.data && res.data.status === 'fail') {
         this.setState({
           status: 'ERROR',
@@ -56,28 +37,6 @@ class SignIn extends Component {
       }
     }
     this.props.dispatch(login(dataToSubmit, cb, cb_error))
-
-    /*
-        try {
-          console.log(this.props);
-          const request = await axios.post('api/v1/users/login', dataToSubmit);
-          console.log(request.data.data.user);
-          // console.log();
-    
-          this.props.setCurrentUser(
-            {
-              email: request.data.data.user.email,
-              name: request.data.data.user.name,
-              role: request.data.data.user.role,
-              id: request.data.data.user._id
-            })
-    
-          this.setState({ email: '', password: '' })
-    
-        } catch (err) {
-          console.log(err);
-        }
-        */
   }
 
   handleChange = e => {
@@ -195,7 +154,6 @@ class SignIn extends Component {
       jsx = jsxRedirect
     } else {
       if (autologinFetching === true) {
-        // jsxMaybe = <SpinnerRow />
         jsx = jsxMaybe
       } else {
         jsx = jsxLoginForm
@@ -211,13 +169,7 @@ class SignIn extends Component {
 }
 
 const mapStateToProps = createStructuredSelector({
-  auth: selectCurrentUser //naming???
+  auth: selectCurrentUser 
 })
-
-/*
-const mapDispatchToProps = dispatch => ({
-  setCurrentUser: user => dispatch(setCurrentUser(user)),
-})
-*/
 
 export default connect(mapStateToProps)(SignIn);

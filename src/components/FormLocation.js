@@ -13,7 +13,6 @@ export default class FormLocation extends Component {
       address: "",
       description: ''
     };
-    // binding this
     this.handleInputChange = this.handleInputChange.bind(this);
     this._add = this._add.bind(this)
   }
@@ -29,7 +28,7 @@ export default class FormLocation extends Component {
   }
 
   _add() {
-    // umesto submit
+    // instead of submit
     let ll;
     let fixed_coordinates = [];
     if (typeof this.state.geouri === 'string' && this.state.geouri !== '') {
@@ -48,8 +47,8 @@ export default class FormLocation extends Component {
     }
     let cb = this.props.cb;
     if (typeof cb === 'function') {
-      cb(newLocation); // predaje se parent komponenti da upise novu lokaciju
-      //  praznimo formu
+      cb(newLocation); // give to parent to save location
+      //  clear form
       let newId = counterUtils.getFreshId();
       this.setState({
         id: newId,
@@ -62,26 +61,10 @@ export default class FormLocation extends Component {
   }
 
   render() {
-    /*
-        {
-          type: {
-            type: String,
-            default: 'Point',
-            enum: ['Point']
-          },
-          coordinates: [Number],
-          address: String,
-          description: String,
-          day: Number
-        }
-    */
-
     let maxDay = 30;
     if (this.props.duration > 1) {
       maxDay = this.props.duration
     }
-
-
     return (
       <>
         <div className="subform-location">

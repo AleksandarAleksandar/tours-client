@@ -29,7 +29,6 @@ let Breadcrumbs = (props) => {
           } else {
             path = iRoute.path;
           }
-          // jsx = <li key={item} className={cl}><a href={iRoute.path}>{iRoute.pageTitle}</a></li>
           jsx = <li key={item} className={cl}>
             <Link to={iRoute.path}>
               {iRoute.pageTitle}
@@ -40,10 +39,6 @@ let Breadcrumbs = (props) => {
       })
     }
     return jsxBreadcrumbs;
-    /*
-      < li className = "breadcrumb-item" > <a href="#">Home</a></li>
-        <li className="breadcrumb-item active">Starter Page</li>
-    */
   }
   let jsx = breadcrumbsMake();
   return (

@@ -1,19 +1,11 @@
 import React, { Component } from 'react'
-import axios from 'axios'
-import FormInput from './FormInput'
-import Button from './CustomButton'
 import { passwordForgot } from '../redux/user/user-actions'
 import { connect } from 'react-redux'
 import { Link } from 'react-router-dom'
-// import { auth, createUsersProfileDocument } from './firebase.utills'
-
-
-// import '../css/styles.scss'
 
 class PasswordForget extends Component {
   constructor() {
     super();
-
     this.state = {
       email: '',
       status: 'INITIAL',
@@ -25,32 +17,15 @@ class PasswordForget extends Component {
 
   handleSubmit = async e => {
     e.preventDefault();
-    console.log('submit');
-
     const dataToSubmit = {
       email: this.state.email
     }
-    console.log(dataToSubmit)
-
     let cb = (response) => {
-      console.log('callback nakon register');
-      console.log(response);
-      // authUtils.autoLoginProcedure(this.props.dispatch);
       this.setState({
         status: 'SUCCESS'
       })
     }
     let cb_error = res => {
-      console.log("err");
-      console.log(res);
-      /*
-      data:
-      status: "fail"
-      error: {statusCode: 401, status: "fail", isOperational: true}
-      message
-      */
-      console.log(res.data.status);
-      console.log(res.data.message);
       if (res.data && res.data.status === 'fail') {
         this.setState({
           status: 'ERROR',
@@ -59,9 +34,7 @@ class PasswordForget extends Component {
       }
     }
     this.props.dispatch(passwordForgot(dataToSubmit, cb, cb_error))
-
   }
-
 
   handleInputChange(event) {
     const target = event.target;
@@ -96,7 +69,6 @@ class PasswordForget extends Component {
           <div className="card">
             <div className="card-body register-card-body">
               <p className="login-box-msg">Enter your email</p>
-
               {jsxError}
 
               <form className="sign-up-form" onSubmit={this.handleSubmit}>

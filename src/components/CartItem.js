@@ -3,14 +3,10 @@ import { Link } from 'react-router-dom'
 import { addItem, removeItem } from '../redux/cart/cart-actions'
 import { formatUtils } from './../utils/format-utils'
 import { dateUtils } from './../utils/date-utils'
-import {apiLib} from './../utils/api-lib'
+import { apiLib } from './../utils/api-lib'
 
-// import '../css/styles.scss'
 
 export default function CartItem(props) {
-  // { item: { imageUrl, price, name, quantity } }
-  console.log('cart item');
-  console.log(props);
   let dispatch = props.dispatch
   let item = props.item;
   if (!item) {
@@ -25,8 +21,6 @@ export default function CartItem(props) {
     let firstDateParsed = dateUtils.parsedateString(item.startDates[0]);
     startDate = firstDateParsed.monthLong + ' ' + firstDateParsed.day
   }
-
-  let endDate = '';
 
   let cover = apiLib.staticCover(item.imageCover)
   let divStyle = {
@@ -71,7 +65,6 @@ export default function CartItem(props) {
               <div className="fact-icon"><i className="fas fa-euro-sign"></i></div>
               <div className=""><span className="term-name"></span><span className="term-value">{price}</span></div>
             </div>
-
           </div>
 
           <div className="quantity">
@@ -79,17 +72,9 @@ export default function CartItem(props) {
             <div className="value">{quantity} persons</div>
             <div className="arrow plus" onClick={() => dispatch(addItem(item))}><i className="fas fa-user-plus"></i></div>
           </div>
-
-
         </div>
 
       </div>
     </div>
   )
 }
-
-/*
-            <div className="arrow minus" onClick={() => dispatch(removeItem(item))}>&#10094;</div>
-            <div className="value">{quantity} persons</div>
-            <div className="arrow plus" onClick={() => dispatch(addItem(item))}>&#10095;</div>
-*/

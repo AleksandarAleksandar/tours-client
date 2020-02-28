@@ -1,30 +1,19 @@
 import React from 'react'
-
-
 import Breadcrumbs from './../components/Breadcrumbs'
-import { Route } from 'react-router-dom'
-// import CollectionsOverviewContainer from '../components/CollectionOverviewContainer'
-// import CollectionPageContainer from '../components/CollectionPageContainer'
-import CollectionOverview from './../components/CollectionsOverview'
-import CategoryPage from './Category'
 import { toursNeeded } from './../redux/shop/shop-actions'
-
 import UniversalItems from './../components/UniversalItems'
 import { createStructuredSelector } from 'reselect'
 import { connect } from 'react-redux'
-import { fetchCollectionsStart } from './../redux/shop/shop-actions'
-// import { browserUtils } from './../utils/browser-utils'
 import { routingUtils } from './../utils/routing-utils'
 import { updateBrowserTitle } from './../redux/global/global-actions'
 import SpinnerRow from '../components/SpinnerRow'
-import { selectIsCollectionFetching, selectTours, selectCategories } from './../redux/shop/shop-selector'
+import { selectIsCollectionFetching, selectTours } from './../redux/shop/shop-selector'
 
 class Shop extends React.Component {
   constructor() {
     super()
     this.state = {
       search: '',
-
       pricemin: 0,
       pricemax: 0,
       category: 'all',
@@ -43,8 +32,6 @@ class Shop extends React.Component {
     const name = target.name;
 
     let prepared_val = value;
-
-    // fix za polja koja moraju da se tretiraju kao brojevi (integeri)
     if (name === 'pricemin' || name === "pricemax") {
       prepared_val = parseInt(value);
     }
@@ -59,23 +46,15 @@ class Shop extends React.Component {
     event.preventDefault();
     alert('A search query was submitted: ' + this.state.search);
     let query = this.state.search;
-
   }
 
   componentDidMount() {
-    // const { fetchCollectionsStart } = this.props
-    // fetchCollectionsStart()
     this.props.dispatch(toursNeeded())
-
     let thisPageRoute = routingUtils.getRouteData('SHOP');
-    // browserUtils.updateTitle(thisPageRoute.browserTitle)
     this.props.dispatch(updateBrowserTitle(thisPageRoute.browserTitle))
-
   }
 
   search(items) {
-    console.log('search')
-    console.log(items)
     let query = this.state.search;
 
     let query_filter = (items, query) => {
@@ -119,11 +98,8 @@ class Shop extends React.Component {
       let test_1 = () => {
         let test = true;
         if (item.price >= price_min) {
-          // test = true;
-          // sam oako je prosao prvi test radimo drugi
           if (price_max > 0 && price_max >= price_min) {
             if (item.price <= price_max) {
-              // test = true;
             } else {
               test = false;
             }
@@ -133,12 +109,10 @@ class Shop extends React.Component {
         }
         return test;
       }
-      // console.log(item.price, price_min, price_max, item.price < price_max);
 
       let test_2 = () => {
         let test = true;
         if (this.state.category === "all") {
-          // true
         } else {
           if (this.state.category !== item.category) {
             test = false;
@@ -159,7 +133,6 @@ class Shop extends React.Component {
         return test
       }
 
-      // executing tests
       if (!test_1()) {
         total_test = false;
       }
@@ -172,16 +145,12 @@ class Shop extends React.Component {
       return total_test;
 
     })
-
-
-    // STEP 3) output
-    console.log(filteredItems)
     return filteredItems;
   }
 
 
   render() {
-    let { match, categories, isFetching, tours_items } = this.props
+    let { isFetching, tours_items } = this.props
     let items = [];
     let filteredItems = []
     // isFetching = false;
@@ -192,22 +161,12 @@ class Shop extends React.Component {
     if (isFetching === false) {
       isFetching = false;
       jsxSpinner = null;
-      console.log('state.shop ');
-      // console.log(this.props.st.shop);
       items = tours_items; // unfiltered
       let unfiltered_items = tours_items; // unfiltered
       searchResults = this.search(unfiltered_items)
     }
 
-    /*
-    let jsxSearchResults = searchResults.map((item) => {
-      return (
-        <div>+ {item.name}</div>
-      )
-    })
-    */
     let jsxSearchResults = <UniversalItems title={''} items={searchResults} limit={'bez limita'} spinner={isFetching} slider={false} />
-
 
     let thisPageRoute = routingUtils.getRouteData('SHOP');
     let breadcrumbs = thisPageRoute.breadcrumbs;
@@ -221,7 +180,7 @@ class Shop extends React.Component {
             <div className="breadcrumbs-regular clearfix">
               <Breadcrumbs breadcrumbs={breadcrumbs} activeRoute={activeRoute} />
             </div>
-            <h1>Ovo je shop stranica sa 4 kategorije</h1>
+            {/* <h1>Ovo je shop stranica sa 4 kategorije</h1> */}
 
             <div className="shop-filter-widget">
 

@@ -189,7 +189,7 @@ const UserProfile = ({dispatch, bookings, orders}) => {
           <div className="breadcrumbs-regular clearfix">
             <Breadcrumbs breadcrumbs={breadcrumbs} activeRoute={activeRoute} />
           </div>
-          <h1 className="text-left">User profile</h1>
+          {/* <h1 className="text-left">User profile</h1> */}
 
           <div className="my-bookings">
             {/* 

@@ -1,11 +1,9 @@
 import React from 'react'
-import geoUtils from './../utils/geo-utils'
 import { routingUtils } from './../utils/routing-utils'
 import { formatUtils } from './../utils/format-utils'
 import { browserUtils } from '../utils/browser-utils'
 import { updateBrowserTitle, updateCurrentRoute } from './../redux/global/global-actions'
-import { createTour, deleteTour } from './../redux/shop/shop-actions'
-import { usersNeeded } from './../redux/user/user-actions'
+import { deleteTour } from './../redux/shop/shop-actions'
 import { connect } from 'react-redux'
 import { Link } from 'react-router-dom'
 import { toursNeeded } from './../redux/shop/shop-actions'
@@ -37,7 +35,7 @@ class AdminToursList extends React.Component {
 
     let prepared_val = value;
 
-    // fix za polja koja moraju da se tretiraju kao brojevi (integeri)
+    // fix fileds that needs to be numbers
     if (name === 'pricemin' || name === "pricemax") {
       prepared_val = parseInt(value);
     }
@@ -51,15 +49,13 @@ class AdminToursList extends React.Component {
     if (window.confirm("Do you really want to delete?")) {
       console.log('deleting... ', id);
       let callback = () => {
-        // callback nakon uspelog brisanja
-        window.alert("item deleted!"); // tokom alerta ce biti stopiran script na ovoj liniji
-        // nakon sto kliknemo na OK u alertu, izvrsavanje se nastavlja
-        browserUtils.reload(); // refreshujemo ovu stranu
+        // callback after successful delete
+        window.alert("item deleted!");
+        browserUtils.reload(); // to refresh page
       }
       this.props.dispatch(deleteTour(id, callback))
     }
   }
-
 
   componentDidMount() {
     let thisPageRoute = routingUtils.getRouteData('AP_TOURS_LIST');
@@ -69,15 +65,11 @@ class AdminToursList extends React.Component {
     this.props.dispatch(toursNeeded())
   }
 
-
   render() {
 
     let items = [];
     let filteredItems = []
     let jsxSpinner = <Spinner />
-    let jsxCategoriesDashboard = [];
-
-
 
     if (this.props.isFetching === false) {
       jsxSpinner = null;
@@ -98,11 +90,8 @@ class AdminToursList extends React.Component {
       let test_1 = () => {
         let test = true;
         if (item.price >= price_min) {
-          // test = true;
-          // sam oako je prosao prvi test radimo drugi
           if (price_max > 0 && price_max >= price_min) {
             if (item.price <= price_max) {
-              // test = true;
             } else {
               test = false;
             }
@@ -112,12 +101,9 @@ class AdminToursList extends React.Component {
         }
         return test;
       }
-      // console.log(item.price, price_min, price_max, item.price < price_max);
-
       let test_2 = () => {
         let test = true;
         if (this.state.category === "all") {
-          // true
         } else {
           if (this.state.category !== item.category) {
             test = false;
@@ -138,7 +124,6 @@ class AdminToursList extends React.Component {
         return test
       }
 
-      // executing tests
       if (!test_1()) {
         total_test = false;
       }

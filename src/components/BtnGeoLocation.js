@@ -17,7 +17,6 @@ export default function BtnGeoLocation(props) {
       showCancelButton: true,
       showCloseButton: true
     }).then((result) => {
-      console.log('then posle swal');
       if (result.value === true) {
         dispatch(detectMyLocation());
       }

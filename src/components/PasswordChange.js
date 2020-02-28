@@ -1,19 +1,11 @@
 import React, { Component } from 'react'
-import axios from 'axios'
-import FormInput from './FormInput'
-import Button from './CustomButton'
 import { passwordChange } from '../redux/user/user-actions'
 import { connect } from 'react-redux'
 import { Link } from 'react-router-dom'
-// import { auth, createUsersProfileDocument } from './firebase.utills'
-
-
-// import '../css/styles.scss'
 
 class PasswordChange extends Component {
-  constructor() {
-    super();
-
+  constructor(props) {
+    super(props);
     this.state = {
       passwordCurrent: '',
       password: '',
@@ -27,8 +19,6 @@ class PasswordChange extends Component {
 
   handleSubmit = async e => {
     e.preventDefault();
-    console.log('submit');
-
     const { password, passwordConfirm } = this.state
     if (password !== passwordConfirm) {
       alert("password don't match")
@@ -39,28 +29,14 @@ class PasswordChange extends Component {
       password: this.state.password,
       passwordConfirm: this.state.passwordConfirm
     }
-    console.log(dataToSubmit)
 
     let cb = (response) => {
-      console.log('callback nakon register');
-      console.log(response);
-      // authUtils.autoLoginProcedure(this.props.dispatch);
       this.setState({
         status: 'SUCCESS',
         successEmail: response.data.user.email
       })
     }
     let cb_error = res => {
-      console.log("err");
-      console.log(res);
-      /*
-      data:
-      status: "fail"
-      error: {statusCode: 401, status: "fail", isOperational: true}
-      message
-      */
-      console.log(res.data.status);
-      console.log(res.data.message);
       if (res.data && res.data.status === 'fail') {
         this.setState({
           status: 'ERROR',
@@ -69,9 +45,7 @@ class PasswordChange extends Component {
       }
     }
     this.props.dispatch(passwordChange(dataToSubmit, cb, cb_error))
-
   }
-
 
   handleInputChange(event) {
     const target = event.target;
@@ -82,8 +56,7 @@ class PasswordChange extends Component {
       [name]: value
     });
   }
-  render() {
-
+  render() {    
     let jsxError = null;
     if (this.state.status === 'ERROR') {
       jsxError = (
@@ -100,7 +73,7 @@ class PasswordChange extends Component {
 
         <div className="register-box">
           <div className="register-logo">
-            <a href="../../index2.html"><b>Change new password</b></a>
+            <h2>Change new password</h2>
           </div>
 
           <div className="card">
@@ -189,7 +162,7 @@ class PasswordChange extends Component {
       jsxCongratulations = (
         <div className="register-congratulations text-center">
           <div className="inner">
-            <h2>Password successfully changedt</h2>
+            <h2>Password successfully changed</h2>
             <p></p>
             <p><Link to={'/'}>Go to home page</Link></p>
           </div>
@@ -209,5 +182,4 @@ class PasswordChange extends Component {
 const mapStateToProps = state => ({
   state_ceo: state
 })
-export default connect(mapStateToProps)(PasswordChange);
-
+export default connect(mapStateToProps)(PasswordChange)

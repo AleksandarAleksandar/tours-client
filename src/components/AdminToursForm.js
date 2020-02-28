@@ -9,16 +9,10 @@ import { connect } from 'react-redux'
 import { counterUtils } from '../utils/counter-utils'
 import FormLocation from './FormLocation'
 import FormPicture from './FormPicture'
-import {createStructuredSelector} from 'reselect'
-import {selectUsers} from './../redux/user/user-selector'
-import {selectTourAdvanced} from './../redux/shop/shop-selector'
-
-
+import { createStructuredSelector } from 'reselect'
+import { selectUsers } from './../redux/user/user-selector'
+import { selectTourAdvanced } from './../redux/shop/shop-selector'
 import Swal from 'sweetalert2'
-
-
-/* TODO: osmisliti korake nakon uspesnog submitovanja za create i update
-*/
 
 class AdminToursForm extends Component {
   constructor(props) {
@@ -37,7 +31,6 @@ class AdminToursForm extends Component {
       multicheckbox: [],
       locations: [],
       pictures: [],
-
       category: 'biking',
       name: '',
       summary: '',
@@ -47,12 +40,10 @@ class AdminToursForm extends Component {
       maxGroupSize: '',
       price: '',
       imageCover: { url: '' },
-
       startGeoUri: '',
       coordinates: [],
       startDescription: "",
       address: "",
-
       startDate: ''
     };
 
@@ -66,25 +57,20 @@ class AdminToursForm extends Component {
     const target = event.target;
     let value = target.type === 'checkbox' ? target.checked : target.value;
     const name = target.name;
-
     if (name === 'description') {
       value = value.trim();
     }
     if (name === 'summary') {
       value = value.trim()
     }
-
     this.setState({
       [name]: value
     });
-
     if (name === 'startGeoUri') {
       let fixed_coordinates = [];
       if (typeof value === 'string' && value !== '') {
         let ll = geoUtils.extractL(value);
-        console.log(ll);
         fixed_coordinates = [ll[1], ll[0]];
-        console.log(fixed_coordinates);
         this.setState({
           coordinates: fixed_coordinates
         });
@@ -92,10 +78,7 @@ class AdminToursForm extends Component {
     }
   }
 
-
   _handleMultiChecbox(event) {
-    // event.target.checked
-    console.log('*** MULTICHECKBOX CHANGE');
     let next_multicheckbox = this.state.multicheckbox.map((item) => {
       if (event.target.value === item.value) {
         return {
@@ -107,7 +90,6 @@ class AdminToursForm extends Component {
         return item
       }
     });
-    console.log(next_multicheckbox);
     this.setState({
       multicheckbox: next_multicheckbox
     })
@@ -124,13 +106,11 @@ class AdminToursForm extends Component {
     let mode = this.props.mode;
     if (mode === 'UPDATE') {
       if (this._global.multicheckbox_state.users_fetched === true && this._global.multicheckbox_state.tours_fetched === true) {
-        // kada su fetchovani i users i tours
         do_multicheckbox = true;
       }
     } else {
       // mode CREATE
       if (this._global.multicheckbox_state.users_fetched === true) {
-        // kada su fetchovani users
         do_multicheckbox = true;
       }
     }
@@ -144,7 +124,6 @@ class AdminToursForm extends Component {
         }
         return false;
       });
-      console.log(guides);
       let new_multicheckbox = guides.map((item) => {
         let role = 'Guide';
         if (item.role === 'lead-guide') {
@@ -157,7 +136,7 @@ class AdminToursForm extends Component {
           checked: false
         })
       });
-      // zatim drugi pass: inicijalno checkiranje checkboxova
+      // second pass: initial checkbox checking
       let edited_multicheckbox = new_multicheckbox.map((checkbox_item) => {
         this._global.multicheckbox_state.guides_for_edit.forEach((guide_id) => {
           if (guide_id === checkbox_item.value) {
@@ -166,18 +145,14 @@ class AdminToursForm extends Component {
         });
         return checkbox_item;
       });
-      console.log('helper kreirao multicheckbox: ');
-      console.log(edited_multicheckbox);
       this.setState({
         multicheckbox: edited_multicheckbox
       });
     }
-
   }
 
   handleSubmit(event) {
     event.preventDefault();
-    // alert('An essay was submitted: ' + this.state.value);
     console.log('SUBMIT');
     let mode = this.props.mode;
 
@@ -186,8 +161,6 @@ class AdminToursForm extends Component {
       if (item.checked === true) {
         console.log(item);
         guidesPrepared.push(
-          // formType: item.value,
-          // ref: 'User'
           item.value
         )
       }
@@ -221,12 +194,8 @@ class AdminToursForm extends Component {
       guides: guidesPrepared,
       startDates: startDates
     }
-    console.log(submitData);
     let callbackSuccess = (response) => {
-      console.log('...callback u Komponenti nakon "success" post zahteva :)');
-      console.log(response);
-      // alert('podaci su uspesno sacuvani');
-      // prikazi SUCCESS info i pocisti polja forme
+      // show SUCCESS info and clear form fields
       this.setState({
         status: "SUCCESS",
       })
@@ -239,19 +208,14 @@ class AdminToursForm extends Component {
         success_msg,
         'success'
       ).then(() => {
-        console.log('then posle swal');
       })
-      this._formInit(); // praznimo formu
+      this._formInit(); // clear form
     }
     let callbackFail = (res) => {
-      console.log('...callback u Komponenti nakon "ERROR" post zahteva :(');
-      console.log(res);
       if (res && res.data && res.data.status === "error") {
         let errors = {}
         if (res.data.error && res.data.error.errors) {
           errors = res.data.error.errors
-          console.log('errors');
-          console.log(errors);
         }
         this.setState({
           status: "ERROR",
@@ -271,7 +235,7 @@ class AdminToursForm extends Component {
   }
 
   _formInit(data) {
-    // prazni formu ili setuje inicijalne podatke u polja forme
+    // to clear/set form fields
     let mode = this.props.mode;
     if (mode === "CREATE") {
       this.setState({
@@ -299,44 +263,6 @@ class AdminToursForm extends Component {
       })
     } else {
       // mode UPDATE
-      console.log('_formInit(data) ');
-      console.log(data);
-      /*
-      startLocation: {type: "Point", description: "pocetni summary...asaasd", coordinates: Array(2), address: "pocetni summary...asaasd"}
-    ratingsAverage: 4.5
-    ratingsQuantity: 0
-    images: []
-    startDates: []
-    secretTour: false
-    guides: (4) ["5c8a23412f8fb814b56fa18c", "5c8a1f292f8fb814b56fa184", "5c8a21d02f8fb814b56fa189", "5c8a22c62f8fb814b56fa18b"]
-    _id: "5e1070fc9201e300c8da01d4"
-    category: "swimming"
-    name: "swimming sicilia"
-    summary: "pocetni summary...asaasd"
-    description: "pocetni summary...asaasd"
-    difficulty: "medium"
-    duration: 13
-    maxGroupSize: 22
-    price: 666
-    imageCover: "tour-3-cover.jpg"
-    locations: (2) [
-    {
-      type: "Point"
-      coordinates: (2) [15.5841, 38.0654]
-      _id: "5e1070fc9201e300c8da01d6"
-      address: "Hegelstrasse 6"
-      description: "asdasdasd"
-      day: 4
-    }
-    , {…}]
-    slug: "swimming-sicilia"
-    __v: 0
-    durationWeeks: 1.8571428571428572
-    reviews: []
-    id: "5e1070fc9201e300c8da01d4"
-      */
-
-      // popunjavnje locations u formatu koji omogucava brisanje...
       if (data) {
         let newLocations = data.locations.map((item) => {
           let newId = counterUtils.getFreshId()
@@ -386,7 +312,6 @@ class AdminToursForm extends Component {
     }
   }
 
-
   componentDidMount() {
     let mode = this.props.mode;
     let routeName = 'AP_TOURS_ADD';
@@ -408,34 +333,23 @@ class AdminToursForm extends Component {
       let id = this.props.match.params.id;
       this.props.dispatch(singleTourNeeded(id))
     }
-
   }
 
   componentDidUpdate(prevProps) {
     if (this.props.tour_advanced !== prevProps.tour_advanced) {
       let tour_advanced = this.props.tour_advanced;
       if (tour_advanced.isFetching === false) {
-        // ? TODO: treba bezbedinije da ne bi se stalno izvrsavalo
         this._formInit(tour_advanced.data);
       }
     }
   }
 
-
-
   render() {
-    console.log(this.props);
     let mode = this.props.mode;
     let id = 'ID_PLACEHOLDER';
     if (mode === 'UPDATE') {
-      id = this.props.match.params.id; // prop match mu salje router u Admin.js
-      // console.log('match');
-      // console.log(this.props.match);
+      id = this.props.match.params.id;
     }
-    console.log('match');
-    console.log(this.props.match);
-
-
 
     let jsxStatus = null;
     let status = this.state.status;
@@ -495,7 +409,7 @@ class AdminToursForm extends Component {
 
     let cb_delete_location = (id) => {
       console.log('callback delete location ', id);
-      let locations = [...this.state.locations]; // pure clone
+      let locations = [...this.state.locations];
       let newLocations = locations.filter((item) => {
         if (item.id === id) {
           return false; // delete
@@ -507,8 +421,6 @@ class AdminToursForm extends Component {
     }
 
     let cb_add_location = (newLocation) => {
-      console.log('callback add location');
-      console.log(newLocation);
       let locations = [...this.state.locations, newLocation];
       this.setState({ locations: locations })
     }
@@ -519,8 +431,7 @@ class AdminToursForm extends Component {
       if (item.coordinates) {
         loc = item.coordinates[0] + ' ' + item.coordinates[1]
       }
-      console.log('loc');
-      console.log(item);
+
       let googleMapURL = geoUtils.createGooleMapsURL(ll)
       let openStreetMapURL = geoUtils.createOpenStreetMapURL(ll, 10)
       let href = openStreetMapURL;
@@ -550,10 +461,8 @@ class AdminToursForm extends Component {
       </>
     );
 
-
     let cb_delete_picture = id => {
-      console.log('callback delete picture ', id);
-      let pictures = [...this.state.pictures]; // pure clone
+      let pictures = [...this.state.pictures];
       let newPictures = pictures.filter((item) => {
         if (item.id === id) {
           return false; // delete
@@ -565,15 +474,9 @@ class AdminToursForm extends Component {
     }
 
     let cb_add_picture = (newPicture) => {
-      console.log('callback add picture');
-      console.log(newPicture);
       let pictures = [...this.state.pictures, newPicture];
       this.setState({ pictures: pictures })
-      // this.setState({ imageCover: pictures[0].url })
     }
-
-    console.log('pictures');
-    console.log(this.state.pictures);
 
     let jsxPictures = this.state.pictures.map((pic) => {
       return (
@@ -587,14 +490,10 @@ class AdminToursForm extends Component {
       )
     })
 
-
     let cb_delete_picture_cover = () => {
-      console.log('callback delete picture cover');
       this.setState({ imageCover: { url: '' } })
     }
     let cb_add_picture_cover = (newPicture) => {
-      console.log('callback add picture cover');
-      console.log(newPicture);
       this.setState({ imageCover: newPicture })
     }
     let pic = this.state.imageCover;
@@ -616,17 +515,6 @@ class AdminToursForm extends Component {
     if (mode === 'UPDATE') {
       submitTitle = 'Update tour'
     }
-
-
-    /*
-    {name: {…}, summary: {…}, duration: {…}, maxGroupSize: {…}, price: {…}}
-    name: {message: "A tour must have name", name: "ValidatorError", properties: {…}, kind: "required", path: "name", …}
-    summary: {message: "A tour must have summary", name: "ValidatorError", properties: {…}, kind: "required", path: "summary", …}
-    duration: {message: "A tour must have duration", name: "ValidatorError", properties: {…}, kind: "required", path: "duration", …}
-    maxGroupSize: {message: "A tour must have group size", name: "ValidatorError", properties: {…}, kind: "required", path: "maxGroupSize", …}
-    price: {message: "A tour must have a price", name: "ValidatorError", properties: {…}, kind: "required", path: "price", …}
-    __proto__: Object
-    */
 
     const ERROR_CL = ' is-invalid';
     let errors_cl = {};
@@ -866,10 +754,8 @@ class AdminToursForm extends Component {
   }
 }
 
-// 2021-07-20T09:00:00.000Z
-
-const mapStateToProps = createStructuredSelector ({
-  users: selectUsers, 
+const mapStateToProps = createStructuredSelector({
+  users: selectUsers,
   tour_advanced: selectTourAdvanced
 })
 

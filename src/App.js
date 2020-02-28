@@ -1,6 +1,5 @@
 import React, { lazy, Suspense } from 'react';
-import axios from 'axios'
-import { Switch, Route, Redirect } from 'react-router-dom'
+import { Switch, Route } from 'react-router-dom'
 import Spinner from './components/Spinner'
 import Home from './pages/Home'
 import Header from './components/Header'
@@ -8,16 +7,15 @@ import Footer from './components/Footer'
 import { authUtils } from './utils/auth-utils'
 import ErrorBoundery from './components/ErrorBoundary'
 import NotFound from './pages/NotFound'
-
-
 import { connect } from 'react-redux'
-import { setCurrentUser } from './redux/user/user-actions'
 import Helper from './Helper'
 import SpinnerRow from './components/SpinnerRow'
+
+
+
 const Contact = lazy(() => import('./pages/Contact'))
 const Product = lazy(() => import('./pages/Product'))
 const Category = lazy(() => import('./pages/Category'))
-// const NotFound = lazy(() => import('./pages/NotFound'))
 const Admin = lazy(() => import('./pages/Admin'))
 const Cart = lazy(() => import('./pages/Cart'))
 const UserProfile = lazy(() => import('./pages/UserProfile'))
@@ -48,8 +46,6 @@ class App extends React.Component {
       wrapper_cl = 'wrapper adminlte';
     }
 
-
-    console.log(this.props);
     let jsxLoginMaybe = (
       <Spinner />
     );
@@ -59,15 +55,10 @@ class App extends React.Component {
     }
     let isLoggedIn = false;
     if (this.props.state_ceo.user.auth.isLoggedIn === true) {
-      console.log('*** App JESMO ULOGOVANI');
       isLoggedIn = true;
     } else {
-      console.log('*** App NISMO ULOGOVANI ILI JE LOGOVANJE U TOKU');
       if (autologinFetching === true) {
-        console.log('*** App LOGOVANJE U TOKU');
-        // ostaje spinner
       } else {
-        console.log('*** App NISMO ULOGOVANI');
         jsxLoginMaybe = (
           <SignInUp />
         );
@@ -219,27 +210,8 @@ class App extends React.Component {
   }
 }
 
-
-/*
-const mapStateToProps = createStructuredSelector({
-  currentUser: selectCurrentUser,
-})
-*/
-
 const mapStateToProps = state => ({
   state_ceo: state
-})
-
-
-/*
-const mapStateToProps = state => ({
-  state_ceo: state
-})
-*/
-
-const mapDispatchToProps = dispatch => ({
-  setCurrentUser: user => dispatch(setCurrentUser(user)),
-  dispatchClassic: dispatch
 })
 
 export default connect(mapStateToProps, null)(App);

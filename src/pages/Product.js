@@ -1,13 +1,10 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { selectCollectionsForPreview } from './../redux/shop/shop-selector'
 import { singleTourNeeded, reviewsNeeded } from './../redux/shop/shop-actions'
 import UniversalMap from './../components/UniversalMap'
-import UniversalItem from './../components/UniversalItem'
 import ReviewItem from './../components/ReviewItem'
 import GuidesItem from './../components/GuidesItem'
 import { apiLib } from '../utils/api-lib'
-// import { browserUtils } from './../utils/browser-utils'
 import { updateBrowserTitle } from './../redux/global/global-actions'
 import { routingUtils } from './../utils/routing-utils'
 import Breadcrumbs from './../components/Breadcrumbs'
@@ -15,12 +12,11 @@ import geoUtils from './../utils/geo-utils'
 import { dateUtils } from './../utils/date-utils'
 import { formatUtils } from './../utils/format-utils'
 import BtnGeoLocation from '../components/BtnGeoLocation'
-
 import { addItem } from '../redux/cart/cart-actions'
 import SpinnerRow from '../components/SpinnerRow'
 import { Link } from 'react-router-dom'
 import { selectIsCollectionFetching, selectTour, selectReviews } from './../redux/shop/shop-selector'
-import { selectUsersLocation , selectCurrentUser} from './../redux/user/user-selector'
+import { selectUsersLocation, selectCurrentUser } from './../redux/user/user-selector'
 import { createStructuredSelector } from 'reselect'
 
 class Product extends Component {
@@ -38,63 +34,22 @@ class Product extends Component {
   }
 
   componentDidMount() {
-    console.log(this.props);
-
     let id = this.props.match.params.id; // path='/category/:id'
-
     this.props.dispatch(singleTourNeeded(id))
     this.props.dispatch(reviewsNeeded(id))
     console.log(this.props);
 
     let thisPageRoute = routingUtils.getRouteData('PRODUCT');
-    // browserUtils.updateTitle(thisPageRoute.browserTitle)
     this.props.dispatch(updateBrowserTitle(thisPageRoute.browserTitle))
   }
 
   render() {
-    console.log(this.props);
-    console.log('xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx');
-        
-    
-    let { tour_item, reviews, isFetching, userLocation, auth  } = this.props;
-    console.log('SINGLE TOUR');
-    /*
-    startLocation: {type: "Point", description: "Aspen, USA", coordinates: Array(2), address: "419 S Mill St, Aspen, CO 81611, USA"}
-    ratingsAverage: 4.5
-    ratingsQuantity: 6
-    images: (3) ["tour-3-1.jpg", "tour-3-2.jpg", "tour-3-3.jpg"]
-      0(pin):"tour-3-1.jpg"
-      1(pin):"tour-3-2.jpg"
-      2(pin):"tour-3-3.jpg"
-    startDates: (3) ["2022-01-05T10:00:00.000Z", "2022-02-12T10:00:00.000Z", "2023-01-06T10:00:00.000Z"]
-    secretTour: false
-    guides: (3) ["5c8a21d02f8fb814b56fa189", "5c8a23412f8fb814b56fa18c", "5c8a1f4e2f8fb814b56fa185"]
-    _id: "5c88fa8cf4afda39709c295a"
-    category: "swimming"
-    name: "The Snow Adventurer"
-    duration: 4
-    maxGroupSize: 10
-    difficulty: "difficult"
-    price: 997
-    summary: "Exciting adventure in the snow with snowboarding and skiing"
-    description: "Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua, ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum!↵Dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur, exercitation ullamco laboris nisi ut aliquip. Lorem ipsum dolor sit amet, consectetur adipisicing elit!"
-    imageCover: "tour-3-cover.jpg"
-    locations: (2) [{…}, {…}]
-    slug: "the-snow-adventurer"
-    __v: 0
-    durationWeeks: 0.5714285714285714
-    reviews: (6) [{…}, {…}, {…}, {…}, {…}, {…}]
-    id: "5c88fa8cf4afda39709c295a"
-    */
-
+    let { tour_item, reviews, isFetching, userLocation, auth } = this.props;
     let guides = [];
     let cover = ""
     let validated = true;
-    // let shop = this.props.state_ceo.shop;
-
     let jsxSpinner = <SpinnerRow />
     let jsxReviewsSpinner = <SpinnerRow />
-
     let jsxDistance = 'not calculated';
 
     if (isFetching === false && tour_item && tour_item.name) {
@@ -110,57 +65,31 @@ class Product extends Component {
     let ll = [];
     let locations;
     if (validated === false) {
-      console.log('test 4 SHOP ');
-      // console.log(shop);
-
       jsxSpinner = null;
-
       tour = tour_item;
       item = tour;
-
-      console.log(tour);
-      // FIX
       let original_ll = tour.startLocation.coordinates;
       ll = [original_ll[1], original_ll[0]]; // fixed ll
-      // locations = tour.locations [...].coordinates 
       locations = tour.locations;
-      console.log(ll);
-      console.log(locations);
-      // startLocation.coordinates[""0""]
       guides = tour.guides;
 
-      console.log(typeof tour.startDate, tour.startDate);
       if (tour.startDates && tour.startDates[0] !== '') {
         let firstDateParsed = dateUtils.parsedateString(item.startDates[0]);
         firstDate = firstDateParsed.monthLong + ' ' + firstDateParsed.day;
-        console.log(firstDateParsed);
       }
 
       price = formatUtils.formatPrice(item.price, '€');
-
-      // if fetching false
       cover = apiLib.staticCover(tour.imageCover)
-
-
-
 
       if (userLocation.detected === true) {
         let original_ll = tour.startLocation.coordinates;
         let ll = [original_ll[1], original_ll[0]]; // fixed ll
-        // let original_myll = [0,0];
         let myll = userLocation.ll; // no need to fix
         let raw_distance = geoUtils.getDistance(ll, myll);
         let distance = formatUtils.formatDistance(raw_distance);
         jsxDistance = (
           <div className="distance">Distance: {distance}</div>
         );
-        /*
-        console.log('-----------------------------------------------------------------');
-        console.log(original_ll);
-        console.log(myll);
-        console.log(raw_distance);
-        console.log(distance);
-        */
       } else {
         jsxDistance = (
           <BtnGeoLocation dispatch={this.props.dispatch} />
@@ -175,13 +104,8 @@ class Product extends Component {
       jsxReviewsSpinner = null;
       review = reviews.data
     }
-
-    // console.log(reviews);
     let id = this.props.match.params.id; // path='/category/:id'
-    // console.log(id);
     let filteredReviews = review.filter((item) => {
-      // console.log(item.id, item._id);
-
       if (item.tour === id) {
         return true
       }
@@ -313,11 +237,11 @@ class Product extends Component {
               <div className="items guides-items">{jsxGuides}</div>
             </div>
           </div>
-          <div className="extra-map-buttons">
+          {/* <div className="extra-map-buttons">
             <a target="_blank" href={googleMapURL}>Open start location on google map</a>
             <br />
             <a target="_blank" href={openStreetMapURL}>Open start location on open street map</a>
-          </div>
+          </div> */}
         </section>
 
 
@@ -333,14 +257,6 @@ class Product extends Component {
     )
   }
 }
-
-/*
-const mapStateToProps = createStructuredSelector({
-      collections: selectCollectionsForPreview,
-  
-  })
-  */
-
 const mapStateToProps = createStructuredSelector({
   tour_item: selectTour,
   isFetching: selectIsCollectionFetching,

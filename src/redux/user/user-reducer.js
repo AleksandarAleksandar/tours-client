@@ -1,14 +1,5 @@
 import { userActionTypes } from './user-types'
 
-
-/*
-dizeldorf kordinate
-  userLocation: {
-    detected: true,
-    ll: [51.1005, 6.8431]
-  },
-*/
-
 const INITIAL_STATE = {
   currentUser: null,
   userLocation: {

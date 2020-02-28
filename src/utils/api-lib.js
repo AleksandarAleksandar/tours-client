@@ -1,23 +1,16 @@
-// biblioteka svih APi url-ova i ostalih URL-ova
+// library of all api urls
 import { config } from './config'
 import { liveConfig } from './live-config'
 
 export const apiLib = {};
 
-// const config = {
-//   environment: 'LIVE',
-//   simulate: true
-// }
 
 const STATIC_AVATAR_FOLDER = '/static/img/users/'
 const STATIC_AVATAR_DEFAULT = '/static/img/users/default.jpg';
 const STATIC_COVER_FOLDER = '/static/img/tours/'
 
-const PRIMER_API_PREFIX = 'htttps://api.nekisajt.com/services/';
-const PRIMER_API_PREFIX_DEV = 'htttps://testapi.nekisajt.com/services/';
 
 const API_PREFIX_LOCAL = 'http://localhost:3000/';
-// const API_PREFIX_PROD = 'http://nekisajt.com/';
 const API_PREFIX_PROD = config.API_PREFIX_PROD
 
 let apiPrefix = () => {
@@ -37,25 +30,17 @@ const API_URL_PASSWORD_CHANGE = 'api/v1/users/updateMyPassword'
 const API_URL_PASSWORD_FORGOT = 'api/v1/users/forgotPassword'
 const API_URL_PASSWORD_RESET = 'api/v1/users/resetPassword/'
 const API_URL_CONTACT_US = 'api/v1/users/contactus'
-const API_URL_GET_TOURS = 'api/v1/tours'; // opsi sve ture, nefiltrirane
+const API_URL_GET_TOURS = 'api/v1/tours'; 
 const API_URL_GET_SINGLE_TOUR = 'api/v1/tours/'
 const API_URL_GET_REVIEWS = 'api/v1/reviews/'
 const API_URL_GET_USERS = 'api/v1/users/'
 const API_URL_CREATE_TOUR = 'api/v1/tours/'
 const API_URL_TOUR_STATS = 'api/v1/tours/tour-stats'
-// const API_URL_BOOK_TOUR = 'api/v1/bookings/checkout-session/'
 const API_URL_GET_BOOKINGS = 'api/v1/bookings/list'
 const API_URL_GET_ORDERS = 'api/v1/orders/list'
 // const API_URL_CREATE_ORDER = 'api/v1/orders/checkout-session/'
 const API_URL_PAYMENT_STRIPE = 'api/v1/orders/stripe-payment/'
 const API_URL_PAYMENT_PAYPAL = 'api/v1/orders/paypal-payment/'
-
-
-
-
-
-
-
 
 // URLs
 
@@ -165,55 +150,3 @@ apiLib.apiPaymentStripe = () => {
 apiLib.apiPaymentPaypal = () => {
   return apiPrefix() + API_URL_PAYMENT_PAYPAL
 }
-
-
-/*
-// a)
-// apiLib.apiPostsGet_var = apiPrefix() + API_POSTS_GET;
-
-// b)
-apiLib.apiPostsGet = () => {
-  if (limit) {
-    url = prefix + API_POSTS_GET + '?limit=' + limit;
-  }
-  return prefix + API_POSTS_GET;
-};
-
-apiLib.apiPostsGet = (userId, limit, after) => {
-  let url = '';
-  let prefix = apiPrefix();
-  if (config.envirnment === 'DEV') {
-    prefix = apiPrefix()_DEV;
-  }
-  if (limit) {
-    url = prefix + API_POSTS_GET + '?limit=' + limit;
-  }
-  if (after) {
-    url = prefix + API_POSTS_GET + '?limit=' + limit; + '&after=' + after;
-  }
-  if (config.simulate === true) {
-    ulr = 'localhost/simulacijaapija/posts.json';
-  }
-  return url;
-};
-
-*/
-
-
-
-/*
-/api/va/posts?limit=10
-/api/va/posts
-/api/v1/posts/all/get
-/api/v1/posts/single/get
-*/
-
-
-
-
-
-
-
-
-
-

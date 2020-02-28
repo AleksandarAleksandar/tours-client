@@ -25,9 +25,7 @@ const appConfig = {
   use_jwt: true,
   useCookieToken: true,
   useHeaderToken: true
-};
-// ostale mogu biti na primer:
-cookie...
+};..
 */
 
 authUtils.storeToken = (tokenName, token) => {
@@ -49,13 +47,10 @@ authUtils.getToken = (key) => {
 }
 
 authUtils.afterLoginFormProcedure = (token) => {
-  // ovo je procedura koja se u sutini poziva samo nakon logovanja kada nam server kreira novi token.
   authUtils.storeToken(config.TOKEN_STORAGE_KEY, token);
 }
 
 authUtils.autoLoginProcedure = (dispatch) => {
-  console.log(' ...AUTOLOGIN PROCEDURE');
-  // ovo je procedura univerzalna koja treba da se obavi svaki put kad se aplikacija startuje i nakon login, nakon logout...
   let token = authUtils.getToken(config.TOKEN_STORAGE_KEY);
   let decoded;
   if (config.use_jwt === true) {
@@ -83,7 +78,6 @@ authUtils.autoLoginProcedure = (dispatch) => {
 
 authUtils.logoutProcedure = (dispatch) => {
   console.log(' ...LOGOUT PROCEDURE');
-  // ovo je procedura univerzalna koja treba da se obavi svaki put kad se aplikacija startuje i nakon login, nakon logout...
 
   authUtils.deleteToken(config.TOKEN_STORAGE_KEY)
 
@@ -96,8 +90,6 @@ authUtils.logoutProcedure = (dispatch) => {
   }
 
   let cb = (data) => {
-    console.log('logout utils make calback...');
-    console.log(data);
   }
 
   dispatch(logout(cb));

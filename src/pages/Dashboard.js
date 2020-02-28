@@ -1,26 +1,17 @@
 import React from 'react'
-
 import { connect } from 'react-redux'
-// import '../css/styles.scss'
-import { selectCollection } from '../redux/shop/shop-selector'
-import CollectionItem from '../components/PreviewItem'
 import UniversalItems from '../components/UniversalItems'
 import { toursNeeded } from '../redux/shop/shop-actions'
-import shopActionTypes from '../redux/shop/shop-types'
-import { selectIsCollectionFetching, selectTours, selectCategories } from './../redux/shop/shop-selector'
+import { selectIsCollectionFetching, selectTours } from './../redux/shop/shop-selector'
 import { createStructuredSelector } from 'reselect'
 
 class Dashboard extends React.Component {
   constructor(props) {
     super(props)
-    console.log('constructor Category Page');
-    console.log(this.props);
   }
 
   componentDidMount() {
     this.props.dispatch(toursNeeded())
-    console.log('did mount Category Page');
-    console.log(this.props);
   }
 
   render() {
@@ -49,15 +40,11 @@ class Dashboard extends React.Component {
     let filteredItems = []
 
     if (this.props.isFetching === false) {
-      console.log('test 3 ');
-      // console.log(this.props.state_ceo.shop);
       items = this.props.tours_items;
 
     }
-    console.log(items)
 
     filteredItems = items.filter((item) => {
-      console.log(item.category, category)
       if (catId === 'all') {
         return true;
       }
@@ -68,21 +55,13 @@ class Dashboard extends React.Component {
       }
     })
 
-    console.log(filteredItems)
 
     return (
       <div className='collection-page'>
         <h2 className='title'>{category.title}</h2>
-        
-
         <div className="">
           <UniversalItems title={category.title} items={filteredItems} limit={'ncemo da limitiramo ovde'} spinner={true} />
-
         </div>
-
-
-
-
       </div>
     )
   }

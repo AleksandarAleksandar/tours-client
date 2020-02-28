@@ -1,14 +1,5 @@
-import React, { useEffect, useState } from 'react'
-import { connect } from 'react-redux'
-import { routingUtils } from '../utils/routing-utils'
-import { updateBrowserTitle, updateCurrentRoute } from '../redux/global/global-actions'
-import { bookingsNeeded, ordersNeeded } from '../redux/shop/shop-actions'
-
+import React from 'react'
 import BookingsItem from './../components/BookingsItem'
-import SpinnerRow from './../components/SpinnerRow'
-import Breadcrumbs from './../components/Breadcrumbs'
-import { Link } from 'react-router-dom'
-
 import { formatUtils } from '../utils/format-utils'
 import { dateUtils } from '../utils/date-utils'
 
@@ -17,7 +8,6 @@ const BookingsGroup = (props) => {
 
   let order = props.group.order;
   let bookings = props.group.tours;
-
   // table
   let jsxTableRows = bookings.map((item) => {
     return (
@@ -41,8 +31,6 @@ const BookingsGroup = (props) => {
   )
 
   let price = formatUtils.formatPrice(order.price, '€')
-  // console.log('TEST datume', order.createdAt);
-  // console.log(dateUtils.parsedateString(order.createdAt));
   let date = dateUtils.parsedateString(order.createdAt);
   let dateDisplay = date.day + ' ' + date.monthLong + ' ' + date.year;
 

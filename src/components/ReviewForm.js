@@ -1,30 +1,21 @@
 import React from 'react'
-
-
 import Breadcrumbs from './../components/Breadcrumbs'
-import { Route, Link } from 'react-router-dom'
-// import CollectionsOverviewContainer from '../components/CollectionOverviewContainer'
-// import CollectionPageContainer from '../components/CollectionPageContainer'
+import { Link } from 'react-router-dom'
 import { reviewCreate } from './../redux/shop/shop-actions'
 import Rating from '@material-ui/lab/Rating'
-
-import UniversalItems from './../components/UniversalItems'
 import { createStructuredSelector } from 'reselect'
 import { connect } from 'react-redux'
-import { fetchCollectionsStart } from './../redux/shop/shop-actions'
-// import { browserUtils } from './../utils/browser-utils'
 import { routingUtils } from './../utils/routing-utils'
 import { updateBrowserTitle } from './../redux/global/global-actions'
 import { selectIsCollectionFetching, selectTours } from './../redux/shop/shop-selector'
+import SpinnerRow from './SpinnerRow'
+import { singleTourNeeded } from './../redux/shop/shop-actions'
 
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
-import CloudUploadIcon from '@material-ui/icons/CloudUpload';
-import Icon from '@material-ui/core/Icon';
 import Typography from '@material-ui/core/Typography';
 import Box from '@material-ui/core/Box';
-import SpinnerRow from './SpinnerRow'
-import { singleTourNeeded } from './../redux/shop/shop-actions'
+
 
 class ReviewForm extends React.Component {
   constructor(props) {
@@ -40,7 +31,6 @@ class ReviewForm extends React.Component {
 
   handleSubmit(e) {
     e.preventDefault();
-    console.log('submit');
     let id = this.props.match.params.id; // path='/category/:id'
 
     const dataToSubmit = {
@@ -48,32 +38,13 @@ class ReviewForm extends React.Component {
       rating: this.state.rating,
       tour: id
     }
-    console.log(dataToSubmit)
     let cb = (response) => {
-      console.log('callback nakon submit review');
-      console.log(response);
-      // authUtils.autoLoginProcedure(this.props.dispatch);
       this.setState({
         status: 'SUCCESS'
       })
     }
     let cb_error = res => {
-      console.log("err");
-      console.log(res);
-      /*
-      { 
-         "status":"fail",
-         "error":{ 
-            "statusCode":400,
-            "status":"fail",
-            "isOperational":true
-         },
-         "message":"Token is invalid",
-         "stack":"Error: Token is invalid\n    at exports.resetPassword.catchAsync (C:\\projekti\\backend\\controllers\\authControler.js:178:17)\n    at process._tickCallback (internal/process/next_tick.js:68:7)"
-      }
-      */
       if (res.data && (res.data.status === 'fail' || res.data.status === 'error')) {
-        console.log(res.data);
         this.setState({
           status: 'ERROR',
           statusMessage: res.data.message
@@ -98,7 +69,7 @@ class ReviewForm extends React.Component {
     let thisPageRoute = routingUtils.getRouteData('REVIEW_CREATE');
     this.props.dispatch(updateBrowserTitle(thisPageRoute.browserTitle))
 
-    let id = this.props.match.params.id; // path='/category/:id'
+    let id = this.props.match.params.id;
     this.props.dispatch(singleTourNeeded(id))
   }
 
@@ -107,18 +78,13 @@ class ReviewForm extends React.Component {
     let thisPageRoute = routingUtils.getRouteData('REVIEW_CREATE');
     let breadcrumbs = thisPageRoute.breadcrumbs;
     let activeRoute = thisPageRoute.routeName;
-    console.log(this.props);
-    console.log('0000000000000000000000000000000000000000000000');
-    
-    
 
     let mode = 'CREATE'
     let id = this.props.match.params.id;
-    let {isFetching, tours_items} = this.props
+    let { isFetching, tours_items } = this.props
 
     let jsxTourName = '...';
     let jsxSpinner = <SpinnerRow />
-    // let shop = this.props.state_ceo.shop
     if (isFetching === false && tours_items && tours_items.name) {
       jsxSpinner = null;
       jsxTourName = (
@@ -205,7 +171,7 @@ class ReviewForm extends React.Component {
   }
 }
 
-const mapStateToProps =createStructuredSelector ({
+const mapStateToProps = createStructuredSelector({
   tours_items: selectTours,
   isFetching: selectIsCollectionFetching
 });

@@ -1,13 +1,7 @@
 import React, { Component } from 'react'
-import axios from 'axios'
-import FormInput from './FormInput'
-import Button from './CustomButton'
 import { register } from './../redux/user/user-actions'
 import { connect } from 'react-redux'
 import { Link } from 'react-router-dom'
-// import { auth, createUsersProfileDocument } from './firebase.utills'
-
-// import '../css/styles.scss'
 
 class Register extends Component {
   constructor() {
@@ -27,9 +21,8 @@ class Register extends Component {
 
   handleSubmit = async e => {
     e.preventDefault();
-    console.log('submit');
 
-    const { name, email, password, confirmPassword } = this.state
+    const { password, confirmPassword } = this.state
     if (password !== confirmPassword) {
       alert("password don't match")
       return
@@ -40,28 +33,14 @@ class Register extends Component {
       password: this.state.password,
       confirmPassword: this.state.confirmPassword
     }
-    console.log(dataToSubmit)
 
     let cb = (response) => {
-      console.log('callback nakon register');
-      console.log(response);
-      // authUtils.autoLoginProcedure(this.props.dispatch);
       this.setState({
         status: 'SUCCESS',
         successEmail: response.user.email
       })
     }
     let cb_error = res => {
-      console.log("err");
-      console.log(res);
-      /*
-      data:
-      status: "fail"
-      error: {statusCode: 401, status: "fail", isOperational: true}
-      message
-      */
-      console.log(res.data.status);
-      console.log(res.data.message);
       if (res.data && res.data.status === 'fail') {
         this.setState({
           status: 'ERROR',
@@ -70,32 +49,7 @@ class Register extends Component {
       }
     }
     this.props.dispatch(register(dataToSubmit, cb, cb_error))
-
   }
-
-
-  /*
-    handleSubmit = async e => {
-      e.preventDefault();
-      const { name, email, password, confirmPassword } = this.state;
-      if (password !== confirmPassword) {
-        alert("password don't match")
-        return
-      }
-      try {
-        const registration = await axios.post('api/v1/users/signUp', this.state)
-        console.log(registration)
-        this.setState({
-          name: '',
-          email: '',
-          password: '',
-          confirmPassword: ''
-        });
-      } catch (error) {
-        console.log(error);
-      }
-    }
-  */
 
   handleInputChange(event) {
     const target = event.target;
@@ -108,8 +62,6 @@ class Register extends Component {
   }
 
   render() {
-    // const { name, email, password, confirmPassword } = this.state;
-
     let jsx = (
       <div className="register-page">
 
@@ -251,4 +203,3 @@ const mapStateToProps = state => ({
   state_ceo: state
 })
 export default connect(mapStateToProps)(Register);
-

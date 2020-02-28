@@ -3,8 +3,6 @@ import React from 'react'
 class UniversalMap extends React.Component {
   constructor(props) {
     super(props);
-
-    // binding this
     this._refresh_leaflet = this._refresh_leaflet.bind(this)
   }
 
@@ -13,15 +11,8 @@ class UniversalMap extends React.Component {
     if (this.props.locations) {
       locations_arr = this.props.locations;
     }
-    /*
-    let callback_extract_ll_from_arr = function (arr) {
-      arr.forEach(function (item) {
-        item.coordinates
-      });
-    }
-    */
     let callback_extract_ll_from_arr_item = function (item) {
-      var ll = [item.coordinates[1], item.coordinates[0]]; // FIX za obrnuti redosled lat long...
+      var ll = [item.coordinates[1], item.coordinates[0]]; // fix for reverse lat lng
       return ll;
     }
     let callback_tooltip_template = function (item) {
@@ -31,10 +22,6 @@ class UniversalMap extends React.Component {
 
     if (this.props.ll) {
       let ll = this.props.ll;
-      /*
-      let lat = 0;
-      let long = 0;
-      */
       if (ll[0] && typeof ll[0] === 'number') {
       } else {
         ll[0] = 0;
@@ -43,26 +30,16 @@ class UniversalMap extends React.Component {
       } else {
         ll[1] = 0;
       }
-      /*
-      // FIX
-      let original_ll = [...ll];
-      ll = [original_ll[1], original_ll[0]];
-      */
-
-      window.myscript.init(ll, locations_arr, callback_extract_ll_from_arr_item, callback_tooltip_template); // inivijalizujemo/reinicijalizujemo lefalet widget
+        window.myscript.init(ll, locations_arr, callback_extract_ll_from_arr_item, callback_tooltip_template); // initialize/reinitialize lafet widget
     }
   }
 
   componentDidMount() {
-    console.log(this.props);
     this._refresh_leaflet();
   }
 
   componentDidUpdate(prevProps, prevState) {
-    console.log('componentDidUpdate ', prevProps.ll, this.props.ll);
-    console.log(this.props);
     if (this.props.ll !== prevProps.ll) {
-      console.log('UPDATED props.ll');
       this._refresh_leaflet();
     }
   }

@@ -2,8 +2,6 @@
 
 import React from 'react'
 import { connect } from 'react-redux'
-
-// import '../css/styles.scss'
 import Button from './CustomButton'
 import CartItem from './CartItem'
 import { selectCartItems } from '../redux/cart/cart-selectors'

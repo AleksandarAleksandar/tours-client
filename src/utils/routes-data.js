@@ -1,5 +1,3 @@
-
-
 export const routesData = [
   {
     routeName: 'NOT_FOUND',
@@ -129,7 +127,7 @@ export const routesData = [
 ]
 
 
-// ucenje
+// to think about(more poverfull breadcrumb)
 let mocniji_breadcrumbs = [
   {
     option: 'HOME',
@@ -178,5 +176,4 @@ let drugacije = [
     option: 'GUIDES_EDIT',
     parent: 'GUIDES_LIST'
   }
-
 ];

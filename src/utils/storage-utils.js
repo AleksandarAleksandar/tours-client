@@ -3,21 +3,19 @@ export const storageUtils = {};
 let config = {
   solution: 'LOCALSTORAGE'
 }
-/* ostale mogu biti na primer:
+/* other can be:
 ANDROID ASYNC SIORAGE, 
 sessionStorage,
 cookie...
 */
 
 storageUtils.get = (key) => {
-  // upsert znaci update or insert (setuje novi podatak ili updateuje stari ako psotoji)
   if (config.solution === 'LOCALSTORAGE') {
     return localStorage.getItem(key);
   }
 }
 
 storageUtils.upsert = (key, value) => {
-  // upsert znaci update or insert (setuje novi podatak ili updateuje stari ako psotoji)
   if (config.solution === 'LOCALSTORAGE') {
     localStorage.setItem(key, value);
   }
@@ -40,7 +38,6 @@ storageUtils.logAll = () => {
         value: localStorage.getItem(keys[i])
       });
     }
-    console.log(arr);
     return arr;
   }
 }

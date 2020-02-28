@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react'
 import { apiLib } from '../utils/api-lib'
-import { apiSingleTourGet } from '../redux/shop/shop-actions'
 import { ajaxGet } from '../utils/ajax-abstraction'
 import { dateUtils } from './../utils/date-utils'
 import { formatUtils } from './../utils/format-utils'
@@ -10,9 +9,7 @@ import { Link } from 'react-router-dom'
 
 function BookingsItem(props) {
   let item = props.item
-  console.log('iteeeeeeeeeeeeeeeeeeeeeeem', item);
   let tourid = item.tour
-
   const [state, setState] = useState({
     price: item.price,
     isFetching: true,
@@ -20,15 +17,11 @@ function BookingsItem(props) {
   })
 
   useEffect(() => {
-    // component did mount
 
-    // step 2: odmah zapocinjemo fetchovanje asinhtono
+    //start fetching
     ajaxGet(apiLib.apiSingleTourGet(tourid))
       .then((response) => {
-        // fetchovanje je zavrseno i uspelo
-        // step 3
-        console.log('nase fetchovanje je zavrseno')
-        console.log(response);
+        // fetchovanje success
         if (response && response.data) {
           let pripremljeni_podaci_za_state = response.data.data.doc;
           setState({
@@ -36,14 +29,9 @@ function BookingsItem(props) {
             isFetching: false,
             data: pripremljeni_podaci_za_state
           });
-          console.log(pripremljeni_podaci_za_state);
-          // dispatch(fetchReviewsSuccess(pripremljeni_podaci_za_state))
         } else {
-          // dispatch(fetchReviewsFailure())
         }
-
       })
-
   }, [])
 
 
@@ -52,7 +40,6 @@ function BookingsItem(props) {
   date = firstDateParsed.monthLong + ' ' + firstDateParsed.day;
 
 
-  let prics_from_booking = item.price;
   let price = formatUtils.formatPrice(state.data.price, '€'); // actual price fetched from tours api
 
   return (

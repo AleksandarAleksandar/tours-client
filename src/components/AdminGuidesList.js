@@ -10,27 +10,18 @@ export default class AdminGuidesList extends Component {
     this.props.dispatch(updateBrowserTitle(thisPageRoute.browserTitle))
     this.props.dispatch(updateCurrentRoute('AP_GUIDES_LIST'))
   }
-
   render() {
     return (
       <>
         <div className="container-fluid">
           <div className="row">
-
             <div className="col-lg-6">
               <h3>GUIDES LIST</h3>
-              col lg 6
-
-
-
-                  </div>
-
+            </div>
             <div className="col-lg-6">
               <Link to={'/admin/guides/add'} className="active">(+) Add guide</Link>
-
             </div>
           </div>
-
         </div>
       </>
     )

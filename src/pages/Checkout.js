@@ -1,60 +1,30 @@
-import React, { useEffect, useState, useReducer, setInputs } from 'react'
+import React, { useEffect, useState, useReducer } from 'react'
 import { connect } from 'react-redux'
-// import { createStructuredSelector } from 'reselect'
 import { routingUtils } from './../utils/routing-utils'
-import axios from 'axios'
 import StripeCheckout from 'react-stripe-checkout'
 import { Link, Redirect } from 'react-router-dom'
-
-import TextField from '@material-ui/core/TextField';
-import Button from '@material-ui/core/Button';
-import CloudUploadIcon from '@material-ui/icons/CloudUpload';
-import Icon from '@material-ui/core/Icon';
-
-import FormLabel from '@material-ui/core/FormLabel';
-import FormControl from '@material-ui/core/FormControl';
-import FormGroup from '@material-ui/core/FormGroup';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import Checkbox from '@material-ui/core/Checkbox';
 import { paymentStripe, paymentPaypal } from './../redux/shop/shop-actions'
 import { emptyCart } from '../redux/cart/cart-actions'
-
-import Radio from '@material-ui/core/Radio';
-import RadioGroup from '@material-ui/core/RadioGroup';
-import FormHelperText from '@material-ui/core/FormHelperText';
-import StripePayment from './StripePayment'
-import Paypal from './../components/Paypal'
 import { selectCartItems } from './../redux/cart/cart-selectors'
 import { createStructuredSelector } from 'reselect'
-
-
-// import { selectCartItems, selectCartTotal } from '../redux/cart/cart-selectors'
-
-import CheckoutItem from '../components/CheckoutItem'
-// import StripeCheckoutButton from '../components/StripeButton'
 import Breadcrumbs from '../components/Breadcrumbs'
 import { updateBrowserTitle } from './../redux/global/global-actions'
 import { formatUtils } from './../utils/format-utils'
 import Swal from 'sweetalert2'
 
+import Radio from '@material-ui/core/Radio';
+import RadioGroup from '@material-ui/core/RadioGroup';
+import TextField from '@material-ui/core/TextField';
+import Button from '@material-ui/core/Button';
+import FormControl from '@material-ui/core/FormControl';
+import FormGroup from '@material-ui/core/FormGroup';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
+import Checkbox from '@material-ui/core/Checkbox';
+
 
 const Checkout = (props) => {
   let jsxRedirect = null;
-
-  /*
-    componentDidMount() {
-      // this.props.dispatch(toursNeeded())
-      console.log('did mount Cart page');
-      console.log(this.props);
-  
-      let thisPageRoute = routingUtils.getRouteData('CART');
-      // browserUtils.updateTitle(thisPageRoute.browserTitle)
-      this.props.dispatch(updateBrowserTitle(thisPageRoute.browserTitle))
-    }
-  */
-  // let breadcrumbs = []
   const [needRedirect, setNeedRedirect] = useState(false)
-
   const [savedAddress, setSavedAddress] = useState('NEW')
   let toggleAddressForm = (event) => {
     setSavedAddress(event.target.value);
@@ -67,28 +37,6 @@ const Checkout = (props) => {
   if (savedAddressChecked === true) {
     cl_saved = "hide"
   }
-
-  /*
-  const [paymentMethod, setPaymentMethod] = useState('CARD')
-  let paymentChecked = {
-    paypal: false,
-    card: true,
-    bitcon: false
-  }
-  if (paymentMethod === 'PAYPAL') {
-    paymentChecked = {
-      paypal: true,
-      card: false,
-      bitcon: false
-    }
-  } else if (paymentMethod === 'BITCOIN') {
-    paymentChecked = {
-      paypal: false,
-      card: false,
-      bitcon: true
-    }
-  }
-  */
   const mInitial = {
     paypal: false,
     card: false,
@@ -118,11 +66,6 @@ const Checkout = (props) => {
     }
   }
   const [mState, mDispatch] = useReducer(mReducer, mInitial)
-  // onChange={ (e) => { mDispatch('BITCOIN') } }
-  // mState.paypal
-
-  //dodao useReducer da handluje input change. Zasto mora da se salje objekat sa username: '' itd kada moze da se kreira properti kada se unese input?
-
   const [inputValues, setInputValues] = useReducer(
     (state, newState) => ({ ...state, ...newState }),
     {}
@@ -144,36 +87,9 @@ const Checkout = (props) => {
     const { name, value } = event.target;
     setInputValues({ [name]: value });
   };
-  console.log('hello');
-  console.log(inputValues);
-
-
-
-  // const [state, setState] = useState({})
-  // let handleInputChange = (event) => {
-  //   const target = event.target;
-  //   const value = target.type === 'checkbox' ? target.checked : target.value;
-  //   const name = target.name;
-  //   console.log('opalio');
-
-
-  //   setState({
-  //     [name]: value
-  //   });
-  // }
-
-
-  //   const handleInputChange = (event) => {
-  //   event.persist();
-  //   setInputs(inputs => ({...inputs, [event.target.name]: event.target.value}));
-  //   console.log('opalio');
-
-  // }
 
   useEffect(() => {
-    // isto sto i componentDidMount()
     let thisPageRoute = routingUtils.getRouteData('CHECKOUT');
-    // browserUtils.updateTitle(thisPageRoute.browserTitle)
     props.dispatch(updateBrowserTitle(thisPageRoute.browserTitle))
   }, [])
 
@@ -182,7 +98,7 @@ const Checkout = (props) => {
   let activeRoute = thisPageRoute.routeName;
 
 
-  let items = props.cartItems; // itemsi iz carta koji na backendu moraj uda se upisu u tabelu 
+  let items = props.cartItems; 
   if (!Array.isArray(items)) {
     items = [];
   }
@@ -198,17 +114,13 @@ const Checkout = (props) => {
 
 
   let cb_order_success = (response) => {
-    console.log('==============================================');
-    console.log('callback order success', response)
     Swal.fire(
       'Payment successfull!',
-      'Order created (maybe)!',
+      'You will receive receipt on your emaill',
       'success'
     ).then(() => {
-      console.log('then posle swal ... REDIRECT');
       setNeedRedirect(true)
     })
-    // TOD: pocititi cart nakon payment success
     props.dispatch(emptyCart())
   }
   if (needRedirect === true) {
@@ -217,23 +129,20 @@ const Checkout = (props) => {
     );
   }
 
-
   const onToken = token => {
-    let items = props.cartItems; // itemsi iz carta koji na backendu moraj uda se upisu u tabelu OrderItems odnosno bookings...
+    let items = props.cartItems; 
     console.log(items);
     let total = 0;
     let tours = [];
     let jsxCartItems = items.forEach((item) => {
-      // return <CheckoutItem key={item.id} cartItem={item} />
       total += item.price * item.quantity;
-      tours.push(item.id); // popunjava array sam osa ID-ovima od tura...yyy
+      tours.push(item.id); 
     })
     let submitData = {
       amount: total,
       tours: tours,
       token
     }
-    console.log(submitData)
     props.dispatch(paymentStripe(submitData, cb_order_success))
   }
 
@@ -241,7 +150,6 @@ const Checkout = (props) => {
     e.preventDefault();
   }
   const publishableKey = 'pk_test_uwo2ixsEAZeoQqmFkHcEAW9O00CYR7upAk';
-
   let counter = 0;
   let jsxTableRows = items.map((item) => {
     counter++;
@@ -262,41 +170,27 @@ const Checkout = (props) => {
       'Card payment functionality not available at the moment, please use Stripe instead',
       'error'
     ).then(() => {
-      // console.log('then posle swal');
     })
   }
 
   const handlePaypalTransaction = () => {
-    // paypal success callback
-
-    let items = props.cartItems; // itemsi iz carta koji na backendu moraj uda se upisu u tabelu OrderItems odnosno bookings...
-    // console.log(items);
+    let items = props.cartItems; 
     let total = 0;
     let tours = [];
     let jsxCartItems = items.forEach((item) => {
-      // return <CheckoutItem key={item.id} cartItem={item} />
       total += item.price * item.quantity;
-      tours.push(item.id); // popunjava array sam osa ID-ovima od tura...yyy
+      tours.push(item.id);
     })
-    // identican zavrsetak kao za stripa success callback
     let submitData = {
       amount: total,
       tours: tours
     }
-    console.log(submitData)
-
     let cb_order_success = response => {
-      console.log('PayPal success response from our backend')
-      console.log(response);
       let redirectUrl = response.redirectUrl;
-      console.log('we will redirect to: ', redirectUrl);
       window.open(redirectUrl, '_blank');
-
     }
-
     props.dispatch(paymentPaypal(submitData, cb_order_success))
   }
-
 
   return (
     <>
@@ -321,8 +215,6 @@ const Checkout = (props) => {
               <section className="section section-summary">
 
                 <div className='items cart-items grid-items'>
-                  {/* {jsxCartItems}
-              {jsxSpinner} */}
                 </div>
 
                 <h2>Order Summary</h2>
@@ -333,11 +225,6 @@ const Checkout = (props) => {
                   <div className="item separator"></div>
                   <div className="item total"><span>Order total: </span><b>{totalDisplay}</b></div>
                 </div>
-
-                {/* <div className="add-to-cart-group">
-                  <Link to={'/checkout'} className="btn btn-add-cart"><i className="fas fa-cart-plus"></i>Checkout</Link>
-                </div> */}
-
               </section>
             </div>
 

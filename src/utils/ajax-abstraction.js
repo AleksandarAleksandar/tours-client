@@ -1,22 +1,11 @@
-// ovde vrsimo apstrakciju funkcija koje obavljaju ajax/fetchovanja sa servera...
+// here we make abstraction of functions that make fetching from the server
 
 import axios from 'axios'
-import { futimes } from 'fs';
-import { networkInterfaces } from 'os';
-import { API_URL_GET_TOURS } from './api-lib'
-import { myFetchStartFirst } from '../redux/shop/shop-actions';
 
 let config = {
   solution: 'AXIOS'
 }
 
-/*
-let axiosPostConfig = {
-  headers: {
-    'X-MyFirstHeader': 'value headera'
-  }
-}
-*/
 
 let axiosConfigurator = {};
 axiosConfigurator.axiosPostConfig = {
@@ -26,36 +15,17 @@ axiosConfigurator.axiosPostConfig = {
 }
 axiosConfigurator.setHeader = (key, value) => {
   axiosConfigurator.axiosPostConfig.headers[key] = value;
-  console.log('*** HEADER CHANGED', axiosConfigurator)
 }
-
 
 const ajaxErrorHandle = (err) => {
-  console.log('AJAX uhvatili smo gresku');
-  console.error(err);
 }
 
-// export const ajaxGet = async function (url) {
 export const ajaxGet = async function (url) {
   if (config.solution === 'AXIOS') {
-    // axios je vec asinhroni i poziv axios metoda axios.get() odmah vraca promise.
-    // i mi taj promise vracamo sada.
-    // ona funkcija koja ga je pozcvala nasu asinhronu funkciju ajaxGet() treba da ima .then() da bi uhvatila podatke kad se obecanej ispuni.
     return axios.get(url, axiosConfigurator.axiosPostConfig)
       .then((response) => {
-        console.log(response);
         return response;
       }, error => ajaxErrorHandle(error));
-
-    /*
-  .catch(error => console.log('BAD', error))
-.then(response => {
-  console.log('GOOD', response)
-  return response
-});
-*/
-
-    // .catch((err) => { ajaxErrorHandle(err) })
   }
 }
 

@@ -1,24 +1,11 @@
 import React from 'react'
-
-
 import Breadcrumbs from './../components/Breadcrumbs'
-import { Route } from 'react-router-dom'
-// import CollectionsOverviewContainer from '../components/CollectionOverviewContainer'
-// import CollectionPageContainer from '../components/CollectionPageContainer'
-import CollectionOverview from './../components/CollectionsOverview'
-import CategoryPage from './Category'
 import { toursNeeded } from './../redux/shop/shop-actions'
-
 import { contactUs } from './../redux/user/user-actions'
-// import { browserUtils } from './../utils/browser-utils'
 import { routingUtils } from './../utils/routing-utils'
 import { updateBrowserTitle } from './../redux/global/global-actions'
-import { selectCollections } from './../redux/shop/shop-selector'
-
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
-import CloudUploadIcon from '@material-ui/icons/CloudUpload';
-import Icon from '@material-ui/core/Icon';
 import Swal from 'sweetalert2'
 
 
@@ -58,11 +45,7 @@ class Contact extends React.Component {
       fullName: this.state.fullName,
       message: this.state.message
     }
-    console.log('submitData', submitData)
-
     let callbackSuccess = (response) => {
-      console.log('...callback u Komponenti nakon "success" post zahteva :)');
-      console.log(response);
       this.setState({
         status: "SUCCESS",
       })
@@ -71,9 +54,7 @@ class Contact extends React.Component {
         'Message sent successfully',
         'success'
       ).then(() => {
-        // console.log('then posle swal');
       })
-      // cistimo formu posle uspesnog submita
       this.setState({
         email: '',
         fullName: '',
@@ -82,8 +63,6 @@ class Contact extends React.Component {
     }
 
     let cb_error = (response) => {
-      console.log('...callback error');
-      console.log(response);
       let message = 'Unknown error. Mail not sent!';
       if (response && response.data && response.data.message) {
         message = response.data.message;
@@ -94,7 +73,6 @@ class Contact extends React.Component {
         message,
         'error'
       ).then(() => {
-        // console.log('then posle swal');
       })
     }
 

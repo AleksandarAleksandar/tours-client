@@ -1,6 +1,7 @@
+//za brisanje?
+
 import React from 'react'
 import { withRouter } from 'react-router-dom'
-// import '../css/styles.scss'
 
 
 function HomeMenuItem({ name, imageUrl, history, match, linkUrl }) {

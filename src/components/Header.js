@@ -1,36 +1,12 @@
 import React, { useState, useRef, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { connect } from 'react-redux'
-import axios from 'axios'
 import { createStructuredSelector } from 'reselect'
-import { setCurrentUser } from '../redux/user/user-actions'
 import { apiLib } from './../utils/api-lib'
-
-import CartIcon from './CartIcon'
-
-// import '../css/styles.scss'
-import CartDropdown from './CartDropdown'
 import { selectCurrentUser } from './../redux/user/user-selector'
 import { selectCartItems } from '../redux/cart/cart-selectors'
-// import { logout } from '../../../controllers/authControler'
 
-
-/*
-Princip rada hamburger/popup menija: 
-- event listener za clickove moze da se prikaci samo na postojeci dom elemnt
-mi smo koristili document.body tako da slusamo klikove na celoj stranici.
-- pozivanje listenera se vrsi samo u componentDidMount, u ovom slucaju useEffect.
-- na svaki "click" event se poziva handler funkcija sa argumentom e u kojem e.target je precizniji dom elemnt na koji je tacno kliknuto.
-- da bi mogli da pomocu toga otvaramo i zatavaramo hamburger/popup meni, moramo da takodje znamo dom element od popup menija i da izvrsimo poredjenje sa dom elemntom na kojem se desio klik.
-- u React-u dom element nekog html elementa se dobija pomocu njegovog REF-a. REf se kreira sa createRef ili useRef (zaviusno da li je class ili funkcionalna) a zatim se na konkretan html elemenat mora da doda i ref atribut koji upucuje na promenjivu koju smo kreirali sa createRef ili useRef. Tek tada je ispunjen preduslov za ref.
-- da bi taj dom element zaista postojao, mora komponenta da bude mountovana. I tada se u promenjivoj koja sadrzi ref pojavljuje .current properti koji je dom_element
-- kad imamo i dom elemnt na koji je kliknuto i dom element koji je nas popup meni, onda mozemo da poredimo da li popu element sadrzi kliknutog i na osnovu toga znamo da li je kliknuto unutar popupa ili izvan.
-- ako je kliknuto izvan popupa, obicaj je da u svakom slucaju zatvaramo popup, a ko je kliknuto unutar onda po zelji mozemo da gfa ostavimo otovrenog ili ipak zatvorimo.
-
-*/
-
-function Header({ currentUser, hidden, setCurrentUser, isLoggedIn, state_ceo, auth, cartItems, isHomePage }) {
-
+function Header({ isLoggedIn, auth, cartItems, isHomePage }) {
   const [opened, setOpened] = useState(false)
 
   let toggleMenu = () => {
@@ -44,31 +20,23 @@ function Header({ currentUser, hidden, setCurrentUser, isLoggedIn, state_ceo, au
   const ref_hamburger = useRef(null);
 
   useEffect(() => {
-    // componentDidMount
-    var dom_clicks = document.body; // dom komanda koja selectuje ceo html body
+    var dom_clicks = document.body; // select body
     dom_clicks.addEventListener("click", (e) => {
-      console.log('* CLICK');
       if (ref_hamburger && ref_hamburger.current) {
-        console.log('postoji ref');
         let dom_hamburger = ref_hamburger.current;
         if (dom_hamburger.contains(e.target)) {
-          console.log('ref sadrzi kliknutog');
           if (opened) {
-            setOpened(false); // zatvara meni cak i ako je kliknuto unutar njega
+            setOpened(false); //close menu if clicked inside
           }
         } else {
-          console.log('click se desio izvan refa');
-          console.log(opened)
           if (opened) {
-            setOpened(false); // zatavara meni ako je kliknuto izvan
+            setOpened(false); // close menu if cliked outside
           }
         }
       }
     });
   }, [opened])
 
-  console.log('header');
-  // console.log(currentUser);
 
   let avatar_src = apiLib.staticAvatarDefault();
   if (typeof auth.me.photo === 'string') {
@@ -99,7 +67,7 @@ function Header({ currentUser, hidden, setCurrentUser, isLoggedIn, state_ceo, au
     jsxLoginLogut = (
       <>
         <div className="avatar-group">
-          <div className="avatar-img"><Link to="/profile"><img src={avatar_src} /></Link>
+          <div className="avatar-img"><Link to="/profile"><img alt="avatar" src={avatar_src} /></Link>
           </div>
           <div className="nickname">
             <Link to="/profile">
@@ -127,7 +95,7 @@ function Header({ currentUser, hidden, setCurrentUser, isLoggedIn, state_ceo, au
     jsxLoginLogutSmall = (
       <>
         <div className="avatar-group">
-          <div className="avatar-img"><Link to="/profile"><img src={avatar_src} /></Link>
+          <div className="avatar-img"><Link to="/profile"><img alt="avatar" src={avatar_src} /></Link>
           </div>
           <div className="nickname">
             <Link to="/profile">
@@ -140,7 +108,6 @@ function Header({ currentUser, hidden, setCurrentUser, isLoggedIn, state_ceo, au
       </>
     )
   }
-
 
   let notificationDot = 0;
   let jsxNotificationDot = null;
@@ -182,7 +149,6 @@ function Header({ currentUser, hidden, setCurrentUser, isLoggedIn, state_ceo, au
     </div>
   )
 
-
   let cl_opened = '';
   if (opened) {
     cl_opened = ' menu-opened';
@@ -203,7 +169,7 @@ function Header({ currentUser, hidden, setCurrentUser, isLoggedIn, state_ceo, au
               <div className="logo">
                 <Link to="/">
                   <div className="logo-img">
-                    <img src="/static/img/hiking-logo.png" />
+                    <img alt="logo" src="/static/img/hiking-logo.png" />
                   </div>
                 </Link>
               </div>
@@ -220,7 +186,7 @@ function Header({ currentUser, hidden, setCurrentUser, isLoggedIn, state_ceo, au
             <div className="logo">
               <Link to="/">
                 <div className="logo-img">
-                  <img src="/static/img/hiking-logo.png" />
+                  <img alt="logo" src="/static/img/hiking-logo.png" />
                 </div>
               </Link>
             </div>
@@ -244,14 +210,8 @@ function Header({ currentUser, hidden, setCurrentUser, isLoggedIn, state_ceo, au
   )
 }
 
-/*
 const mapStateToProps = createStructuredSelector({
-    currentUser: selectCurrentUser,
-hidden: selectCartHidden
-})
-*/
-const mapStateToProps = createStructuredSelector({
-  auth: selectCurrentUser, //naming???
+  auth: selectCurrentUser, 
   cartItems: selectCartItems
 })
 

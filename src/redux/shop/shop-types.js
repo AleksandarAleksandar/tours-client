@@ -20,16 +20,3 @@ const shopActionTypes = {
 }
 
 export default shopActionTypes
-
-
-/*
-flux-standard-action
-
-{
-  type: 'ADD_TODO',
-  payload: {
-    text: 'Do something.'
-  }
-}
-
-*/

@@ -1,21 +1,13 @@
 import React from 'react'
-import { connect } from 'react-redux'
 import { Link } from 'react-router-dom'
-
-import Button from './CustomButton'
-import { addItem } from '../redux/cart/cart-actions'
 import ProductListItem from './ProductListItem'
 
 function UniversalItem(props) {
   let item = props.item
-
-  // let itemType = 'SIMPLE';
   let title = props.item.name;
   let price = props.item.price;
 
   let itemType = props.itemType
-
-  // nekakav "router" za tip itema....
   let jsxItem = null;
   let product_key = item.id;
   if (itemType === 'SIMPLE') {
@@ -38,7 +30,6 @@ function UniversalItem(props) {
       </div>
     );
   } else if (itemType === 'PAGE') {
-    // jsxItem = <SingleProductPage />
   }
 
   return (

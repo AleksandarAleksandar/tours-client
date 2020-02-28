@@ -1,23 +1,15 @@
 import { createStore, compose, applyMiddleware } from 'redux';
-// import logger from 'redux-logger'
 import { persistStore } from 'redux-persist'
 import thunk from 'redux-thunk'
 
 import rootReducer from './root-reducer'
 
-const middlewares = [thunk]
+// const middlewares = [thunk]
 
-// if (process.env.NODE_ENV === 'development') {
-//   middlewares.push(logger)
-// }
-
-// export const store = createStore(rootReducer, applyMiddleware(...middlewares))
-
-// store sa odesavnjima za debuggere
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 export const store = createStore(rootReducer, composeEnhancers(
   applyMiddleware(thunk)
-)); // NOVO store koji podrzava i thunk i redux-dev-tools i React Native Debugger
+)); 
 
 export const persistor = persistStore(store)
 

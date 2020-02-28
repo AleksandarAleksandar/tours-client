@@ -1,5 +1,4 @@
 import React, { Component } from 'react'
-import geoUtils from '../utils/geo-utils'
 import { counterUtils } from './../utils/counter-utils'
 import SpinnerRow from './SpinnerRow'
 import axios from 'axios'
@@ -30,24 +29,18 @@ export default class FormPicture extends Component {
     });
 
     if (name === 'thefile') {
-      console.log('*********************');
-      console.log(event.target);
       this.setState({ the_file: event.target.files[0] });
     }
   }
 
-
-
   _add() {
-    // umesto submit
     let newPicture = {
       id: this.state.id,
       url: this.state.url
     }
     let cb = this.props.cb;
     if (typeof cb === 'function') {
-      cb(newPicture); // predaje se parent komponenti da upise novu lokaciju
-      //  praznimo formu
+      cb(newPicture); 
       let newId = counterUtils.getFreshId();
       this.setState({
         id: newId,
@@ -59,31 +52,20 @@ export default class FormPicture extends Component {
   }
 
   _upload() {
-    console.log('upload');
-    // let file = this.state.the_file;
-
     let _cb_on_complete = (url) => {
       this.setState({
         isFetching: false,
         url: url
       })
     }
-
-    // sSTEP 1
     this.setState({
       isFetching: true,
       url: ''
     })
 
 
-    const cloudName = 'elukas';
-    const unsignedUploadPreset = 'testUpload';
-
     // *********** Upload file to Cloudinary ******************** //
     function uploadFile(file) {
-      console.log(file)
-      console.log(file.name);
-
       const cloudName = 'dcimz9cam';
       const url = `https://api.cloudinary.com/v1_1/${cloudName}/image/upload`;
 
@@ -99,34 +81,21 @@ export default class FormPicture extends Component {
 
       axios.post(url, formData)
         .then((result) => {
-          console.log('AXIOS UPLOAD SUCCESS :)');
-          console.log(result);
-
-          console.log('FINISHED');
           let url = result.data.secure_url;
-          console.log(url);
           _cb_on_complete(url);
         })
         .catch((err) => {
-          console.log(err);
         })
     }
-
     let the_file = this.state.the_file;
     uploadFile(the_file)
   }
 
   render() {
-    /*
-    images: [String],
-    
-    "images": ["tour-2-1.jpg", "tour-2-2.jpg", "tour-2-3.jpg"],
-    */
     let jsxSpinner = null;
     if (this.state.isFetching === true) {
       jsxSpinner = <SpinnerRow />
     }
-
     let addIsDisabled = false;
     if (!this.state.url || this.state.url === '') {
       addIsDisabled = true;
@@ -137,7 +106,6 @@ export default class FormPicture extends Component {
     } else {
       addIsDisabled = true;
     }
-
     return (
       <>
         <div className="subform-picture">
@@ -195,27 +163,3 @@ export default class FormPicture extends Component {
     )
   }
 }
-
-/*
-{
-"public_id":"sample_image",
-"version":1579261196,
-"signature":"e4c2a1608e6f297c7d957aa48ae60b3da4c5f505",
-"width":297,
-"height":297,
-"format":"png",
-"resource_type":"image",
-"created_at":"2020-01-17T11:39:56Z",
-"tags":[
-
-],
-"bytes":81489,
-"type":"upload",
-"etag":"32b0331ad8eef6cef2d4b731ea0d7304",
-"placeholder":false,
-"url":"http://res.cloudinary.com/tbaustin/image/upload/v1579261196/sample_image.png",
-"secure_url":"https://res.cloudinary.com/tbaustin/image/upload/v1579261196/sample_image.png",
-"existing":false,
-"original_filename":"logo-green-round"
-}
-*/
