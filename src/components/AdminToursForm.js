@@ -450,7 +450,7 @@ class AdminToursForm extends Component {
       if (typeof startll[0] === 'number') {
         let href_start = geoUtils.createOpenStreetMapURL(startll, 10)
         jsxStartLocationLink = (
-          <a href={href_start}>Open start location on map</a>
+          <a href={href_start} target="_blank" rel="noopener noreferrer">Open start location on map</a>
         );
       }
     }
