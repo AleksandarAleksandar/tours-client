@@ -19,7 +19,10 @@ class ReviewItem extends React.Component {
       .then((response) => {
         if (response && response.data) {
           let pripremljeni_podaci_za_state = response.data.data.doc;
-          let avatarUrl = apiLib.staticAvatar(pripremljeni_podaci_za_state.photo);
+          let avatarUrl = apiLib.staticAvatarDefault();
+          if (pripremljeni_podaci_za_state.photo) {
+            avatarUrl = apiLib.staticAvatar(pripremljeni_podaci_za_state.photo);
+          }
           this.setState({
             avatarFetching: false,
             data: pripremljeni_podaci_za_state,
