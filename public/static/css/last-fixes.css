@@ -166,6 +166,8 @@ body {
   background-size: cover;
   box-shadow: 0 4px 5px 0 rgba(0, 0, 0, 0.14), 0 1px 10px 0 rgba(0, 0, 0, 0.12),
     0 2px 4px -1px rgba(0, 0, 0, 0.3);
+
+  opacity: 0.3;
 }
 .slick-arrow.slick-prev {
   background-image: url("/static/img/prev.png");
@@ -178,4 +180,10 @@ body {
 .slick-arrow.slick-next:hover {
   border: 6px solid rgba(255, 255, 255, 1);
   background-color: rgba(255, 255, 255, 1);
+  opacity: 1;
+}
+
+.slick-slider:hover .slick-arrow.slick-prev,
+.slick-slider:hover .slick-arrow.slick-next {
+  opacity: 1;
 }

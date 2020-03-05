@@ -159,8 +159,8 @@ class Home extends React.Component {
                 <h1>Who si Up Tour</h1>
                 <div className="summary">We are here to remind you that the joy of discovery is the single most important thing in life. Don’t forget it.</div>
 
-                <div className="grid-items">
-                  <div className="header-intro">
+                <div className="">
+                  <div className="item flex-1">
                     <div className="description text-justify">Swimm between islands in Greece, the mythic stomping ground of Poseidon and in a medley of beautiful sand stretches and pebbly coves. Come face to face with  powerful images of Italy's lost peasant culture, rugged mountains and fiery volcanoes while biking through south Italy. Hike among the pastel-coloured homes in Norway and under dancing Aurora Boreallis, or come and share the experience with us of running/sightseeing Paris, Berlin or Vatican.</div>
                   </div>
                 </div>

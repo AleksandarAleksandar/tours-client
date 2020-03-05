@@ -85,11 +85,8 @@ h3.section-title {
   max-width: 1100px;
   align-items: center;
   min-height: 24px;
-
 }
 
-.checkout-summary-items {
-}
 .checkout-summary-items .item {
   display: flex;
   flex-direction: row;
@@ -207,9 +204,6 @@ h3.section-title {
   flex: 6;
 }
 
-.universal-items-group123 {
-  /* outline: 1px dashed orange; */
-}
 .universal-items-group123 .items {
   display: flex;
   flex-direction: row;
@@ -228,8 +222,6 @@ h3.section-title {
   /* outline: 1px dotted blue; */
 }
 
-.universal-items {
-}
 .universal-items.slider-style {
   overflow: hidden;
 }
@@ -283,8 +275,6 @@ h3.section-title {
   padding: 20px;
 }
 
-.facts.items {
-}
 .facts.items {
   display: flex;
   flex-direction: column;
@@ -545,12 +535,6 @@ h3.section-title {
   width: 100%;
 }
 
-.big-nav {
-}
-.small-options-container {
-  /* outline: 1px dashed orange; */
-}
-
 .header .logo-and-hamburger {
   display: flex;
   flex-direction: row;
@@ -692,10 +676,6 @@ h3.section-title {
 
 .btn.btn-add-cart.btn-empty-cart {
   margin-left: 20px;
-}
-
-.section {
-  /* border: 1px dashed purple; */
 }
 
 .group-title {
@@ -887,6 +867,9 @@ h3.section-title {
 
 .t-right {
   text-align: right;
+}
+.t-left {
+  text-align: left;
 }
 .t-center {
   text-align: center;
@@ -1145,8 +1128,6 @@ h3.section-title {
   font-size: 14px;
 }
 
-.billing-address-form-wrapper {
-}
 .billing-address-form-wrapper.hide {
   display: none;
 }
@@ -1211,15 +1192,6 @@ h3.section-title {
 }
 .bookings-group-header .pair span:first-child {
   text-transform: uppercase;
-}
-.bookings-group-header .pair.pair-order {
-  /*
-  display: inline-block;
-  max-width: 100px;
-  overflow: hidden;
-  white-space: nowrap;
-  text-overflow: clip;
-  */
 }
 
 .bookings-group table {
@@ -1312,8 +1284,6 @@ h3.section-title {
   z-index: 5;
 }
 
-.header .header-line-small {
-}
 .header .header-line-big {
   display: none;
 }
@@ -1358,7 +1328,17 @@ h3.section-title {
   display: none;
 }
 
+.oops-img {
+  width: 80vw;
+  height: auto;
+}
+
 @media (min-width: 640px) {
+  .oops-img {
+    max-width: 480px;
+    height: auto;
+  }
+
   .header {
     height: 400px;
     /* clip-path: polygon( 0 0, 100% 0, 100% calc(100% - var(--section-rotate)), 0 100% );*/ /* natours.dev */
@@ -1393,6 +1373,10 @@ h3.section-title {
   .grid-items > .item {
     /* width: 50%; */
     flex: 50%;
+  }
+  .grid-items > .item.flex-1 {
+    /* width: 50%; */
+    flex: 1;
   }
   .slider-style .slick-slide {
     width: 260px;

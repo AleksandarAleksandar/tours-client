@@ -13,7 +13,22 @@ class NotFound extends Component {
   render() {
     return (
       <>
-        <div>ROUTE NOT FOUND</div>
+        <div className="error-page">
+
+          <section className="section">
+            <div className="inner">
+              <div className="breadcrumbs-regular clearfix">
+              </div>
+              <h1>NOT FOUND</h1>
+              <div className="t-center">
+                <p className="t-center">Route not found</p>
+                <p className="t-center"><img className="oops-img" src="/static/img/oops.jpg" /></p>
+                
+              </div>
+            </div>
+          </section>
+
+        </div>
       </>
     )
   }
