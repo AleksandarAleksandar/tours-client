@@ -10,6 +10,8 @@ import NotFound from './pages/NotFound'
 import { connect } from 'react-redux'
 import Helper from './Helper'
 import SpinnerRow from './components/SpinnerRow'
+import  ResetPassword  from './components/ResetPassword'
+
 
 
 
@@ -24,7 +26,7 @@ const Checkout = lazy(() => import('./pages/Checkout'))
 const SignInUp = lazy(() => import('./pages/SignInandUpPaga'))
 const Register = lazy(() => import('./components/Register'))
 const SignIn = lazy(() => import('./components/SignIn'))
-const ResetPassword = lazy(() => import('./components/ResetPassword'))
+// const ResetPassword = lazy(() => import('./components/ResetPassword'))
 const AuthLogout = lazy(() => import('./components/AuthLogout'))
 const PasswordChange = lazy(() => import('./components/PasswordChange'))
 const PasswordForget = lazy(() => import('./components/PasswordForget'))
@@ -96,6 +98,7 @@ class App extends React.Component {
               }} /> */}
 
               <Route path="/resetpassword/:token" render={(props) => {
+                console.log(props)
                 return (
                   <div className={wrapper_cl}>
                     {/* <Header isLoggedIn={isLoggedIn} /> */}
