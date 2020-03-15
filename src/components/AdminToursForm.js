@@ -152,7 +152,9 @@ class AdminToursForm extends Component {
   }
 
   handleSubmit(event) {
-    event.preventDefault();
+    if (event && event.preventDefault) {
+      event.preventDefault();
+    }
     console.log('SUBMIT');
     let mode = this.props.mode;
 
@@ -545,210 +547,217 @@ class AdminToursForm extends Component {
 
     return (
       <>
-        <form onSubmit={this.handleSubmit}>
-          <div className="col-md-12">
-            <div className="card card-primary card-outline">
-              <div className="card-header">
-                <h3 className="card-title"><i className="fas  fa-user-plus"></i> Add tour guide</h3>
+        {/*<form onSubmit={this.handleSubmit}>*/}
+        <div className="col-md-12">
+          <div className="card card-primary card-outline">
+            <div className="card-header">
+              <h3 className="card-title"><i className="fas  fa-user-plus"></i> Add tour guide</h3>
+            </div>
+            <div className="card-body pad table-responsive">
+
+              {jsxStatus}
+
+              <div className='form-group'>
+                <label>Category</label>
+                <select
+                  name="category"
+                  className="form-control"
+                  value={this.state.category}
+                  onChange={this.handleInputChange}
+                >
+                  <option value="biking">Biking</option>
+                  <option value="hiking">Hiking</option>
+                  <option value="running">Running</option>
+                  <option value="swimming">Swimming</option>
+                </select>
               </div>
-              <div className="card-body pad table-responsive">
 
-                {jsxStatus}
+              <div className='form-group'>
+                <label>Name</label>
+                <input
+                  name="name"
+                  type="text"
+                  className={"form-control " + errors_cl.name}
+                  placeholder="Enter ..."
+                  value={this.state.name}
+                  onChange={this.handleInputChange}
+                />
+                {jsxErrors.name}
+              </div>
 
-                <div className='form-group'>
-                  <label>Category</label>
-                  <select
-                    name="category"
-                    className="form-control"
-                    value={this.state.category}
-                    onChange={this.handleInputChange}
-                  >
-                    <option value="biking">Biking</option>
-                    <option value="hiking">Hiking</option>
-                    <option value="running">Running</option>
-                    <option value="swimming">Swimming</option>
-                  </select>
-                </div>
+              <div className='form-group'>
+                <label>Summary</label>
+                <input
+                  name="summary"
+                  type="text"
+                  className={'form-control ' + errors_cl.summary}
+                  placeholder="Enter ..."
+                  value={this.state.summary}
+                  onChange={this.handleInputChange}
+                />
+                {jsxErrors.summary}
 
-                <div className='form-group'>
-                  <label>Name</label>
-                  <input
-                    name="name"
-                    type="text"
-                    className={"form-control " + errors_cl.name}
-                    placeholder="Enter ..."
-                    value={this.state.name}
-                    onChange={this.handleInputChange}
-                  />
-                  {jsxErrors.name}
-                </div>
+              </div>
 
-                <div className='form-group'>
-                  <label>Summary</label>
-                  <input
-                    name="summary"
-                    type="text"
-                    className={'form-control ' + errors_cl.summary}
-                    placeholder="Enter ..."
-                    value={this.state.summary}
-                    onChange={this.handleInputChange}
-                  />
-                  {jsxErrors.summary}
+              <div className='form-group'>
+                <label>Description</label>
+                <textarea
+                  name="description"
+                  className="form-control"
+                  placeholder="Enter ..."
+                  rows="4"
+                  value={this.state.description}
+                  onChange={this.handleInputChange}
+                />
+              </div>
 
-                </div>
+              <div className='form-group'>
+                <label>Difficulty</label>
+                <select
+                  name="difficulty"
+                  className="form-control"
+                  value={this.state.difficulty}
+                  onChange={this.handleInputChange}
+                >
+                  <option value="easy">Easy</option>
+                  <option value="medium">Medium</option>
+                  <option value="difficult">Difficult</option>
+                </select>
+              </div>
 
-                <div className='form-group'>
-                  <label>Description</label>
-                  <textarea
-                    name="description"
-                    className="form-control"
-                    placeholder="Enter ..."
-                    rows="4"
-                    value={this.state.description}
-                    onChange={this.handleInputChange}
-                  />
-                </div>
+              <div className='form-group'>
+                <label>Guides</label>
 
-                <div className='form-group'>
-                  <label>Difficulty</label>
-                  <select
-                    name="difficulty"
-                    className="form-control"
-                    value={this.state.difficulty}
-                    onChange={this.handleInputChange}
-                  >
-                    <option value="easy">Easy</option>
-                    <option value="medium">Medium</option>
-                    <option value="difficult">Difficult</option>
-                  </select>
-                </div>
+                {jsxOptionsGuides}
 
-                <div className='form-group'>
-                  <label>Guides</label>
+              </div>
 
-                  {jsxOptionsGuides}
+              <div className='form-group'>
+                <label>Duration</label>
+                <input
+                  name="duration"
+                  type="number"
+                  className={"form-control " + errors_cl.duration}
+                  placeholder="Enter ..."
+                  step="1"
+                  min="1"
+                  max="30"
+                  value={this.state.duration}
+                  onChange={this.handleInputChange}
+                />
+                {jsxErrors.duration}
 
-                </div>
+              </div>
+              <div className='form-group'>
+                <label>Max group size</label>
+                <input
+                  name="maxGroupSize"
+                  type="number"
+                  className={"form-control " + errors_cl.maxGroupSize}
+                  placeholder="Enter ..."
+                  step="1"
+                  min="1"
+                  max="30"
+                  value={this.state.maxGroupSize}
+                  onChange={this.handleInputChange}
+                />
+                {jsxErrors.maxGroupSize}
 
-                <div className='form-group'>
-                  <label>Duration</label>
-                  <input
-                    name="duration"
-                    type="number"
-                    className={"form-control " + errors_cl.duration}
-                    placeholder="Enter ..."
-                    step="1"
-                    min="1"
-                    max="30"
-                    value={this.state.duration}
-                    onChange={this.handleInputChange}
-                  />
-                  {jsxErrors.duration}
+              </div>
 
-                </div>
-                <div className='form-group'>
-                  <label>Max group size</label>
-                  <input
-                    name="maxGroupSize"
-                    type="number"
-                    className={"form-control " + errors_cl.maxGroupSize}
-                    placeholder="Enter ..."
-                    step="1"
-                    min="1"
-                    max="30"
-                    value={this.state.maxGroupSize}
-                    onChange={this.handleInputChange}
-                  />
-                  {jsxErrors.maxGroupSize}
+              <div className='form-group'>
+                <label>Price</label>
+                <input
+                  name="price"
+                  type="number"
+                  className={"form-control " + errors_cl.price}
+                  placeholder="Enter ..."
+                  value={this.state.price}
+                  onChange={this.handleInputChange}
+                />
+                {jsxErrors.price}
 
-                </div>
+              </div>
 
-                <div className='form-group'>
-                  <label>Price</label>
-                  <input
-                    name="price"
-                    type="number"
-                    className={"form-control " + errors_cl.price}
-                    placeholder="Enter ..."
-                    value={this.state.price}
-                    onChange={this.handleInputChange}
-                  />
-                  {jsxErrors.price}
+              <div className='form-group'>
+                <label>Start date (YYYY-MM-DD)</label>
+                <input
+                  name="startDate"
+                  type="text"
+                  className="form-control"
+                  placeholder="2020-01-30"
+                  value={this.state.startDate}
+                  onChange={this.handleInputChange}
+                />
+              </div>
 
-                </div>
+              <div className='form-group'>
+                <label>Start Location Description</label>
+                <textarea
+                  name="startDescription"
+                  className="form-control"
+                  placeholder="Enter ..."
+                  rows="3"
+                  value={this.state.startDescription}
+                  onChange={this.handleInputChange}
+                />
+              </div>
 
-                <div className='form-group'>
-                  <label>Start Location Description</label>
-                  <textarea
-                    name="startDescription"
-                    className="form-control"
-                    placeholder="Enter ..."
-                    rows="3"
-                    value={this.state.startDescription}
-                    onChange={this.handleInputChange}
-                  />
-                </div>
-
-                <div className='form-group'>
-                  <label>Start Location Address</label>
-                  <textarea
-                    name="address"
-                    className="form-control"
-                    placeholder="Enter ..."
-                    rows="3"
-                    value={this.state.address}
-                    onChange={this.handleInputChange}
-                  />
-                </div>
+              <div className='form-group'>
+                <label>Start Location Address</label>
+                <textarea
+                  name="address"
+                  className="form-control"
+                  placeholder="Enter ..."
+                  rows="3"
+                  value={this.state.address}
+                  onChange={this.handleInputChange}
+                />
+              </div>
 
 
 
-                <div className='form-group'>
-                  <label>Start Location Geo URI</label>
-                  <input
-                    name="startGeoUri"
-                    type="text"
-                    className="form-control"
-                    placeholder="geo:36.2556,-115.3242?z=11"
-                    value={this.state.startGeoUri}
-                    onChange={this.handleInputChange}
-                  />
-                  <p>Use <a target="_blank" href="https://www.openstreetmap.org/">www.openstreetmap.org</a> to find desired location and then Share button (in right sidebar) to get Geo URI of desired location.</p>
-                </div>
+              <div className='form-group'>
+                <label>Start Location Geo URI</label>
+                <input
+                  name="startGeoUri"
+                  type="text"
+                  className="form-control"
+                  placeholder="geo:36.2556,-115.3242?z=11"
+                  value={this.state.startGeoUri}
+                  onChange={this.handleInputChange}
+                />
+                <p>Use <a target="_blank" href="https://www.openstreetmap.org/">www.openstreetmap.org</a> to find desired location and then Share button (in right sidebar) to get Geo URI of desired location.</p>
+              </div>
 
 
+              <div className='form-group'>
                 <h2>Locations</h2>
                 {jsxLocations}
                 <FormLocation cb={cb_add_location} duration={this.state.duration} />
-
-                <div className='form-group'>
-                  <label>Start date (YYYY-MM-DD)</label>
-                  <input
-                    name="startDate"
-                    type="text"
-                    className="form-control"
-                    placeholder="2020-01-30"
-                    value={this.state.startDate}
-                    onChange={this.handleInputChange}
-                  />
-                </div>
-
               </div>
-              <div className="card-footer">
-                <button type="submit" className="btn btn-primary">{submitTitle}</button>
+
+              <div className='form-group'>
+                <h2>Cover picture</h2>
+                {jsxPictureCover}
+                <FormPicture cb={cb_add_picture_cover} />
+              </div>
+
+              <div className='form-group'>
+                <h2>Pictures</h2>
+                {jsxPictures}
+                <FormPicture cb={cb_add_picture} />
               </div>
 
             </div>
+            <div className="card-footer">
+              <button type="submit" className="btn btn-primary" onClick={this.handleSubmit}>{submitTitle}</button>
+            </div>
+
           </div>
-        </form>
+        </div>
+        {/* </form> */}
 
-        <h2>Cover picture</h2>
-        {jsxPictureCover}
-        <FormPicture cb={cb_add_picture_cover} />
-
-        <h2>Pictures</h2>
-        {jsxPictures}
-        <FormPicture cb={cb_add_picture} />
       </>
     )
   }

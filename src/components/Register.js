@@ -199,7 +199,4 @@ class Register extends Component {
   }
 }
 
-const mapStateToProps = state => ({
-  state_ceo: state
-})
-export default connect(mapStateToProps)(Register);
+export default Register;

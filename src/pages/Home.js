@@ -1,6 +1,5 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import Directory from '../components/Directory'
 import UniversalItems from '../components/UniversalItems'
 import { browserUtils } from './../utils/browser-utils'
 import { routingUtils } from './../utils/routing-utils'

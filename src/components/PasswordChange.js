@@ -1,6 +1,5 @@
 import React, { Component } from 'react'
 import { passwordChange } from '../redux/user/user-actions'
-import { connect } from 'react-redux'
 import { Link } from 'react-router-dom'
 
 class PasswordChange extends Component {
@@ -179,7 +178,4 @@ class PasswordChange extends Component {
   }
 }
 
-const mapStateToProps = state => ({
-  state_ceo: state
-})
-export default connect(mapStateToProps)(PasswordChange)
+export default PasswordChange

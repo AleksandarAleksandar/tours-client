@@ -25,7 +25,7 @@ import Checkbox from '@material-ui/core/Checkbox';
 const Checkout = (props) => {
   let jsxRedirect = null;
   const [needRedirect, setNeedRedirect] = useState(false)
-  const [savedAddress, setSavedAddress] = useState('NEW')
+  const [savedAddress, setSavedAddress] = useState('MY')
   let toggleAddressForm = (event) => {
     setSavedAddress(event.target.value);
   }

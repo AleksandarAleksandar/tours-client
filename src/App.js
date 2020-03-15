@@ -88,19 +88,19 @@ class App extends React.Component {
               </Route>
 
               <Route path='/register'>
-                <Register isLoggedIn={isLoggedIn} />
+                <Register dispatch={this.props.dispatch} isLoggedIn={isLoggedIn} />
               </Route>
 
               <Route path="/resetpassword/:token" render={(props) => {
-                return (<ResetPassword match={props.match} />)
+                return (<ResetPassword match={props.props.match} />)
               }} />
 
               <Route path='/passwordchange'>
-                <PasswordChange dispatch={this.dispatch} isLoggedIn={isLoggedIn} />
+                <PasswordChange dispatch={this.props.dispatch} isLoggedIn={isLoggedIn} />
               </Route>
 
               <Route path='/passwordforget'>
-                <PasswordForget isLoggedIn={isLoggedIn} />
+                <PasswordForget  dispatch={this.props.dispatch}  isLoggedIn={isLoggedIn} />
               </Route>
 
               <Route path='/contact'>
