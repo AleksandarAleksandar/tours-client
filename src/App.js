@@ -91,16 +91,27 @@ class App extends React.Component {
                 <Register dispatch={this.props.dispatch} isLoggedIn={isLoggedIn} />
               </Route>
 
+              {/* <Route path="/resetpassword/:token" render={(props) => {
+                return (<ResetPassword match={props.match} />)
+              }} /> */}
+
               <Route path="/resetpassword/:token" render={(props) => {
-                return (<ResetPassword match={props.props.match} />)
-              }} />
+                return (
+                  <div className={wrapper_cl}>
+                    {/* <Header isLoggedIn={isLoggedIn} /> */}
+                    <ResetPassword match={props.match} />
+                    {/* <Footer /> */}
+                  </div>
+                );
+              }}
+              />
 
               <Route path='/passwordchange'>
                 <PasswordChange dispatch={this.props.dispatch} isLoggedIn={isLoggedIn} />
               </Route>
 
               <Route path='/passwordforget'>
-                <PasswordForget  dispatch={this.props.dispatch}  isLoggedIn={isLoggedIn} />
+                <PasswordForget dispatch={this.props.dispatch} isLoggedIn={isLoggedIn} />
               </Route>
 
               <Route path='/contact'>
